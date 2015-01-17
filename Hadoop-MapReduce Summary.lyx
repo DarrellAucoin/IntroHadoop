@@ -1,0 +1,575 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\begin_modules
+theorems-starred
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Hadoop/MapReduce Summary
+\end_layout
+
+\begin_layout Section
+What is Hadoop/MapReduce?
+\end_layout
+
+\begin_layout Section
+User Interface
+\end_layout
+
+\begin_layout Standard
+MapReduce is made of two basic functions at the user end:
+\end_layout
+
+\begin_layout Description
+Map: a function that takes in a key/value pair to generate a set of intermediate
+ key/value pairs
+\end_layout
+
+\begin_layout Description
+Reduce: a function that aggregates said intermediate key/value pairs for
+ the user
+\end_layout
+
+\begin_layout Itemize
+This allows the system to automatically parallelize and execute on a large
+ cluster of machines
+\end_layout
+
+\begin_layout Itemize
+There is more to the Hadoop system than this, but the functionality of partition
+ing, grouping, and sorting is handled at the backend within the hadoop system.
+\end_layout
+
+\begin_layout Itemize
+The hadoop system also hides the messy details of parallelization, fault-toleran
+ce, data distribution, and load balancing in a library.
+\end_layout
+
+\begin_layout Example
+Count occurances of each word in a large collection of documents:
+\end_layout
+
+\begin_layout Example
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+map(String key, String value): 
+\end_layout
+
+\begin_layout Plain Layout
+
+	// key: document name 
+\end_layout
+
+\begin_layout Plain Layout
+
+	// value: document contents 
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each word w in value: 
+\end_layout
+
+\begin_layout Plain Layout
+
+		EmitIntermediate(w, "1");
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+reduce(String key, Iterator values): 
+\end_layout
+
+\begin_layout Plain Layout
+
+	// key: a word 
+\end_layout
+
+\begin_layout Plain Layout
+
+	// values: a list of counts 
+\end_layout
+
+\begin_layout Plain Layout
+
+	int result = 0; 
+\end_layout
+
+\begin_layout Plain Layout
+
+	for each v in values: 
+\end_layout
+
+\begin_layout Plain Layout
+
+		result += ParseInt(v); 
+\end_layout
+
+\begin_layout Plain Layout
+
+	Emit(AsString(result));
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+map emits each word with an associated 1 value
+\end_layout
+
+\begin_layout Itemize
+reduce aggregates these values for each particular word
+\end_layout
+
+\end_deeper
+\begin_layout Example*
+Programs that can be expressed as MapReduce computations:
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Distributed
+\begin_inset space ~
+\end_inset
+
+Grep: Map returns a lines if it matches the supplied pattern.
+ Reduce is just the identity function.
+\end_layout
+
+\begin_layout Description
+Count
+\begin_inset space ~
+\end_inset
+
+of
+\begin_inset space ~
+\end_inset
+
+URL
+\begin_inset space ~
+\end_inset
+
+Access
+\begin_inset space ~
+\end_inset
+
+Frequency: Map processes logs of web page requests and outputs 
+\family typewriter
+<URL, 1>
+\family default
+.
+ Reduce aggregates values for the same URL and returns 
+\family typewriter
+<URL, totalCount>
+\family default
+.
+\end_layout
+
+\begin_layout Description
+Reverse
+\begin_inset space ~
+\end_inset
+
+Web-Link
+\begin_inset space ~
+\end_inset
+
+Graph: Map returns 
+\family typewriter
+<target, source>
+\family default
+ pairs for each link to a 
+\family typewriter
+target
+\family default
+ URL found in a named page 
+\family typewriter
+source
+\family default
+.
+ Reduce concatenates all 
+\family typewriter
+source
+\family default
+ URLs for associated 
+\family typewriter
+target
+\family default
+s and returns 
+\family typewriter
+<target, list(source)>
+\family default
+.
+\end_layout
+
+\begin_layout Description
+Inverted
+\begin_inset space ~
+\end_inset
+
+Index: Map parses each document and returns intermediate sequences of 
+\family typewriter
+<word, documentID>
+\family default
+ pairs.
+ Reduce accepts all pairs for a given word, sorts the corresponding document
+ IDs and returns 
+\family typewriter
+<word, list(document ID)>
+\family default
+ pair.
+\end_layout
+
+\begin_layout Description
+Distributed
+\begin_inset space ~
+\end_inset
+
+Sort: Map extracts the key from each record and return the intermediate
+ 
+\family typewriter
+<key, record>
+\family default
+ pair.
+ Reduce just returns this pair unchanged.
+\end_layout
+
+\end_deeper
+\begin_layout Example
+For the food problem discussed, if we wished to tally the food score for
+ a large collection of individuals:
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Map: Processes documents and for each food variable and person returns 
+\family typewriter
+<personalID, foodValue>
+\family default
+ where 
+\family typewriter
+foodValue
+\family default
+ is either 2, 1, or -1.
+\end_layout
+
+\begin_layout Description
+Reduce: Aggrevates the foodValues for each personalID and returns 
+\family typewriter
+<personalID, foodScore>
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Implementation
+\end_layout
+
+\begin_layout Standard
+Many different possible implementations of MapReduce interface, the right
+ choice depends on the environment:
+\end_layout
+
+\begin_layout Itemize
+A small shared-memory machine,
+\end_layout
+
+\begin_layout Itemize
+A large NUMA multi-processor,
+\end_layout
+
+\begin_layout Itemize
+A large collection of networked machines,
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\vdots$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Implementation In Google
+\end_layout
+
+\begin_layout Standard
+Large cluster of PC's connected together with switched Ethernet
+\end_layout
+
+\begin_layout Enumerate
+Machines are typically dual-process x86 processors running linux, with 2-4GB
+ of memory per machine
+\end_layout
+
+\begin_layout Enumerate
+Networking harware is used: typically either 100 megbits/second or 1 gigabit/sec
+ond at the machine level.
+\end_layout
+
+\begin_layout Enumerate
+A cluster consists of hundred or thousands of machines, thus machine failures
+ are common.
+\end_layout
+
+\begin_layout Enumerate
+Storage is provided by inexpensive IDE disks attached directly to individual
+ machines.
+ Disks are formatted in HDFS (Hadoop Distributed File System) to manage
+ the data stored on these disks.
+ The file system uses replication to provide availability and availability
+ and reliability on top of unreliable hardware.
+\end_layout
+
+\begin_layout Enumerate
+Users submitt jobs to a scheduling system.
+ Each job consists of a set of tasks, and is mapped by the scheduler to
+ a set of available machines within a cluster.
+\end_layout
+
+\begin_layout Subsection
+Execution Overview
+\end_layout
+
+\begin_layout Standard
+The map commands are distributed across multiple macines, partitioning the
+ input data into a set of M splits.
+ The input splits can be processed in parallel by different machines.
+\end_layout
+
+\begin_layout Standard
+Reduce invocations are distributed by partitioning the intermediate key
+ space into R pieces using a partitioning function.
+\end_layout
+
+\begin_layout Itemize
+The number of partitions (R) and the partitioning function are specified
+ by the user.
+\end_layout
+
+\begin_layout Enumerate
+The MapReduce library in the user program first splits the input files into
+ M pieces:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Typically 16-64 Megabytes per piece
+\end_layout
+
+\begin_layout Standard
+It then starts up many copies of the program on a cluster of machines.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+One of the copies of the program is special-
+\series bold
+\bar under
+the master
+\series default
+\bar default
+.
+ The rest are workers that are assigned work by the master.
+ There are M map tasks and R reduce tasks to assign.
+ The master picks idle workers and assigns each one to a map task or a reduce
+ task.
+\end_layout
+
+\begin_layout Enumerate
+A worker who is assigned a map task reads the contents of a corresponding
+ input split.
+ It parses the key/value pairs out of the input data and passes each pair
+ to the user-defined 
+\emph on
+Map
+\emph default
+ function.
+ The intermediate key/value pairs produced by the Map function are buffered
+ in memory.
+\end_layout
+
+\begin_layout Enumerate
+Periodically, the buffered pairs are written to local disk, partitioned
+ into R regions by the partitioning function.
+ The locations of these buffered pairs on the local disk are passed back
+ to the master, who is responsible for forwarding these locations to the
+ reduce workers.
+\end_layout
+
+\begin_layout Enumerate
+When a reduce worker is notified by the master about these locations, it
+ uses remote procedure calls to read the buffered data from the local disks
+ of the map workers.
+ When a reduce worker has read all intermediate data, it sorts it by the
+ intermediate keys so that all occurances of the same key are grouped together.
+ The sorting is needed because typically many different keys map to the
+ same reduce task.
+ If the amount of intermediate data is too large to fit in memory, an external
+ sort is used.
+\end_layout
+
+\begin_layout Enumerate
+The reduce worker interates over the sorted intermediate data and for each
+ unique key enountered, it passes the key and the corresponding set of intermedi
+ate values to the user's 
+\family typewriter
+Reduce
+\family default
+ function.
+ The output of the Reduce function is appended to a final output file for
+ this reduce partition.
+\end_layout
+
+\begin_layout Enumerate
+When all map and reduce task are completed, the master wakes up the user
+ program.
+ At this point, the 
+\family typewriter
+MapReduce
+\family default
+ call in the user program returns back to the user code.
+\end_layout
+
+\begin_layout Standard
+After sucessful completion, the output of the mapreduce execution is available
+ in the R number of output files (one per reduce task, with file names specified
+ by the user).
+\end_layout
+
+\begin_layout Standard
+We can combine these files by doing another 
+\family typewriter
+MapReduce
+\family default
+ call (with R=1) and aggregate as necessary for key/value pairs sparced
+ across these files.
+\end_layout
+
+\begin_layout Subsection
+Master Data Structures
+\end_layout
+
+\begin_layout Standard
+The master keeps several data structures: for each map/reduce task it stores
+ the state (idle, in-progress, or completed) and the identity of the worker
+ machine.
+\end_layout
+
+\begin_layout Standard
+The master tells the location of intermediate data file regions for delivery
+ between map to reduce tasks.
+ For each completed map task, the master stores the locations and sizes
+ of the R intermediate file regions produced by the map task.
+ Updates to this location and size are recieved a map tasks are completed
+ (multiple map tasks can write to single intermediate file).
+ The information is pushed incrementally to workers that have 
+\emph on
+in-progress
+\emph default
+ reduce tasks.
+\end_layout
+
+\begin_layout Subsection
+Fault Tolerance
+\end_layout
+
+\begin_layout Standard
+Google's system processes very large amounts of data using hundreds or thousands
+ of machines, meaning that it must tolerate machine failures.
+\end_layout
+
+\begin_layout Subsubsection
+Worker Failure
+\end_layout
+
+\begin_layout Subsubsection
+Master Failure
+\end_layout
+
+\end_body
+\end_document

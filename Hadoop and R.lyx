@@ -1,0 +1,1739 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-starred
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "backgroundcolor={\color{lightgrey}}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Hadoop Streaming and R
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+RHadoop (rmr2 package)
+\end_layout
+
+\begin_layout Standard
+For any R package to work with hadoop, it must be installed on all clusters
+ with the exact same location path.
+\end_layout
+
+\begin_layout Standard
+Many rmr2 function will return something called a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+, a stub with some information on finding and managing data (the data itself
+ is not loaded into memory until needed).
+ Some functions in rmr2 that return 
+\series bold
+\emph on
+Big Data Objects
+\series default
+\emph default
+ are mapreduce, to.dfs, and from.dfs.
+\end_layout
+
+\begin_layout Standard
+We can switch off hadoop, for debugging purposes with
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Information gathered here come from the rmr2 help function and the 
+\begin_inset CommandInset href
+LatexCommand href
+name "rmr2 tutorial"
+target "https://github.com/RevolutionAnalytics/rmr2/blob/master/docs/tutorial.md"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+rmr2 Functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mapreduce(input, output = NULL, map = to.map(identity), reduce = NULL,
+\end_layout
+
+\begin_layout Plain Layout
+
+	vectorized.reduce = FALSE, combine = NULL, in.memory.combine = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	input.format = "native",   output.format = "native",
+\end_layout
+
+\begin_layout Plain Layout
+
+	backend.parameters = list(),   verbose = TRUE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+mapreduce Defines and executes a map reduce job.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input Can be:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A set of file paths in HDFS
+\end_layout
+
+\begin_layout Itemize
+A 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ (a stub of information on some data in HDFS)
+\end_layout
+
+\begin_layout Itemize
+A 
+\bar under
+list
+\bar default
+ of a combination of both
+\end_layout
+
+\end_deeper
+\begin_layout Description
+output A path to the destination folder on HDFS; if missing, a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ is returned.
+\end_layout
+
+\begin_layout Description
+map An optional R function of two arguments, returning either NULL or the
+ return value of keyval, that specifies the map operation to execute as
+ part of a mapreduce job.
+ 
+\begin_inset Newline newline
+\end_inset
+
+The two arguments represent multiple key-value pairs according to the definition
+ of the mapreduce model.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The map function must return key-value pairs.
+ Preferably using the function keyval:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+return( keyval(key, val) )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where key, val can be vectors, lists, matricies, data.frames and val can
+ even be NULL
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Keys are matched to the corresponding values by position, according to the
+ second dimension if it is defined (that is rows in matrices and data frames,
+ position otherwise), analogous to the behavior of cbind, see keyval for
+ details.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+reduce An optional R function of two arguments, a key and a data structure
+ representing all the values associated with that key (the same type as
+ returned by the map call, merged with rbind for matrices and data frames
+ and c otherwise), returning either NULL or the return value of keyval,
+ that specifies the reduce operation to execute as part of a mapreduce job.
+\begin_inset Newline newline
+\end_inset
+
+The default is no reduce phase, that is the output of the map phase is the
+ output of the mapreduce job, see the vectorized.reduce argument for an alternate
+ interface
+\end_layout
+
+\begin_layout Description
+vectorized.reduce The argument to the reduce should be construed as a collection
+ of keys and values associated to them by position (by row when 2-dimensional).
+ Identical keys are consecutive and once a key is present once, all the
+ records associated with that key will be passed to the same reduce call
+ (complete group guarantee).
+ This form of reduce has been introduced mostly for efficiency reasons when
+ processing small reduce groups, because the records are small and few of
+ them are associated with the same key.
+ This option affects the combiner too.
+\end_layout
+
+\begin_layout Description
+combine refers to:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A function with the same signature and possible return values as the reduce
+ function, or 
+\end_layout
+
+\begin_layout Itemize
+TRUE, which means 
+\emph on
+use the reduce function
+\emph default
+ as combiner.
+\end_layout
+
+\begin_layout Itemize
+NULL means no combiner is used.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+in.memory.combine Apply the combiner just after calling the map function,
+ before returning the results to hadoop.
+ This is useful to reduce the amount of I/O and (de)serialization work when
+ combining on small sets of records has any effect (you may want to tune
+ the input format to read more data for each map call together with this
+ approach, see arguments read.size or nrow for a variety of formats)
+\end_layout
+
+\begin_layout Description
+input.format Input format specification, see make.input.format
+\begin_inset Formula 
+\[
+\mbox{input.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"hbase"} & \mbox{hbase table format}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format (some similarities to csv)}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+output.format Output format specification, see make.output.format
+\begin_inset Formula 
+\[
+\mbox{output.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format (some similarities to csv)}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+backend.parameters This option is for advanced users only and may be removed
+ in the future.
+ Specify additional, backend-specific options, as in backend.parameters =
+ list(hadoop = list(D = "mapred.reduce.tasks=1"), local = list()).
+ It is recommended not to use this argument to change the semantics of mapreduce
+ (output should be independent of this argument).
+ Each backend can only see the nested list named after the backend itself.
+ The interpretation is the following: for the hadoop backend, generate an
+ additional hadoop streaming command line argument for each element of the
+ list, "-name value".
+ If the value is TRUE generate "-name" only, if it is FALSE skip.
+ One possible use is to specify the number of mappers and reducers on a
+ per-job basis.
+ It is not guaranteed that the generated streaming command will be a legal
+ command.
+ In particular, remember to put any generic options before any specific
+ ones, as per hadoop streaming manual.
+ For the local backend, the list is currently ignored.
+\end_layout
+
+\begin_layout Description
+verbose Run hadoop in verbose mode.
+ No effect on the local backend
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Note: Jobs can be chained together by simply providing the output for one
+ job as the input for another.
+\begin_inset Newline newline
+\end_inset
+
+The map function should not read from standard input and write to standard
+ output.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Logging and debugging messages should be written to standard error, and
+ will be redirected to the appropriate logs or to console by the backend.
+\end_layout
+
+\begin_layout Example
+Mapreduce job for doing a word count
+\end_layout
+
+\begin_layout Example
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mapreduce(input='/user/darrellaucoin/input',
+\end_layout
+
+\begin_layout Plain Layout
+
+	output='/user/darrellaucoin/out',
+\end_layout
+
+\begin_layout Plain Layout
+
+	input.format="text",              	map=(k,lines) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		words.list = strsplit(lines, ' ') 
+\end_layout
+
+\begin_layout Plain Layout
+
+		words = unlist(words.list)
+\end_layout
+
+\begin_layout Plain Layout
+
+		return( keyval(words, 1) )
+\end_layout
+
+\begin_layout Plain Layout
+
+	},
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce=function(word, counts) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		keyval(word, sum(counts)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+keyval(key, val)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+keyval Create a key-value object (a collection of key-value pairs) (Pkg
+ rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+key Key object: vectors, lists, matricies, data.frames
+\end_layout
+
+\begin_layout Description
+val Value object: vectors, lists, matricies, data.frames or NULL
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Note: To retrieve the keys/values from a keyval.Object: keys(keyval.Object)
+ or values(keyval.Object)
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from.dfs(input, format = "native")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+from.dfs Read R objects from HDFS.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input A valid path to HDFS or a big.data.object
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.input.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Returns a key-value pair collection to R
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Warning: This is useful only if a job produces something of reasonable size,
+ like a summary of the data, that can fit into memory and therefore inspected.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+to.dfs(kv, output = dfs.tempfile(), format = "native")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+to.dfs Write R objects from HDFS.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+output A valid path to HDFS
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.output.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Not possible to write out big data with to.dfs, but is useful for making
+ test cases, learning and debugging.
+\end_layout
+
+\begin_layout Itemize
+The return type is a 
+\series bold
+\emph on
+big data object
+\series default
+\emph default
+, a stub with some information on finding and managing data (the data itself
+ is not loaded into memory)
+\end_layout
+
+\begin_layout Subsection
+Useful R Functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+system(command, intern = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       ignore.stdout = FALSE, ignore.stderr = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       wait = TRUE, input = NULL, show.output.on.console = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       minimized = FALSE, invisible = TRUE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+system Invokes OS command specified by the character string command.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+command Character string to be invoked in terminal.
+\end_layout
+
+\begin_layout Description
+intern a logical (not NA) which indicates whether to capture the output
+ of the command as an R character vector.
+\end_layout
+
+\begin_layout Description
+ignore.stdout, ignore.stderr a logical (not NA) indicating whether messages
+ written to ‘stdout’ or ‘stderr’ should be ignored.
+\end_layout
+
+\begin_layout Description
+wait a logical (not NA) indicating whether the R interpreter should wait
+ for the command to finish, or run it asynchronously.
+ This will be ignored (and the interpreter will always wait) if intern =
+ TRUE.
+\end_layout
+
+\begin_layout Description
+input if a character vector is supplied, this is copied one string per line
+ to a temporary file, and the standard input of command is redirected to
+ the file.
+\end_layout
+
+\begin_layout Description
+show.output.on.console, minimized, invisible arguments that are accepted on
+ Windows but ignored on this platform, with a warning.
+\end_layout
+
+\end_deeper
+\begin_layout Example
+Command for hadoop to remove previous contents of out
+\end_layout
+
+\begin_layout Example
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+system("${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+file.path(..., fsep = .Platform$file.sep)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+file.path Construct a path from components to be easily translated accross
+ different OS (Mac, Windows, Linux).
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+...
+ character vectors
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+strsplit Split elements of a character vector x into substrings, split with
+ matches to the regular expression in split argument.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+x character vector 
+\end_layout
+
+\begin_layout Description
+split character vector containing regular expressions to tell when to break
+ the substring.
+ If split has length 0, x is split to individual characters.
+\end_layout
+
+\begin_layout Description
+perl logical.
+ Should perl-compatible regular expressions be used?
+\end_layout
+
+\begin_layout Description
+useBytes logical.
+ Should matching be done byte by byte?
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+unlist(x, recursive = TRUE, use.names = TRUE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+unlist Simplifies a list structure x to a vector containing atomic components
+ which occur in x.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+x a list or vector
+\end_layout
+
+\begin_layout Description
+recurvisve logical
+\end_layout
+
+\begin_layout Description
+use.names logical.
+ Should names be preserved?
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+unlist(x, recursive = TRUE, use.names = TRUE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+unlist Simplifies a list structure x to a vector containing atomic components
+ which occur in x.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+x a list or vector
+\end_layout
+
+\begin_layout Description
+recurvisve logical
+\end_layout
+
+\begin_layout Description
+use.names logical.
+ Should names be preserved?
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+\noindent
+Debugging
+\end_layout
+
+\begin_layout Standard
+Debugging is essential to running a MapReduce job and ensuring everything
+ is working correctly.
+ As such, we have two functions to help us debugg code:
+\end_layout
+
+\begin_layout Description
+Rprof when we are running on local mode (using rmr.options(backend = "local")
+ ).
+ When local mode is turned on, hadoop is never run but a simulation of hadoop
+ entirely within R is run, as such Rprof is used to collect any debugging
+ information we might need.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+summaryRprof
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Functions will only be recorded in the profile log if they put a context
+ on the call stack
+\end_layout
+
+\begin_layout Itemize
+Individual statements will be recorded in the profile log if line.profiling
+ is set to TRUE, and if the code being executed was parsed with source reference
+s.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+rmr.options when we are running on hadoop (either in pseudo-distribution
+ or full-distribution mode).
+ When in hadoop mode, there are several options to collect information to
+ help debug.
+\end_layout
+
+\begin_layout Itemize
+When trying to look for bugs it is usually best look in local mode to find
+ potential problems within R, then failing that look in hadoop mode for
+ any problems (connections problems between R and Hadoop etc.)
+\end_layout
+
+\begin_layout Standard
+Profiling works by writing out the call stack every interval seconds, to
+ the file specified
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options(backend = c("hadoop", "local"),
+\end_layout
+
+\begin_layout Plain Layout
+
+	profile.nodes = c("off", "calls", "memory", "both"),
+\end_layout
+
+\begin_layout Plain Layout
+
+	hdfs.tempdir = "/tmp",
+\end_layout
+
+\begin_layout Plain Layout
+
+	exclude.objects = NULL,
+\end_layout
+
+\begin_layout Plain Layout
+
+	backend.parameters = list())
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+rmr.options Set and get package options.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+...
+ Names of options to get values of, as length of one character vectors.
+\end_layout
+
+\begin_layout Description
+backend Use either hadoop, or the current R interpreter, sequentially, for
+ learning and debugging.
+\begin_inset Formula 
+\[
+\mbox{backend}=\begin{cases}
+\mbox{"local"} & \mbox{implemented in R (helpful for debugging)}\\
+\mbox{"hadoop"} & \mbox{implemented in Hadoop}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+profile.nodes Collect profiling and memory information when running additional
+ R interpreters (besides the current one) on the cluster.
+ No effect on the local backend, use 
+\emph on
+Rprof
+\emph default
+ instead.
+ For backward compatibility, "calls" is equivalent to TRUE and "off" to
+ FALSE
+\begin_inset Formula 
+\[
+\mbox{profile.nodes}=\begin{cases}
+\mbox{"off"} & \mbox{No collection}\\
+\mbox{"calls"} & \mbox{Collect R calls}\\
+\mbox{"memory"} & \mbox{Collect memory information}\\
+\mbox{"both"} & \mbox{Collect both}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The profiling data is collected in the following files:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+file.path(rmr.options("dfs.tempdir"), "Rprof", <job id>, <attempt id>)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+hdfs.tempdir The directory to use for temporary files, including mapreduce
+ intermediate results files, on the distributed file system (not used when
+ running on the local backend).
+\end_layout
+
+\begin_layout Description
+exclude.objects Objects in the Global environment that are not needed by
+ the map or reduce functions, as character vector.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is useful when you have some large R objects that is not needed by
+ the map reduce job (you don't need to copy these objects to the nodes)
+\end_layout
+
+\end_deeper
+\begin_layout Description
+backend.parameters Parameters to pass directly to the backend.
+ See equally named argument for the function mapreduce.
+ Use this setting for backend parameters that need to be different from
+ default but can be the same from job to job
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Rprof(filename = "Rprof.out", append = FALSE, interval = 0.02,
+\end_layout
+
+\begin_layout Plain Layout
+
+	memory.profiling = FALSE, gc.profiling = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	line.profiling = FALSE, numfiles = 100L, bufsize = 10000L) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Rprof Simplifies a list structure x to a vector containing atomic components
+ which occur in x.
+ (Pkg utils)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+filename The file to be used for recording the profiling results.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Set to NULL or "" to disable profiling.
+\end_layout
+
+\begin_layout Description
+append logical: should the file be over-written or appended to?
+\end_layout
+
+\begin_layout Description
+interval real: time interval between samples.
+\end_layout
+
+\begin_layout Description
+memory.profiling logical: write memory use information to the file?
+\end_layout
+
+\begin_layout Description
+gc.profiling logical: record whether GC is running?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+GC is 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+line.profiling logical: write line locations to the file?
+\end_layout
+
+\begin_layout Description
+numfiles,
+\begin_inset space ~
+\end_inset
+
+bufsize integers: line profiling memory allocation
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Linear Least Squares Using RHadoop
+\end_layout
+
+\begin_layout Standard
+To understand the MapReduce framework, lets solve a familar problem of Linear
+ Regression.
+ For Hadoop/MapReduce to work we MUST figure out how to parallelize our
+ code, in other words how to use the hadoop system to only need to make
+ a subset of our calculations on a subset of our data.
+\end_layout
+
+\begin_layout Description
+Assumption: The value of 
+\begin_inset Formula $p$
+\end_inset
+
+, the number of explanatory variables is small enough for R to easily handle
+ and 
+\begin_inset Formula $n\gg p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We know from linear regression, that our estimate of 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+ :
+\begin_inset Formula 
+\[
+X^{T}X\hat{\beta}=X^{T}y
+\]
+
+\end_inset
+
+and the matrix 
+\begin_inset Formula $\left(X^{T}X\right)_{p\times p}$
+\end_inset
+
+ and 
+\begin_inset Formula $\left(X^{T}y\right)_{p\times1}$
+\end_inset
+
+ should be small enough for R to solve for 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+ with relative ease.
+ We would therfore only need to find 
+\begin_inset Formula $X^{T}X,X^{T}y$
+\end_inset
+
+ to get 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To break up this calculation we break our matrix 
+\begin_inset Formula $X$
+\end_inset
+
+ into submatricies 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+: 
+\begin_inset Formula 
+\[
+X=\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray*}
+\implies X^{T}X & = & \begin{bmatrix}X_{1}^{T} & X_{2}^{T} & X_{3}^{T} & \cdots & X_{n}^{T}\end{bmatrix}\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix}\\
+ & = & \begin{bmatrix}X_{1}^{T}X_{1}+ & X_{2}^{T}X_{2}+ & X_{3}^{T}X_{3}+ & \cdots & +X_{n}^{T}X_{n}\end{bmatrix}
+\end{eqnarray*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\implies X^{T}y=\begin{bmatrix}X_{1}^{T}y_{1}+ & X_{2}^{T}y_{2}+ & X_{3}^{T}y_{3}+ & \cdots & +X_{n}^{T}y_{n}\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+ can be easily calculated in the map phase of our MapReduce job and the
+ addition of 
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+'s and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+'s can be done in the aggregation phase (the reduce phase).
+\end_layout
+
+\begin_layout Subsubsection
+Setup
+\end_layout
+
+\begin_layout Standard
+First lets setup the system, and create some variables to test our code
+ on:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=R"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoo
+p-streaming-2.2.0.jar")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rmr2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(data.table)
+\end_layout
+
+\begin_layout Plain Layout
+
+#Setup variables 
+\end_layout
+
+\begin_layout Plain Layout
+
+p = 10 
+\end_layout
+
+\begin_layout Plain Layout
+
+num.obs = 2000 
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.true = 1:(p+1) 
+\end_layout
+
+\begin_layout Plain Layout
+
+# Make our X matrix 
+\end_layout
+
+\begin_layout Plain Layout
+
+X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p), ncol = p))
+\end_layout
+
+\begin_layout Plain Layout
+
+y = X %*% beta.true + rnorm(num.obs) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X.index = to.dfs(cbind(y, X)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+rm(X, y, num.obs, p) 
+\end_layout
+
+\begin_layout Plain Layout
+
+############################
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that since we are only doing a test run in pseudo-distribution mode,
+ we can't make the num.obs too large as that would take too long for a single
+ node (our computer) to run.
+ After 
+\begin_inset Formula $y$
+\end_inset
+
+ and 
+\begin_inset Formula $X$
+\end_inset
+
+ are written to HDFS, we remove them, it is good practice to remove variables
+ we no longer need.
+ Or at least not to send unnecessary variables to our clusters: relieving
+ unnecessary IO burdens in initialization:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options(exclude.objects=c('X','y'))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Map-Reduce Functions
+\end_layout
+
+\begin_layout Itemize
+To get our 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ in each cluster node, we must first remove the 
+\begin_inset Formula $y$
+\end_inset
+
+ values.
+ 
+\end_layout
+
+\begin_layout Itemize
+In order to aggregate over all values, we must return a fixed value as the
+ key in our map functions (otherwise they will only aggregate over the same
+ key values)
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+map.XtX = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #For our calucation, we need to get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% Xi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+map.Xty = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	yi = Xi[,1] # Retrieve the y values
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #For the reduce phase, we need to get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% yi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+Sum = function(., YY) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(Reduce('+', YY))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+# The key here doesn't matter, as long it is is the same for every # value
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The reason we are returning a list in the map function is because otherwise
+ Reduce will only return a some of the elements of the matricies.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list prevents this by Reduce iterating though the elements of the list (the
+ individual 
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+ matricies) and applying the binary function '+' to each one.
+\end_layout
+
+\begin_layout Itemize
+list is used in the reduce function 'Sum' because we will also use this
+ as a combiner function and if we didn't use a list we would have the same
+ problem as above.
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+MapReduce Job
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+XtX = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.XtX,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Xty = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(
+\end_layout
+
+\begin_layout Plain Layout
+
+	input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.Xty,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.hat = solve(XtX, Xty)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(beta.hat)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Full Code
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "Hadoop_linear_reg.R"
+lstparams "breaklines=true,language=R"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

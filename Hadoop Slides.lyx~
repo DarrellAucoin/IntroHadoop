@@ -1,0 +1,3313 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass beamer
+\begin_preamble
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+% We use the "Berkeley" theme with a 3.45em-wide side bar on the left
+%\usetheme[left,width=3.45em]{Berkeley}
+%\usetheme{Warsaw}
+% or ...
+%\usetheme{Antibes}	% tree outline, neat
+%\usetheme{JuanLesPins}	% like Antibes, with shading
+%\usetheme{Bergen}	% outline on side
+%\usetheme{Luebeck}	% like Warsaw, square sides
+%\usetheme{Berkeley}	% interesting left bar outline
+\usetheme{Madrid}	% clean, nice.  7/12 page numbers
+%\usetheme{Berlin}	% dots show slide number
+%\usetheme{Malmoe}	% OK, plain, unshaded
+%\usetheme{Boadilla}	% nice, white bg, no top bar
+%\usetheme{Marburg}	% nice, outline on right
+%\usetheme{boxes}	% ???
+%\usetheme{Montpellier}	% tree outline on top, plainish white
+%\usetheme{Copenhagen}	% like Warsaw
+%\usetheme{PaloAlto}	% looks good
+%\usetheme{Darmstadt}	% like Warsaw with circle outline
+%\usetheme{Pittsburgh}
+%\usetheme{default}
+%\usetheme{Rochester}	% like boxy, unshaded warsaw
+%\usetheme{Dresden}	% circle outline on top
+%\usetheme{Singapore}	% purple gradient top
+%\usetheme{Frankfurt}	% like Warsaw with circle outline on top
+%\usetheme{Szeged}
+%\usetheme{Goettingen}	% light purple right bar outline
+%\usetheme{Warsaw}
+%\usetheme{Hannover}	% like Goett with bar on left
+%\usetheme{compatibility}
+%\usetheme{Ilmenau}
+
+
+\usecolortheme{seahorse}
+%\usecolortheme{fly}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-starred
+knitr
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 1
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Intro to Hadoop
+\end_layout
+
+\begin_layout Author
+Darrell Aucoin
+\end_layout
+
+\begin_layout Institute
+Stats Club
+\end_layout
+
+\begin_layout TitleGraphic
+In pioneer days they used oxen for heavy pulling, and when one ox couldn’t
+ budge a log, they didn’t try to grow a larger ox.
+ We shouldn’t be trying for bigger computers, but for more systems of computers.
+\begin_inset Newline newline
+\end_inset
+
+—Grace Hoppe
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_deeper
+\begin_layout FrameTitle
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+presentation
+\end_layout
+
+\end_inset
+
+Contents
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Motivation
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Motivation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hadoop VS SQL
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100line%">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RDBMS (SQL)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hadoop
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gigabytes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Terabyte/Petrabytes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Access
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Interactive and batch
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Batch
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Updates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read and write many times
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write once, read many times
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Structure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Static schema (highly structured)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dynamic schema (Semi-structured)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Integrity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Low
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scaling
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nonlinear
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Linear
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write-on Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read-on Schema
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data formating
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Normalized
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally De-normalized
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+What is Hadoop?
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+What is Hadoop?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Definition
+Hadoop is a MapReduce framework built on top of a distributed file system
+ (HDFS for Hadoop).
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+What is MapReduce?
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+What is MapReduce?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Definition
+MapReduce is a programming paradigm model of using parallel, distributed
+ algorithims to process or generate data sets.
+ MapRedeuce is composed of two main components/functions:
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Map(k,v): Filters and sorts data.
+\end_layout
+
+\begin_layout Description
+Reduce(k,v): Aggregates data according to keys (k).
+\end_layout
+
+\end_deeper
+\begin_layout Block
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+Hadoop MapReduce Components
+\end_layout
+
+\end_inset
+
+Controls job execution
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+JobTracker Coordinates jobs, scheduling task for tasktrackers and records
+ progress for each job
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If a task fails, it's rescheduled on different TaskTracker
+\end_layout
+
+\end_deeper
+\begin_layout Description
+TaskTracker Run tasks and send progress reports to the jobtracker
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+What is HDFS?
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+What is HDFS?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Definition
+HDFS (Hadoop Distributed File System) is a fault tolerant, distributed,
+ scalable file-system accross multiple interconnected computer systems (nodes).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Fault
+\begin_inset space ~
+\end_inset
+
+tolerant means that a single node failure will not halt operations.
+ It does this by replicating the data accross multiple nodes (usually 3).
+\end_layout
+
+\begin_layout Description
+Distributed means that data is shared accross multiple computer nodes.
+ This means that one node can have data that another node does not.
+ The data nodes can 
+\begin_inset Quotes eld
+\end_inset
+
+talk
+\begin_inset Quotes erd
+\end_inset
+
+ to each other to balance the data.
+\end_layout
+
+\begin_layout Description
+Scalable means that new nodes can be easily added.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+HDFS Components
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Block
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+Hadoop MapReduce Components
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+NameNode Manages the filesystem namespace: filesystem tree, metadata for
+ files/directories, which DataNodes for each block of data.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Too many files on HDFS can slow the NameNode down
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Best to have input files at least a gigabyte in size
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+DataNode Store and retrieve blocks 
+\end_layout
+
+\begin_layout Description
+Secondary
+\begin_inset space ~
+\end_inset
+
+NameNode Periodically merge namespace image with edit log, keeps a copy
+ of the namespace image.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Secondary Namespace lags behind primary, thus total failure of primary will
+ likely result in data loss
+\end_layout
+
+\begin_layout Itemize
+Otherwise, copy metadata to secondary and run that as the new primary
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+HDFS Federation
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+To mange a large number of files, NameNodes require more and more memory:
+\end_layout
+
+\begin_layout Itemize
+Hadoop 2.x addresses this by allowing mutliple NameNodes which each manages
+ a namespace volumne
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Metadata for namespace
+\end_layout
+
+\begin_layout Itemize
+a block pool containing all the blocks for the file in the namespace
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Each NameNode is independent of the other NameNodes and do not communicate
+ with each other
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Hadoop Version 1.x vs 2.x
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hadoop Ver 1.x vs 2.x
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+s
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+MapReduce Phases
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+s
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Record Reader
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Record
+\begin_inset space ~
+\end_inset
+
+Reader splits input into fixed-size pieces for each mapper with 
+\begin_inset Formula $k$
+\end_inset
+
+=positional information, 
+\begin_inset Formula $v=$
+\end_inset
+
+ data
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0} &  & \mbox{Reducer 0}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1} &  & \mbox{Reducer 1} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1} &  & \mbox{Reducer R-1}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Map
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Map User defined function outputing intermediate key-value pairs for reducer
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map}} &  & \mbox{Reducer 0}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map}} &  & \mbox{Reducer 1} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map}} &  & \mbox{Reducer R-1}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Combiner (Optional)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Combiner User defined function: aggregates data according to intermediate
+ keys on mapper node
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 0}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Partitioner
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Partitioner Sends intermediate key-value pairs 
+\begin_inset Formula $\left(k,v\right)$
+\end_inset
+
+ to reducer by 
+\begin_inset Formula $\mbox{Reducer}=\mbox{hash}\left(\mbox{k}\right)\pmod{R}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Shuffle and Sort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Shuffle
+\begin_inset space ~
+\end_inset
+
+and
+\begin_inset space ~
+\end_inset
+
+Sort On reducer node, sorts by key to help group equivalent keys
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\ar@(ul,ur)^{{sort}}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1}\ar@(ul,ur)^{{sort}} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}\ar@(ul,ur)^{{sort}}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Reduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Reduce User Defined Function that aggregates data (
+\begin_inset Formula $v$
+\end_inset
+
+) according to keys (
+\begin_inset Formula $k$
+\end_inset
+
+) to send key-value pairs to output
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\ar@(ul,ur)^{{sort,reduce}}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1}\ar@(ul,ur)^{{sort,reduce}} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}\ar@(ul,ur)^{{sort,reduce}}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+MapReduce Phases: Output Format
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Output
+\begin_inset space ~
+\end_inset
+
+Format Translates final key-value pairs to file format (tab-seperated by
+ default).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{\\
+ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\ar@(ul,ur)^{{sort,reduce}}\ar[dr]|-{(k_{3},v_{3})}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1}\ar@(ul,ur)^{{sort,reduce}}\ar[r]|-{(k_{3},v_{3})} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}\ar@(ul,ur)^{{sort,reduce}}\ar[uur]|-{(k_{3},v_{3})}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+HDFS Operations
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+HDFS Operations
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+block: Data stored in HDFS is broken into chucks, 64 MB by default, spread
+ accross one or more nodes in HDFS.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+HDFS Operations
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+block: Data stored in HDFS is broken into chucks, 64 MB by default, spread
+ accross one or more nodes in HDFS.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Hadoop vs RDBMS
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hadoop vs RDBMS
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100line%">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top" width="3cm">
+<column alignment="left" valignment="top" width="3cm">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RDBMS
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MapReduce
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gigabytes/Terabyte
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Petrabytes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Access
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Interactive and batch
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Batch
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Updates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read and write many times
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write once, read many times
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Structure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Static schema (highly structured)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dynamic schema (Semi-structured)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write-on Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read-on Schema
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Integrity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Low
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scaling
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nonlinear
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Linear
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data formating
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Normalized
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally De-normalized
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Hadoop Projects
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Various Hadoop Projects
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Hive: Allows users to create SQL-like queries (HQL) and convert them to
+ MapReduce.
+ (INSERT, UPDATE, DELETE statements not allowed).
+\end_layout
+
+\begin_layout Description
+Pig: An easy to learn hadoop-based language that is adept at very deep,
+ very long data pipelines.
+\end_layout
+
+\begin_layout Description
+HBase: Non-relational database allowing low-latency, quick lookups in Hadoop.
+ Can do updates, inserts, and deletes.
+\end_layout
+
+\begin_layout Description
+Flume: A framework for populating Hadoop with data.
+\end_layout
+
+\begin_layout Description
+Oozie: A workflow processing that lets users define a series of jobs written
+ in multiple languages: Hadoop, Pig, and Hive and then link them to one
+ another
+\end_layout
+
+\begin_layout Description
+Ambari: Web-based set of tools for deploying, administering and monitoring
+ Apache Hadoop clusters.
+\end_layout
+
+\begin_layout Description
+Avro: A data serialization system that allows for encoding the schema of
+ Hadoop files.
+ It is adept at parsing data and performing removed procedure calls.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Various Hadoop Projects
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Mahout: A data mining library using the most popular data mining algorithims
+ for performing clustering, regression testing and statistical modeling
+ and implements them using the Map Reduce model.
+\end_layout
+
+\begin_layout Description
+Sqoop: A conectivity tool for moving data from non-Hadoop databases (SQL,
+ etc.) into Hadoop.
+\end_layout
+
+\begin_layout Description
+HCatalog: A centralized metadata mangagement and sharing service for Hadoop,
+ allowing a unified view of all data in Hadoop clusters.
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+HDFS Commands
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+HDFS Commands
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+All input and output paths of MapReduce jobs must be contained within the
+ HDFS, meaning we need to interact with HDFS.
+ 
+\end_layout
+
+\begin_layout Itemize
+Putting/Getting files from HDFS
+\end_layout
+
+\begin_layout Itemize
+Commands are very similar to bash rudimentary commands:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+ls, mkdir, rm, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Most of these commands are on the Hadoop Cheatsheets given out
+\end_layout
+
+\begin_layout Itemize
+Because of NameNode needing to keep track of file metadata, it is preferable
+ to have a small number of large files than vice versa.
+\end_layout
+
+\begin_layout Description
+Reminder: Go to terminal to execute some sample commands
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Executing MapReduce Jobs
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Executing MapReduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Two basic ways of runing MapReduce
+\end_layout
+
+\begin_layout Enumerate
+Running Jar files
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+jython can also be used here
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Running Hadoop Streaming with other languages: C++, Python, etc.
+\end_layout
+
+\begin_layout Enumerate
+Hadoop Pipes: C++ interface using sockets
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Executing Java
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Running Jar Files
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Hadoop is written in Java code, thus one of the main ways of running MapReduce
+ jobs is with Java.
+\end_layout
+
+\begin_layout LyX-Code
+$ hadoop jar <java file> [mainClass] args...
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Hadoop Streaming
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hadoop Streaming
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Hadoop Streaming allows Hadoop to use any programming languages with stdin,
+ stdout: C++, Python, Perl, etc.
+\end_layout
+
+\begin_layout LyX-Code
+$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar
+ 
+\backslash
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+	-input <InputDirs> 
+\backslash
+     
+\end_layout
+
+\begin_layout Standard
+	-output <OutputDir> 
+\backslash
+
+\end_layout
+
+\begin_layout Standard
+	[-file <MapperFileToBeSent>] 
+\backslash
+ 
+\end_layout
+
+\begin_layout Standard
+	-mapper <MapperFile> 
+\backslash
+
+\end_layout
+
+\begin_layout Standard
+	[-file <ReducerFileToBeSent>] 
+\backslash
+ 
+\end_layout
+
+\begin_layout Standard
+	-reducer <ReducerFile>
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hadoop Cheatsheet gives an outline of how to use this
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Remember any files to be used must be sent using -file option (the mapper
+ and reducer nodes need a copy of the files)
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Hadoop Streaming: Ver 1.x vs 2.x
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Hadoop Streaming for version 1.x can only use text for stdin and stdout,
+ while 2.x is not.
+\end_layout
+
+\begin_layout Description
+1.x This means that stdin takes in text and then break the text back into
+ the datatypes needed for computations.
+\begin_inset Newline newline
+\end_inset
+
+stdout is a print statement with a tab character seperating keys (
+\series bold
+
+\backslash
+t
+\series default
+)
+\end_layout
+
+\begin_layout Description
+2.x Can do text as well as stream objects
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Python would use emit() function to pass along each key-value pair instead
+ of printing like in 1.x
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Hadoop Streaming and R
+\end_layout
+
+\begin_layout Subsection
+Packages
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+R Packages
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "rdatamining"
+target "http://www.rdatamining.com/tutorials/r-hadoop-setup-guide"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: mapreduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+mapreduce(
+\bar under
+input
+\bar default
+, 
+\bar under
+output = NULL
+\bar default
+, 
+\bar under
+map = to.map(identity)
+\bar default
+, 
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+
+\bar under
+reduce = NULL
+\bar default
+,
+\series bold
+ 
+\series default
+\bar under
+combine = NULL
+\bar default
+, 
+\end_layout
+
+\begin_layout LyX-Code
+
+\bar under
+input.format = "native"
+\bar default
+,   
+\end_layout
+
+\begin_layout LyX-Code
+
+\bar under
+output.format = "native"
+\bar default
+, 
+\end_layout
+
+\begin_layout LyX-Code
+vectorized.reduce = FALSE,  in.memory.combine = FALSE,
+\end_layout
+
+\begin_layout LyX-Code
+backend.parameters = list(),   verbose = TRUE) 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+mapreduce Defines and executes a map reduce job.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input Can be:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A set of file paths in HDFS
+\end_layout
+
+\begin_layout Itemize
+A 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ (a stub of information on some data in HDFS)
+\end_layout
+
+\begin_layout Itemize
+A 
+\bar under
+list
+\bar default
+ of a combination of both
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: mapreduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+output A path to the destination folder on HDFS; if missing, a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ is returned.
+\end_layout
+
+\begin_layout Description
+map An optional R map function that returns either NULL or a keyval object
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+keyval(key,
+\begin_inset space ~
+\end_inset
+
+val) Function that returns key-value pair, only val can ever be NULL
+\end_layout
+
+\end_deeper
+\begin_layout Description
+reduce An optional R reduce function that returns either NULL or a keyval
+ object 
+\end_layout
+
+\begin_layout Description
+combine refers to:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A function with the same signature and possible return values as the reduce
+ function, or 
+\end_layout
+
+\begin_layout Itemize
+TRUE, which means 
+\emph on
+\bar under
+use the reduce function
+\emph default
+\bar default
+ as combiner.
+\end_layout
+
+\begin_layout Itemize
+NULL means no combiner is used.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: mapreduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input.format Input format specification, see make.input.format
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mbox{input.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"} & \mbox{R saved datatypes}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"hbase"} & \mbox{hbase table format}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: mapreduce
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+output.format Output format specification, see make.output.format
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\mbox{output.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"} & \mbox{R saved datatypes}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: from.dfs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+from.dfs(input, format = "native")
+\end_layout
+
+\begin_layout Description
+from.dfs Read R objects from HDFS.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input A valid path to HDFS or a big.data.object
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.input.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: to.dfs
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+to.dfs(kv, output = dfs.tempfile(), format = "native")
+\end_layout
+
+\begin_layout Description
+to.dfs Write R objects to HDFS and return a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+.
+ (Useful for test purposes only)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input A valid path to HDFS or a big.data.object
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.input.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
++-
+\end_layout
+
+\end_inset
+
+
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: keys() and values()
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+keys(kv)
+\end_layout
+
+\begin_layout Description
+keys Get keys from a 
+\series bold
+\emph on
+big data object
+\series default
+\emph default
+ or HDFS file path
+\end_layout
+
+\begin_layout LyX-Code
+values(kv)
+\end_layout
+
+\begin_layout Description
+values Get values from a 
+\series bold
+\emph on
+big data object 
+\series default
+\emph default
+or HDFS file path
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+rmr2: Preamble
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+For rmr2 to work, some variables need to be set in bash:
+\end_layout
+
+\begin_layout LyX-Code
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+\end_layout
+
+\begin_layout LyX-Code
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+\end_layout
+
+\begin_layout LyX-Code
+Sys.setenv("HADOOP_STREAMING"=
+\end_layout
+
+\begin_layout LyX-Code
+	"/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Section
+Hadoop Examples
+\end_layout
+
+\begin_layout Subsection
+Word Count
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Word Count
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<wordcount, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_STREAMING"=
+\end_layout
+
+\begin_layout Plain Layout
+
+	"/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rmr2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(data.table)
+\end_layout
+
+\begin_layout Plain Layout
+
+system('${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out/')
+\end_layout
+
+\begin_layout Plain Layout
+
+map=function(k,lines) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	words.list = strsplit(lines, ' ') 
+\end_layout
+
+\begin_layout Plain Layout
+
+	words = unlist(words.list)
+\end_layout
+
+\begin_layout Plain Layout
+
+	return( keyval(words, 1) ) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+reduce=function(word, counts) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(word, sum(counts)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Word Count
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<wordmapreduce, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+mapreduce(input='/user/darrellaucoin/input/War_and_Peace.txt',
+\end_layout
+
+\begin_layout Plain Layout
+
+	output='/user/darrellaucoin/out',
+\end_layout
+
+\begin_layout Plain Layout
+
+	input.format="text",
+\end_layout
+
+\begin_layout Plain Layout
+
+	map=map,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce=reduce
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+count = from.dfs('/user/darrellaucoin/out')
+\end_layout
+
+\begin_layout Plain Layout
+
+results = as.data.table(count) 
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Word Count
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<wordcountresults, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+setnames(results, c('word', 'count')) 
+\end_layout
+
+\begin_layout Plain Layout
+
+results[order(results$count, decreasing=T), ]
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Subsection
+Linear Regression
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: Linear Regression
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Assumption: The value of 
+\begin_inset Formula $p$
+\end_inset
+
+, the number of explanatory variables is small enough for R to easily handle
+ and 
+\begin_inset Formula $n\gg p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We know from linear regression, that our estimate of 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+ :
+\begin_inset Formula 
+\[
+X^{T}X\hat{\beta}=X^{T}y
+\]
+
+\end_inset
+
+
+\begin_inset Formula $\left(X^{T}X\right)_{p\times p}$
+\end_inset
+
+ and 
+\begin_inset Formula $\left(X^{T}y\right)_{p\times1}$
+\end_inset
+
+is small enough for R to solve for 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+, thus we only need 
+\begin_inset Formula $X^{T}X,X^{T}y$
+\end_inset
+
+ to get 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{eqnarray*}
+X=\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix} &  & y=\begin{bmatrix}y_{1}\\
+y_{2}\\
+y_{3}\\
+\vdots\\
+y_{n}
+\end{bmatrix}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: MapReduce Framework
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\implies X^{T}X & = & \begin{bmatrix}X_{1}^{T} & X_{2}^{T} & X_{3}^{T} & \cdots & X_{n}^{T}\end{bmatrix}\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix}\\
+ & = & \begin{bmatrix}X_{1}^{T}X_{1}+ & X_{2}^{T}X_{2}+ & X_{3}^{T}X_{3}+ & \cdots & +X_{n}^{T}X_{n}\end{bmatrix}
+\end{eqnarray*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\implies X^{T}y=\begin{bmatrix}X_{1}^{T}y_{1}+ & X_{2}^{T}y_{2}+ & X_{3}^{T}y_{3}+ & \cdots & +X_{n}^{T}y_{n}\end{bmatrix}
+\]
+
+\end_inset
+
+
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+ can be easily calculated in the map phase of our MapReduce job and the
+ addition of 
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+'s and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+'s can be done in the aggregation phase (the reduce phase).
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: LR Problem Setup
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<setup, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_STREAMING"=
+\end_layout
+
+\begin_layout Plain Layout
+
+	"/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rmr2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(data.table)
+\end_layout
+
+\begin_layout Plain Layout
+
+#Setup variables 
+\end_layout
+
+\begin_layout Plain Layout
+
+p = 10 
+\end_layout
+
+\begin_layout Plain Layout
+
+num.obs = 200
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.true = 1:(p+1) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p), 
+\end_layout
+
+\begin_layout Plain Layout
+
+	ncol = p))
+\end_layout
+
+\begin_layout Plain Layout
+
+y = X %*% beta.true + rnorm(num.obs) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X.index = to.dfs(cbind(y, X)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+rm(X, y, num.obs, p) 
+\end_layout
+
+\begin_layout Plain Layout
+
+############################
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: LR Map-Reduce Functions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<mapreduce, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+map.XtX = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #Get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% Xi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+map.Xty = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	yi = Xi[,1] # Retrieve the y values
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #Get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% yi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+Sum = function(., YY) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(Reduce('+', YY))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+# The key here doesn't matter
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: LR MapReduce Job
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<job, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+XtX = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.XtX,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Xty = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(
+\end_layout
+
+\begin_layout Plain Layout
+
+	input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.Xty,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout FragileFrame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+Example: LR Result
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<result, tidy=FALSE, cache=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.hat = solve(XtX, Xty)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(beta.hat)
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\begin_layout Frame
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+References
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Websites:
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "rdatamining"
+target "http://www.rdatamining.com/tutorials/r-hadoop-setup-guide"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "http://wikibon.org/wiki/v/HBase,_Sqoop,_Flume_and_More:_Apache_Hadoop_Defined"
+target "http://wikibon.org/wiki/v/HBase,_Sqoop,_Flume_and_More:_Apache_Hadoop_Defined"
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Separator
+
+\end_layout
+
+\end_body
+\end_document

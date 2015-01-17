@@ -1,0 +1,1642 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"  
+  "http://www.w3.org/TR/html4/loose.dtd">  
+<html > 
+<head><title>Hadoop Streaming and R</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"> 
+<meta name="generator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<meta name="originator" content="TeX4ht (http://www.tug.org/tex4ht/)"> 
+<!-- html --> 
+<meta name="src" content="Hadoop_and_R.tex"> 
+<meta name="date" content="2015-01-04 11:09:00"> 
+<link rel="stylesheet" type="text/css" href="Hadoop_and_R.css"> 
+</head><body 
+>
+   <div class="maketitle">
+                                                                                         
+                                                                                         
+                                                                                         
+                                                                                         
+
+<h2 class="titleHead">Hadoop Streaming and R</h2>
+<div class="author" ></div><br />
+<div class="date" ><span 
+class="ecrm-1200">January 4, 2015</span></div>
+   </div>
+   <h3 class="likesectionHead"><a 
+ id="x1-1000"></a>Contents</h3>
+   <div class="tableofcontents">
+   <span class="sectionToc" >1 <a 
+href="#x1-20001" id="QQ2-1-2">RHadoop (rmr2 package)</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.1 <a 
+href="#x1-30001.1" id="QQ2-1-3">rmr2 Functions</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.2 <a 
+href="#x1-40001.2" id="QQ2-1-4">Useful R Functions</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.3 <a 
+href="#x1-50001.3" id="QQ2-1-5">Debugging</a></span>
+<br />   &#x00A0;<span class="subsectionToc" >1.4 <a 
+href="#x1-60001.4" id="QQ2-1-6">Linear Least Squares Using RHadoop</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >1.4.1 <a 
+href="#x1-70001.4.1" id="QQ2-1-7">Setup</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >1.4.2 <a 
+href="#x1-80001.4.2" id="QQ2-1-8">Map-Reduce Functions</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >1.4.3 <a 
+href="#x1-90001.4.3" id="QQ2-1-9">MapReduce Job</a></span>
+<br />   &#x00A0;&#x00A0;<span class="subsubsectionToc" >1.4.4 <a 
+href="#x1-100001.4.4" id="QQ2-1-10">Full Code</a></span>
+   </div>
+<!--l. 42--><p class="noindent" >
+   <h3 class="sectionHead"><span class="titlemark">1   </span> <a 
+ id="x1-20001"></a>RHadoop (rmr2 package)</h3>
+<!--l. 44--><p class="noindent" >For any R package to work with hadoop, it must be installed on all clusters with the exact same location
+path.
+<!--l. 47--><p class="indent" >   Many rmr2 function will return something called a <span 
+class="ecbi-1000">Big Data Object</span>, a stub with some information on finding
+and managing data (the data itself is not loaded into memory until needed). Some functions in rmr2 that return <span 
+class="ecbi-1000">Big</span>
+<span 
+class="ecbi-1000">Data Objects </span>are mapreduce, to.dfs, and from.dfs.
+<!--l. 53--><p class="indent" >   We can switch off hadoop, for debugging purposes with
+   <!--l. 55-->
+   <div class="lstlisting" id="listing-1"><span class="label"><a 
+ id="x1-2001r1"></a></span>rmr.options
+   
+   </div>
+<!--l. 60--><p class="indent" >   Information gathered here come from the rmr2 help function and the <a 
+href="https://github.com/RevolutionAnalytics/rmr2/blob/master/docs/tutorial.md" >rmr2 tutorial</a>.
+                                                                                         
+                                                                                         
+<!--l. 64--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.1   </span> <a 
+ id="x1-30001.1"></a>rmr2 Functions</h4>
+   <!--l. 66-->
+   <div class="lstlisting" id="listing-2"><span class="label"><a 
+ id="x1-3001r1"></a></span>mapreduce(input,&#x00A0;output&#x00A0;=&#x00A0;NULL,&#x00A0;map&#x00A0;=&#x00A0;to.map(identity),&#x00A0;reduce&#x00A0;=&#x00A0;NULL,&#x00A0;<br /><span class="label"><a 
+ id="x1-3002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;vectorized.reduce&#x00A0;=&#x00A0;FALSE,&#x00A0;combine&#x00A0;=&#x00A0;NULL,&#x00A0;in.memory.combine&#x00A0;=&#x00A0;FALSE,&#x00A0;<br /><span class="label"><a 
+ id="x1-3003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;input.format&#x00A0;=&#x00A0;"native",&#x00A0;&#x00A0;&#x00A0;output.format&#x00A0;=&#x00A0;"native",&#x00A0;<br /><span class="label"><a 
+ id="x1-3004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;backend.parameters&#x00A0;=&#x00A0;list(),&#x00A0;&#x00A0;&#x00A0;verbose&#x00A0;=&#x00A0;TRUE)
+   
+   </div>
+<!--l. 73--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">mapreduce</span> </dt><dd 
+class="description">Defines and executes a map reduce job. (Pkg rmr2)
+     <!--l. 76--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">input</span> </dt><dd 
+class="description">Can be:
+             <ul class="itemize1">
+             <li class="itemize">A set of file paths in HDFS
+             </li>
+             <li class="itemize">A <span 
+class="ecbi-1000">Big Data Object </span>(a stub of information on some data in HDFS)
+             </li>
+             <li class="itemize">A <span class="uline">list</span> of a combination of both</li></ul>
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">output</span> </dt><dd 
+class="description">A path to the destination folder on HDFS; if missing, a <span 
+class="ecbi-1000">Big Data Object </span>is returned.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">map</span> </dt><dd 
+class="description">An optional R function of two arguments, returning either NULL or the return value of keyval, that
+         specifies the map operation to execute as part of a mapreduce job. <br 
+class="newline" />The two arguments represent multiple key-value pairs according to the definition of the mapreduce
+         model.
+             <ul class="itemize1">
+             <li class="itemize">The map function must return key-value pairs. Preferably using the function keyval:
+             <!--l. 98-->
+             <div class="lstlisting" id="listing-3"><span class="label"><a 
+ id="x1-3005r1"></a></span>return(&#x00A0;keyval(key,&#x00A0;val)&#x00A0;)
+             
+             </div>
+             <!--l. 104--><p class="noindent" >where key, val can be vectors, lists, matricies, data.frames and val can even be NULL
+             </li></ul>
+         <!--l. 109--><p class="noindent" >Keys are matched to the corresponding values by position, according to the second dimension if it is
+         defined (that is rows in matrices and data frames, position otherwise), analogous to the behavior of cbind,
+         see keyval for details.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">reduce</span> </dt><dd 
+class="description">An optional R function of two arguments, a key and a data structure representing all
+         the values associated with that key (the same type as returned by the map call, merged
+         with rbind for matrices and data frames and c otherwise), returning either NULL or the
+         return value of keyval, that specifies the reduce operation to execute as part of a mapreduce
+         job.<br 
+class="newline" />The default is no reduce phase, that is the output of the map phase is the output of the mapreduce job,
+         see the vectorized.reduce argument for an alternate interface
+                                                                                         
+                                                                                         
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">vectorized.reduce</span> </dt><dd 
+class="description">The argument to the reduce should be construed as a collection of keys and values
+         associated to them by position (by row when 2-dimensional). Identical keys are consecutive and
+         once a key is present once, all the records associated with that key will be passed to the
+         same reduce call (complete group guarantee). This form of reduce has been introduced
+         mostly for efficiency reasons when processing small reduce groups, because the records are
+         small and few of them are associated with the same key. This option affects the combiner
+         too.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">combine</span> </dt><dd 
+class="description">refers to:
+             <ul class="itemize1">
+             <li class="itemize">A function with the same signature and possible return values as the reduce function, or
+             </li>
+             <li class="itemize">TRUE, which means <span 
+class="ecti-1000">use the reduce function </span>as combiner.
+             </li>
+             <li class="itemize">NULL means no combiner is used.</li></ul>
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">in.memory.combine</span> </dt><dd 
+class="description">Apply the combiner just after calling the map function, before returning the results to
+         hadoop. This is useful to reduce the amount of I/O and (de)serialization work when combining on small
+         sets of records has any effect (you may want to tune the input format to read more data for
+         each map call together with this approach, see arguments read.size or nrow for a variety of
+         formats)
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">input.format</span> </dt><dd 
+class="description">Input format specification, see make.input.format
+         <center class="math-display" >
+         <img 
+src="Hadoop_and_R0x.png" alt="             ( "text"               Plain text
+             ||||
+             |||| "json"               JavaScript Object Notation
+             ||{ "csv"                Comma   Separated Values
+input.format =   "native"
+             |||| "sequence.typedbytes"
+             |||| "hbase"              hbase table format
+             ||(
+               "pig.hive"            pig/hive table format (some similarities to csv)
+         " class="math-display" ></center>
+         <!--l. 157--><p class="nopar" >
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">output.format</span> </dt><dd 
+class="description">Output format specification, see make.output.format
+         <center class="math-display" >
+         <img 
+src="Hadoop_and_R1x.png" alt="               (
+               ||"text"               Plain text
+               ||||"json"               JavaScript Object Notation
+               ||{
+output.format =  "csv"                Comma  Separated Values
+               ||||"native"
+               ||||"sequence.typedbytes"
+               ("pig.hive"            pig/hive table format (some similarities to csv)
+         " class="math-display" ></center>
+         <!--l. 169--><p class="nopar" >
+                                                                                         
+                                                                                         
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">backend.parameters</span> </dt><dd 
+class="description">This option is for advanced users only and may be removed in the future. Specify
+         additional, backend-specific options, as in backend.parameters = list(hadoop = list(D =
+         "mapred.reduce.tasks=1"), local = list()). It is recommended not to use this argument to
+         change the semantics of mapreduce (output should be independent of this argument). Each
+         backend can only see the nested list named after the backend itself. The interpretation is
+         the following: for the hadoop backend, generate an additional hadoop streaming command
+         line argument for each element of the list, "-name value". If the value is TRUE generate
+         "-name" only, if it is FALSE skip. One possible use is to specify the number of mappers and
+         reducers on a per-job basis. It is not guaranteed that the generated streaming command
+         will be a legal command. In particular, remember to put any generic options before any
+         specific ones, as per hadoop streaming manual. For the local backend, the list is currently
+         ignored.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">verbose</span> </dt><dd 
+class="description">Run hadoop in verbose mode. No effect on the local backend</dd></dl>
+     </dd><dt class="description">
+<span 
+class="ecbx-1000">Note:</span> </dt><dd 
+class="description">Jobs can be chained together by simply providing the output for one job as the input for another.<br 
+class="newline" />The map function should not read from standard input and write to standard output. <br 
+class="newline" />Logging and debugging messages should be written to standard error, and will be redirected to the appropriate
+     logs or to console by the backend.</dd></dl>
+<div class="newtheorem">
+<!--l. 196--><p class="noindent" ><span class="head">
+<span 
+class="ecbx-1000">Example.</span>  </span>Mapreduce job for doing a word count
+   <!--l. 199-->
+   <div class="lstlisting" id="listing-4"><span class="label"><a 
+ id="x1-3006r1"></a></span>mapreduce(input=&#8217;/user/darrellaucoin/input&#8217;,&#x00A0;<br /><span class="label"><a 
+ id="x1-3007r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;output=&#8217;/user/darrellaucoin/out&#8217;,&#x00A0;<br /><span class="label"><a 
+ id="x1-3008r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;input.format="text",&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;map=(k,lines)&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-3009r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;words.list&#x00A0;=&#x00A0;strsplit(lines,&#x00A0;&#8217;&#x00A0;&#8217;)&#x00A0;<br /><span class="label"><a 
+ id="x1-3010r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;words&#x00A0;=&#x00A0;unlist(words.list)&#x00A0;<br /><span class="label"><a 
+ id="x1-3011r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;return(&#x00A0;keyval(words,&#x00A0;1)&#x00A0;)&#x00A0;<br /><span class="label"><a 
+ id="x1-3012r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;},&#x00A0;<br /><span class="label"><a 
+ id="x1-3013r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;reduce=function(word,&#x00A0;counts)&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-3014r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;keyval(word,&#x00A0;sum(counts))&#x00A0;<br /><span class="label"><a 
+ id="x1-3015r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;}&#x00A0;<br /><span class="label"><a 
+ id="x1-3016r11"></a></span>)
+   
+   </div>
+<!--l. 214--><p class="noindent" >_________________________________________________________________________________________
+</div>
+<!--l. 216-->
+   <div class="lstlisting" id="listing-5"><span class="label"><a 
+ id="x1-3017r1"></a></span>keyval(key,&#x00A0;val)
+   
+   </div>
+<!--l. 220--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">keyval</span> </dt><dd 
+class="description">Create a key-value object (a collection of key-value pairs) (Pkg rmr2)
+     <!--l. 224--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">key</span> </dt><dd 
+class="description">Key object: vectors, lists, matricies, data.frames
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">val</span> </dt><dd 
+class="description">Value object: vectors, lists, matricies, data.frames or NULL</dd></dl>
+     </dd><dt class="description">
+<span 
+class="ecbx-1000">Note:</span> </dt><dd 
+class="description">To retrieve the keys/values from a keyval.Object: keys(keyval.Object) or values(keyval.Object)</dd></dl>
+<!--l. 231--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 233-->
+                                                                                         
+                                                                                         
+   <div class="lstlisting" id="listing-6"><span class="label"><a 
+ id="x1-3018r1"></a></span>from.dfs(input,&#x00A0;format&#x00A0;=&#x00A0;"native")
+   
+   </div>
+<!--l. 237--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">from.dfs</span> </dt><dd 
+class="description">Read R objects from HDFS. (Pkg rmr2)
+     <!--l. 240--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">input</span> </dt><dd 
+class="description">A valid path to HDFS or a big.data.object
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">format</span> </dt><dd 
+class="description">Either
+             <ul class="itemize1">
+             <li class="itemize">A string naming the format, or
+             </li>
+             <li class="itemize">A value returned by the function make.input.format</li></ul>
+         </dd></dl>
+     </dd></dl>
+     <ul class="itemize1">
+     <li class="itemize">Returns a key-value pair collection to R
+     <!--l. 253--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">Warning:</span> </dt><dd 
+class="description">This is useful only if a job produces something of reasonable size, like a summary of the
+         data, that can fit into memory and therefore inspected.</dd></dl>
+     </li></ul>
+<!--l. 259--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 261-->
+   <div class="lstlisting" id="listing-7"><span class="label"><a 
+ id="x1-3019r1"></a></span>to.dfs(kv,&#x00A0;output&#x00A0;=&#x00A0;dfs.tempfile(),&#x00A0;format&#x00A0;=&#x00A0;"native")
+   
+   </div>
+<!--l. 265--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">to.dfs</span> </dt><dd 
+class="description">Write R objects from HDFS. (Pkg rmr2)
+     <!--l. 268--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">output</span> </dt><dd 
+class="description">A valid path to HDFS
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">format</span> </dt><dd 
+class="description">Either
+             <ul class="itemize1">
+             <li class="itemize">A string naming the format, or
+             </li>
+             <li class="itemize">A value returned by the function make.output.format</li></ul>
+         </dd></dl>
+                                                                                         
+                                                                                         
+     </dd></dl>
+     <ul class="itemize1">
+     <li class="itemize">Not  possible  to  write  out  big  data  with  to.dfs,  but  is  useful  for  making  test  cases,  learning  and
+     debugging.
+     </li>
+     <li class="itemize">The return type is a <span 
+class="ecbi-1000">big data object</span>, a stub with some information on finding and managing data
+     (the data itself is not loaded into memory)</li></ul>
+<!--l. 286--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.2   </span> <a 
+ id="x1-40001.2"></a>Useful R Functions</h4>
+   <!--l. 288-->
+   <div class="lstlisting" id="listing-8"><span class="label"><a 
+ id="x1-4001r1"></a></span>system(command,&#x00A0;intern&#x00A0;=&#x00A0;FALSE,&#x00A0;<br /><span class="label"><a 
+ id="x1-4002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;ignore.stdout&#x00A0;=&#x00A0;FALSE,&#x00A0;ignore.stderr&#x00A0;=&#x00A0;FALSE,&#x00A0;<br /><span class="label"><a 
+ id="x1-4003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;wait&#x00A0;=&#x00A0;TRUE,&#x00A0;input&#x00A0;=&#x00A0;NULL,&#x00A0;show.output.on.console&#x00A0;=&#x00A0;TRUE,&#x00A0;<br /><span class="label"><a 
+ id="x1-4004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;minimized&#x00A0;=&#x00A0;FALSE,&#x00A0;invisible&#x00A0;=&#x00A0;TRUE)
+   
+   </div>
+<!--l. 295--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">system</span> </dt><dd 
+class="description">Invokes OS command specified by the character string command. (Pkg base)
+     <!--l. 299--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">command</span> </dt><dd 
+class="description">Character string to be invoked in terminal.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">intern</span> </dt><dd 
+class="description">a logical (not NA) which indicates whether to capture the output of the command as an R
+         character vector.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">ignore.stdout,</span> </dt><dd 
+class="description">ignore.stderr a logical (not NA) indicating whether messages written to &#8216;stdout&#8217; or
+         &#8216;stderr&#8217; should be ignored.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">wait</span> </dt><dd 
+class="description">a logical (not NA) indicating whether the R interpreter should wait for the command to finish,
+         or run it asynchronously. This will be ignored (and the interpreter will always wait) if intern =
+         TRUE.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">input</span> </dt><dd 
+class="description">if a character vector is supplied, this is copied one string per line to a temporary file, and the
+         standard input of command is redirected to the file.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">show.output.on.console,</span> </dt><dd 
+class="description">minimized, invisible arguments that are accepted on Windows but ignored
+         on this platform, with a warning.</dd></dl>
+     </dd></dl>
+<div class="newtheorem">
+<!--l. 317--><p class="noindent" ><span class="head">
+<span 
+class="ecbx-1000">Example.</span>  </span>Command for hadoop to remove previous contents of out
+   <!--l. 320-->
+   <div class="lstlisting" id="listing-9"><span class="label"><a 
+ id="x1-4005r1"></a></span>system("${HADOOP_CMD}&#x00A0;fs&#x00A0;<span 
+class="cmsy-10">-</span>rm&#x00A0;<span 
+class="cmsy-10">-</span>r&#x00A0;/user/darrellaucoin/out")
+   
+                                                                                         
+                                                                                         
+   </div>
+<!--l. 325--><p class="noindent" >_________________________________________________________________________________________
+</div>
+<!--l. 327-->
+   <div class="lstlisting" id="listing-10"><span class="label"><a 
+ id="x1-4006r1"></a></span>file.path(...,&#x00A0;fsep&#x00A0;=&#x00A0;.Platform$file.sep)
+   
+   </div>
+<!--l. 331--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">file.path</span> </dt><dd 
+class="description">Construct a path from components to be easily translated accross different OS (Mac, Windows,
+     Linux). (Pkg base)
+     <!--l. 335--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">...</span> </dt><dd 
+class="description">character vectors</dd></dl>
+     </dd></dl>
+<!--l. 339--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 341-->
+   <div class="lstlisting" id="listing-11"><span class="label"><a 
+ id="x1-4007r1"></a></span>strsplit(x,&#x00A0;split,&#x00A0;fixed&#x00A0;=&#x00A0;FALSE,&#x00A0;perl&#x00A0;=&#x00A0;FALSE,&#x00A0;useBytes&#x00A0;=&#x00A0;FALSE)
+   
+   </div>
+<!--l. 345--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">strsplit</span> </dt><dd 
+class="description">Split elements of a character vector x into substrings, split with matches to the regular expression
+     in split argument. (Pkg base)
+     <!--l. 350--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">x</span> </dt><dd 
+class="description">character vector
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">split</span> </dt><dd 
+class="description">character vector containing regular expressions to tell when to break the substring. If split has
+         length 0, x is split to individual characters.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">perl</span> </dt><dd 
+class="description">logical. Should perl-compatible regular expressions be used?
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">useBytes</span> </dt><dd 
+class="description">logical. Should matching be done byte by byte?</dd></dl>
+     </dd></dl>
+<!--l. 359--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 361-->
+   <div class="lstlisting" id="listing-12"><span class="label"><a 
+ id="x1-4008r1"></a></span>unlist(x,&#x00A0;recursive&#x00A0;=&#x00A0;TRUE,&#x00A0;use.names&#x00A0;=&#x00A0;TRUE)
+   
+   </div>
+<!--l. 365--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">unlist</span> </dt><dd 
+class="description">Simplifies a list structure x to a vector containing atomic components which occur in x. (Pkg base)
+     <!--l. 369--><p class="noindent" >
+                                                                                         
+                                                                                         
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">x</span> </dt><dd 
+class="description">a list or vector
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">recurvisve</span> </dt><dd 
+class="description">logical
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">use.names</span> </dt><dd 
+class="description">logical. Should names be preserved?</dd></dl>
+     </dd></dl>
+<!--l. 375--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 377-->
+   <div class="lstlisting" id="listing-13"><span class="label"><a 
+ id="x1-4009r1"></a></span>unlist(x,&#x00A0;recursive&#x00A0;=&#x00A0;TRUE,&#x00A0;use.names&#x00A0;=&#x00A0;TRUE)
+   
+   </div>
+<!--l. 381--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">unlist</span> </dt><dd 
+class="description">Simplifies a list structure x to a vector containing atomic components which occur in x. (Pkg base)
+     <!--l. 385--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">x</span> </dt><dd 
+class="description">a list or vector
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">recurvisve</span> </dt><dd 
+class="description">logical
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">use.names</span> </dt><dd 
+class="description">logical. Should names be preserved?</dd></dl>
+     </dd></dl>
+<!--l. 392--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.3   </span> <a 
+ id="x1-50001.3"></a>Debugging</h4>
+<!--l. 394--><p class="noindent" >Debugging is essential to running a MapReduce job and ensuring everything is working correctly. As such, we have
+two functions to help us debugg code:
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">Rprof</span> </dt><dd 
+class="description">when we are running on local mode (using rmr.options(backend = "local") ). When local mode is
+     turned on, hadoop is never run but a simulation of hadoop entirely within R is run, as such Rprof is
+     used to collect any debugging information we might need.
+     <!--l. 405-->
+     <div class="lstlisting" id="listing-14"><span class="label"><a 
+ id="x1-5001r1"></a></span>summaryRprof
+     
+     </div>
+         <ul class="itemize1">
+         <li class="itemize">Functions will only be recorded in the profile log if they put a context on the call stack
+         </li>
+         <li class="itemize">Individual statements will be recorded in the profile log if line.profiling is set to TRUE, and if the
+         code being executed was parsed with source references.</li></ul>
+                                                                                         
+                                                                                         
+     </dd><dt class="description">
+<span 
+class="ecbx-1000">rmr.options</span> </dt><dd 
+class="description">when we are running on hadoop (either in pseudo-distribution or full-distribution mode). When in
+     hadoop mode, there are several options to collect information to help debug.</dd></dl>
+     <ul class="itemize1">
+     <li class="itemize">When trying to look for bugs it is usually best look in local mode to find potential problems within R,
+     then failing that look in hadoop mode for any problems (connections problems between R and Hadoop
+     etc.)</li></ul>
+<!--l. 424--><p class="noindent" >Profiling works by writing out the call stack every interval seconds, to the file specified
+<!--l. 427--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 429-->
+   <div class="lstlisting" id="listing-15"><span class="label"><a 
+ id="x1-5002r1"></a></span>rmr.options(backend&#x00A0;=&#x00A0;c("hadoop",&#x00A0;"local"),&#x00A0;<br /><span class="label"><a 
+ id="x1-5003r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;profile.nodes&#x00A0;=&#x00A0;c("off",&#x00A0;"calls",&#x00A0;"memory",&#x00A0;"both"),&#x00A0;<br /><span class="label"><a 
+ id="x1-5004r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;hdfs.tempdir&#x00A0;=&#x00A0;"/tmp",&#x00A0;<br /><span class="label"><a 
+ id="x1-5005r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;exclude.objects&#x00A0;=&#x00A0;NULL,&#x00A0;<br /><span class="label"><a 
+ id="x1-5006r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;backend.parameters&#x00A0;=&#x00A0;list())
+   
+   </div>
+<!--l. 437--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">rmr.options</span> </dt><dd 
+class="description">Set and get package options. (Pkg rmr2)
+     <!--l. 440--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">...</span> </dt><dd 
+class="description">Names of options to get values of, as length of one character vectors.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">backend</span> </dt><dd 
+class="description">Use either hadoop, or the current R interpreter, sequentially, for learning and debugging.
+         <center class="math-display" >
+         <img 
+src="Hadoop_and_R2x.png" alt="         {
+backend =  "local"    implemented in R (helpful for debugging)
+          "hadoop " implemented in Hadoop
+         " class="math-display" ></center>
+         <!--l. 450--><p class="nopar" >
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">profile.nodes</span> </dt><dd 
+class="description">Collect  profiling  and  memory  information  when  running  additional  R  interpreters
+         (besides the current one) on the cluster. No effect on the local backend, use <span 
+class="ecti-1000">Rprof  </span>instead. For
+         backward compatibility, "calls" is equivalent to TRUE and "off" to FALSE
+         <center class="math-display" >
+         <img 
+src="Hadoop_and_R3x.png" alt="             (
+             |||{ "off"      No collection
+profile.nodes =  "calls"     Collect R calls
+             ||| "memory"  Collect memory information
+             ( "both"     Collect both
+         " class="math-display" ></center>
+         <!--l. 464--><p class="nopar" >
+             <ul class="itemize1">
+             <li class="itemize">The profiling data is collected in the following files:
+             <!--l. 471-->
+             <div class="lstlisting" id="listing-16"><span class="label"><a 
+ id="x1-5007r1"></a></span>file.path(rmr.options("dfs.tempdir"),&#x00A0;"Rprof",&#x00A0;&#x003C;job&#x00A0;id&#x003E;,&#x00A0;&#x003C;attempt&#x00A0;id&#x003E;)
+             
+                                                                                         
+                                                                                         
+             </div>
+             </li></ul>
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">hdfs.tempdir</span> </dt><dd 
+class="description">The directory to use for temporary files, including mapreduce intermediate results files, on the
+         distributed file system (not used when running on the local backend).
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">exclude.objects</span> </dt><dd 
+class="description">Objects in the Global environment that are not needed by the map or reduce functions, as
+         character vector.
+             <ul class="itemize1">
+             <li class="itemize">This is useful when you have some large R objects that is not needed by the map reduce job
+             (you don&#8217;t need to copy these objects to the nodes)</li></ul>
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">backend.parameters</span> </dt><dd 
+class="description">Parameters to pass directly to the backend. See equally named argument for the
+         function mapreduce. Use this setting for backend parameters that need to be different from default but
+         can be the same from job to job</dd></dl>
+     </dd></dl>
+<!--l. 494--><p class="noindent" >_________________________________________________________________________________________
+   <!--l. 496-->
+   <div class="lstlisting" id="listing-17"><span class="label"><a 
+ id="x1-5008r1"></a></span>Rprof(filename&#x00A0;=&#x00A0;"Rprof.out",&#x00A0;append&#x00A0;=&#x00A0;FALSE,&#x00A0;interval&#x00A0;=&#x00A0;0.02,&#x00A0;<br /><span class="label"><a 
+ id="x1-5009r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;memory.profiling&#x00A0;=&#x00A0;FALSE,&#x00A0;gc.profiling&#x00A0;=&#x00A0;FALSE,&#x00A0;<br /><span class="label"><a 
+ id="x1-5010r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;line.profiling&#x00A0;=&#x00A0;FALSE,&#x00A0;numfiles&#x00A0;=&#x00A0;100L,&#x00A0;bufsize&#x00A0;=&#x00A0;10000L)
+   
+   </div>
+<!--l. 502--><p class="indent" >
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">Rprof</span> </dt><dd 
+class="description">Simplifies a list structure x to a vector containing atomic components which occur in x. (Pkg utils)
+     <!--l. 506--><p class="noindent" >
+         <dl class="description"><dt class="description">
+     <span 
+class="ecbx-1000">filename</span> </dt><dd 
+class="description">The file to be used for recording the profiling results. <br 
+class="newline" />Set to NULL or "" to disable profiling.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">append</span> </dt><dd 
+class="description">logical: should the file be over-written or appended to?
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">interval</span> </dt><dd 
+class="description">real: time interval between samples.
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">memory.profiling</span> </dt><dd 
+class="description">logical: write memory use information to the file?
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">gc.profiling</span> </dt><dd 
+class="description">logical: record whether GC is running?
+             <ul class="itemize1">
+             <li class="itemize">GC is</li></ul>
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">line.profiling</span> </dt><dd 
+class="description">logical: write line locations to the file?
+         </dd><dt class="description">
+     <span 
+class="ecbx-1000">numfiles,</span><span 
+class="ecbx-1000">&#x00A0;bufsize</span> </dt><dd 
+class="description">integers: line profiling memory allocation</dd></dl>
+     </dd></dl>
+                                                                                         
+                                                                                         
+<!--l. 524--><p class="noindent" >
+   <h4 class="subsectionHead"><span class="titlemark">1.4   </span> <a 
+ id="x1-60001.4"></a>Linear Least Squares Using RHadoop</h4>
+<!--l. 526--><p class="noindent" >To understand the MapReduce framework, lets solve a familar problem of Linear Regression.
+For Hadoop/MapReduce to work we MUST figure out how to parallelize our code, in other words
+how to use the hadoop system to only need to make a subset of our calculations on a subset of our
+data.
+     <dl class="description"><dt class="description">
+<span 
+class="ecbx-1000">Assumption:</span> </dt><dd 
+class="description">The value of <span 
+class="cmmi-10">p</span>, the number of explanatory variables is small enough for R to easily handle
+     and <span 
+class="cmmi-10">n </span><span 
+class="cmsy-10">&#x226B; </span><span 
+class="cmmi-10">p</span>.</dd></dl>
+<!--l. 535--><p class="noindent" >We know from linear regression, that our estimate of <img 
+src="Hadoop_and_R4x.png" alt="&#x02C6;&#x03B2;"  class="circ" > :
+   <center class="math-display" >
+<img 
+src="Hadoop_and_R5x.png" alt="XT X &#x02C6;&#x03B2; = XT y
+" class="math-display" ></center>
+<!--l. 539--><p class="nopar" > and the matrix <img 
+src="Hadoop_and_R6x.png" alt="(     )
+ XT X"  class="left" align="middle"><sub><span 
+class="cmmi-7">p</span><span 
+class="cmsy-7">&#x00D7;</span><span 
+class="cmmi-7">p</span></sub> and <img 
+src="Hadoop_and_R7x.png" alt="(   )
+XT y"  class="left" align="middle"><sub><span 
+class="cmmi-7">p</span><span 
+class="cmsy-7">&#x00D7;</span><span 
+class="cmr-7">1</span></sub> should be small enough for R to solve for <img 
+src="Hadoop_and_R8x.png" alt="&#x02C6;&#x03B2;"  class="circ" > with relative ease. We
+would therfore only need to find <span 
+class="cmmi-10">X</span><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">X,X</span><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">y </span>to get <img 
+src="Hadoop_and_R9x.png" alt="&#x02C6;&#x03B2;"  class="circ" > .
+<!--l. 545--><p class="indent" >   To break up this calculation we break our matrix <span 
+class="cmmi-10">X </span>into submatricies <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub>:
+   <center class="math-display" >
+<img 
+src="Hadoop_and_R10x.png" alt="    &#x230A;   &#x230B;
+     X1
+    ||X2 ||
+X = ||X3 ||
+    |&#x2308; ... |&#x2309;
+     X
+       n
+" class="math-display" ></center>
+<!--l. 554--><p class="nopar" > <div class="eqnarray">
+   <center class="math-display" >
+<img 
+src="Hadoop_and_R11x.png" alt="                                      &#x230A;   &#x230B;
+                                       X1
+                                      ||X2 ||
+= &#x21D2; XT X   =  [XT1   XT2  XT3  &#x22C5;&#x22C5;&#x22C5;  XTn ]||X3 ||
+                                      |&#x2308; ... |&#x2309;
+                                       X
+              [                          n          ]
+           =   XT1 X1+  XT2 X2+  XT3 X3+  &#x22C5;&#x22C5;&#x22C5; +XTn Xn
+" class="math-display" ></center>
+</div>
+   <center class="math-display" >
+<img 
+src="Hadoop_and_R12x.png" alt="          [                                   ]
+= &#x21D2; XT y = XT1 y1+ XT2 y2+ XT3 y3+  &#x22C5;&#x22C5;&#x22C5;  +XTnyn
+" class="math-display" ></center>
+<!--l. 566--><p class="nopar" >
+                                                                                         
+                                                                                         
+<!--l. 569--><p class="indent" >   <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub> and <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">y</span><sub><span 
+class="cmmi-7">i</span></sub> can be easily calculated in the map phase of our MapReduce job and the addition of <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub>&#8217;s
+and <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">y</span><sub><span 
+class="cmmi-7">i</span></sub>&#8217;s can be done in the aggregation phase (the reduce phase).
+<!--l. 575--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">1.4.1   </span> <a 
+ id="x1-70001.4.1"></a>Setup</h5>
+<!--l. 577--><p class="noindent" >First lets setup the system, and create some variables to test our code on:
+   <!--l. 580-->
+<div class="lstlisting" id="listing-18"><span class="label"><a 
+ id="x1-7001r1"></a></span>Sys.setenv("HADOOP<span class="lstinline"></span><span 
+class="ecbx-1000">_</span>PREFIX"="<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>usr<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>local<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>2.2.0")&#x00A0;<br /><span class="label"><a 
+ id="x1-7002r2"></a></span>Sys.setenv("HADOOP<span class="lstinline"></span><span 
+class="ecbx-1000">_</span>CMD"="<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>usr<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>local<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>2.2.0<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>bin<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop")&#x00A0;<br /><span class="label"><a 
+ id="x1-7003r3"></a></span>Sys.setenv("HADOOP<span class="lstinline"></span><span 
+class="ecbx-1000">_</span>STREAMING"="<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>usr<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>local<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>2.2.0<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>share<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>tools<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>lib<span class="lstinline"></span><span 
+class="ecbx-1000">/</span>hadoop<span 
+class="cmsy-10">-</span>streaming<span 
+class="cmsy-10">-</span>2.2.0.jar")&#x00A0;<br /><span class="label"><a 
+ id="x1-7004r4"></a></span><span 
+class="ecbx-1000">library</span>(rmr2)&#x00A0;<br /><span class="label"><a 
+ id="x1-7005r5"></a></span><span 
+class="ecbx-1000">library</span>(<span 
+class="ecbx-1000">data</span>.<span 
+class="ecbx-1000">table</span>)&#x00A0;<br /><span class="label"><a 
+ id="x1-7006r6"></a></span><span 
+class="ecti-1000">#</span><span 
+class="ecti-1000">Setup</span><span 
+class="ecti-1000">&#x00A0;</span><span 
+class="ecti-1000">variables</span>&#x00A0;<br /><span class="label"><a 
+ id="x1-7007r7"></a></span>p&#x00A0;=&#x00A0;10&#x00A0;<br /><span class="label"><a 
+ id="x1-7008r8"></a></span>num.obs&#x00A0;=&#x00A0;2000&#x00A0;<br /><span class="label"><a 
+ id="x1-7009r9"></a></span><span 
+class="ecbx-1000">beta</span>.true&#x00A0;=&#x00A0;1:(p+1)&#x00A0;<br /><span class="label"><a 
+ id="x1-7010r10"></a></span><span 
+class="ecti-1000">#</span><span 
+class="ecti-1000">&#x00A0;</span><span 
+class="ecti-1000">Make</span><span 
+class="ecti-1000">&#x00A0;</span><span 
+class="ecti-1000">our</span><span 
+class="ecti-1000">&#x00A0;</span><span 
+class="ecti-1000">X</span><span 
+class="ecti-1000">&#x00A0;</span><span 
+class="ecti-1000">matrix</span>&#x00A0;<br /><span class="label"><a 
+ id="x1-7011r11"></a></span>X&#x00A0;=&#x00A0;<span 
+class="ecbx-1000">cbind</span>(<span 
+class="ecbx-1000">rep</span>(1,num.obs),&#x00A0;<span 
+class="ecbx-1000">matrix</span>(<span 
+class="ecbx-1000">rnorm</span>(num.obs&#x00A0;<span class="lstinline"></span><span 
+class="cmbsy-10">*</span>&#x00A0;p),&#x00A0;<span 
+class="ecbx-1000">ncol</span>&#x00A0;=&#x00A0;p))&#x00A0;<br /><span class="label"><a 
+ id="x1-7012r12"></a></span>y&#x00A0;=&#x00A0;X&#x00A0;<span class="lstinline">%<span class="lstinline"></span><span 
+class="cmbsy-10">*</span></span><span 
+class="ecbx-1000">%</span>&#x00A0;<span 
+class="ecbx-1000">beta</span>.true&#x00A0;+&#x00A0;<span 
+class="ecbx-1000">rnorm</span>(num.obs)&#x00A0;<br /><span class="label"><a 
+ id="x1-7013r13"></a></span>X.<span 
+class="ecbx-1000">index</span>&#x00A0;=&#x00A0;to.dfs(<span 
+class="ecbx-1000">cbind</span>(y,&#x00A0;X))&#x00A0;<br /><span class="label"><a 
+ id="x1-7014r14"></a></span><span 
+class="ecbx-1000">rm</span>(X,&#x00A0;y,&#x00A0;num.obs,&#x00A0;p)&#x00A0;<br /><span class="label"><a 
+ id="x1-7015r15"></a></span><span 
+class="ecti-1000">#</span><span 
+class="ecti-1000">###########################</span>
+   </div>
+<!--l. 599--><p class="indent" >   Note that since we are only doing a test run in pseudo-distribution mode, we can&#8217;t make the num.obs too large
+as that would take too long for a single node (our computer) to run. After <span 
+class="cmmi-10">y </span>and <span 
+class="cmmi-10">X </span>are written to HDFS, we remove
+them, it is good practice to remove variables we no longer need. Or at least not to send unnecessary variables to our
+clusters: relieving unnecessary IO burdens in initialization:
+   <!--l. 606-->
+   <div class="lstlisting" id="listing-19"><span class="label"><a 
+ id="x1-7016r1"></a></span>rmr.options(exclude.objects=c(&#8217;X&#8217;,&#8217;y&#8217;))
+   
+   </div>
+<!--l. 612--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">1.4.2   </span> <a 
+ id="x1-80001.4.2"></a>Map-Reduce Functions</h5>
+     <ul class="itemize1">
+     <li class="itemize">To get our <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub> in each cluster node, we must first remove the <span 
+class="cmmi-10">y </span>values.
+     </li>
+     <li class="itemize">In order to aggregate over all values, we must return a fixed value as the key in our map functions
+     (otherwise they will only aggregate over the same key values)</li></ul>
+<!--l. 620-->
+   <div class="lstlisting" id="listing-20"><span class="label"><a 
+ id="x1-8001r1"></a></span>map.XtX&#x00A0;=&#x00A0;function(.,&#x00A0;Xi)&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-8002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Xi&#x00A0;=&#x00A0;Xi[,<span 
+class="cmsy-10">-</span>1]&#x00A0;#For&#x00A0;our&#x00A0;calucation,&#x00A0;we&#x00A0;need&#x00A0;to&#x00A0;get&#x00A0;rid&#x00A0;of&#x00A0;y&#x00A0;values&#x00A0;in&#x00A0;Xi&#x00A0;<br /><span class="label"><a 
+ id="x1-8003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;keyval(1,&#x00A0;list(t(Xi)&#x00A0;%<span 
+class="cmsy-10">*</span>%&#x00A0;Xi))&#x00A0;<br /><span class="label"><a 
+ id="x1-8004r4"></a></span>}&#x00A0;<br /><span class="label"><a 
+ id="x1-8005r5"></a></span>map.Xty&#x00A0;=&#x00A0;function(.,&#x00A0;Xi)&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-8006r6"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;yi&#x00A0;=&#x00A0;Xi[,1]&#x00A0;#&#x00A0;Retrieve&#x00A0;the&#x00A0;y&#x00A0;values&#x00A0;<br /><span class="label"><a 
+ id="x1-8007r7"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;Xi&#x00A0;=&#x00A0;Xi[,<span 
+class="cmsy-10">-</span>1]&#x00A0;#For&#x00A0;the&#x00A0;reduce&#x00A0;phase,&#x00A0;we&#x00A0;need&#x00A0;to&#x00A0;get&#x00A0;rid&#x00A0;of&#x00A0;y&#x00A0;values&#x00A0;in&#x00A0;Xi&#x00A0;<br /><span class="label"><a 
+ id="x1-8008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;keyval(1,&#x00A0;list(t(Xi)&#x00A0;%<span 
+class="cmsy-10">*</span>%&#x00A0;yi))&#x00A0;<br /><span class="label"><a 
+ id="x1-8009r9"></a></span>}&#x00A0;<br /><span class="label"><a 
+ id="x1-8010r10"></a></span>Sum&#x00A0;=&#x00A0;function(.,&#x00A0;YY)&#x00A0;{&#x00A0;<br /><span class="label"><a 
+ id="x1-8011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;keyval(1,&#x00A0;list(Reduce(&#8217;+&#8217;,&#x00A0;YY)))&#x00A0;<br /><span class="label"><a 
+ id="x1-8012r12"></a></span>}&#x00A0;<br /><span class="label"><a 
+ id="x1-8013r13"></a></span>#&#x00A0;The&#x00A0;key&#x00A0;here&#x00A0;doesn&#8217;t&#x00A0;matter,&#x00A0;as&#x00A0;long&#x00A0;it&#x00A0;is&#x00A0;is&#x00A0;the&#x00A0;same&#x00A0;for&#x00A0;every&#x00A0;#&#x00A0;value
+   
+   </div>
+     <ul class="itemize1">
+     <li class="itemize">The reason we are returning a list in the map function is because otherwise Reduce will only return a
+     some of the elements of the matricies.
+         <ul class="itemize2">
+         <li class="itemize">list prevents this by Reduce iterating though the elements of the list (the individual <span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub><sup><span 
+class="cmmi-7">T</span></sup><span 
+class="cmmi-10">X</span><sub><span 
+class="cmmi-7">i</span></sub>
+         matricies) and applying the binary function &#8217;+&#8217; to each one.
+         </li>
+         <li class="itemize">list is used in the reduce function &#8217;Sum&#8217; because we will also use this as a combiner function and
+         if we didn&#8217;t use a list we would have the same problem as above.</li></ul>
+     </li></ul>
+                                                                                         
+                                                                                         
+<!--l. 650--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">1.4.3   </span> <a 
+ id="x1-90001.4.3"></a>MapReduce Job</h5>
+   <!--l. 652-->
+   <div class="lstlisting" id="listing-21"><span class="label"><a 
+ id="x1-9001r1"></a></span>XtX&#x00A0;=&#x00A0;values(from.dfs(&#x00A0;<br /><span class="label"><a 
+ id="x1-9002r2"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;mapreduce(input&#x00A0;=&#x00A0;X.index,&#x00A0;<br /><span class="label"><a 
+ id="x1-9003r3"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;map&#x00A0;=&#x00A0;map.XtX,&#x00A0;<br /><span class="label"><a 
+ id="x1-9004r4"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;reduce&#x00A0;=&#x00A0;Sum,&#x00A0;<br /><span class="label"><a 
+ id="x1-9005r5"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;combine&#x00A0;=&#x00A0;TRUE)))[[1]]&#x00A0;<br /><span class="label"><a 
+ id="x1-9006r6"></a></span>&#x00A0;<br /><span class="label"><a 
+ id="x1-9007r7"></a></span>Xty&#x00A0;=&#x00A0;values(from.dfs(&#x00A0;<br /><span class="label"><a 
+ id="x1-9008r8"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;mapreduce(&#x00A0;<br /><span class="label"><a 
+ id="x1-9009r9"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;input&#x00A0;=&#x00A0;X.index,&#x00A0;<br /><span class="label"><a 
+ id="x1-9010r10"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;map&#x00A0;=&#x00A0;map.Xty,&#x00A0;<br /><span class="label"><a 
+ id="x1-9011r11"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;reduce&#x00A0;=&#x00A0;Sum,&#x00A0;<br /><span class="label"><a 
+ id="x1-9012r12"></a></span>&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;&#x00A0;combine&#x00A0;=&#x00A0;TRUE)))[[1]]&#x00A0;<br /><span class="label"><a 
+ id="x1-9013r13"></a></span>beta.hat&#x00A0;=&#x00A0;solve(XtX,&#x00A0;Xty)&#x00A0;<br /><span class="label"><a 
+ id="x1-9014r14"></a></span>print(beta.hat)
+   
+   </div>
+<!--l. 671--><p class="noindent" >
+   <h5 class="subsubsectionHead"><span class="titlemark">1.4.4   </span> <a 
+ id="x1-100001.4.4"></a>Full Code</h5>
+   <!--l. 673--><div class="lstinputlisting">
+<a 
+ id="x1-10001"></a>
+<span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10002r1"></a></span><span 
+class="ectt-1000">Sys</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">setenv</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">HADOOP</span><span class="lstinline"></span><span 
+class="ectt-1000">_</span><span 
+class="ectt-1000">PREFIX</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">"</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">usr</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">local</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">2.2.0</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10003r2"></a></span><span 
+class="ectt-1000">Sys</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">setenv</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">HADOOP</span><span class="lstinline"></span><span 
+class="ectt-1000">_</span><span 
+class="ectt-1000">CMD</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">"</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">usr</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">local</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">2.2.0</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">bin</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10004r3"></a></span><span 
+class="ectt-1000">Sys</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">setenv</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">HADOOP</span><span class="lstinline"></span><span 
+class="ectt-1000">_</span><span 
+class="ectt-1000">STREAMING</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">"</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">usr</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">local</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">2.2.0</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">share</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">tools</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">lib</span><span class="lstinline"></span><span 
+class="ectt-1000">/</span><span 
+class="ectt-1000">hadoop</span><span 
+class="ectt-1000">-</span><span 
+class="ectt-1000">streaming</span><span 
+class="ectt-1000">-2.2.0.</span><span 
+class="ectt-1000">jar</span><span 
+class="ectt-1000">"</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10005r4"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10006r5"></a></span><span 
+class="ectt-1000">library</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">rmr2</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10007r6"></a></span><span 
+class="ectt-1000">library</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">data</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">table</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10008r7"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10009r8"></a></span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">Setup</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">variables</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10010r9"></a></span><span 
+class="ectt-1000">p</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">10</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10011r10"></a></span><span 
+class="ectt-1000">num</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">obs</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">2000</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10012r11"></a></span><span 
+class="ectt-1000">beta</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">true</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">1:(</span><span 
+class="ectt-1000">p</span><span 
+class="ectt-1000">+1)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10013r12"></a></span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">Make</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">our</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">X</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">matrix</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10014r13"></a></span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">cbind</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">rep</span><span 
+class="ectt-1000">(1,</span><span 
+class="ectt-1000">num</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">obs</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">matrix</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">rnorm</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">num</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">obs</span><span 
+class="ectt-1000">&#x00A0;</span><span class="lstinline"></span><span 
+class="ectt-1000">*</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">p</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">ncol</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">p</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10015r14"></a></span><span 
+class="ectt-1000">y</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">&#x00A0;</span><span class="lstinline"><span 
+class="ectt-1000">%</span><span class="lstinline"></span><span 
+class="ectt-1000">*</span></span><span 
+class="ectt-1000">%</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">beta</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">true</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">+</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">rnorm</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">num</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">obs</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10016r15"></a></span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">index</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">to</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">dfs</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">cbind</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">y</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10017r16"></a></span><span 
+class="ectt-1000">rm</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">y</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">num</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">obs</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">p</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10018r17"></a></span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">###########################</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10019r18"></a></span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">XtX</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">function</span><span 
+class="ectt-1000">(.,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10020r19"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">[,-1]</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">For</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">the</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">reduce</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">phase</span><span 
+class="ecit-1000">,</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">we</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">need</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">to</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">get</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">rid</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">of</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">y</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">values</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">in</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">Xi</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10021r20"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">keyval</span><span 
+class="ectt-1000">(1,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">list</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">t</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><span class="lstinline"><span 
+class="ectt-1000">%</span><span class="lstinline"></span><span 
+class="ectt-1000">*</span></span><span 
+class="ectt-1000">%</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10022r21"></a></span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10023r22"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10024r23"></a></span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">Xty</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">function</span><span 
+class="ectt-1000">(.,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10025r24"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">yi</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">[,1]</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">Retrieve</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">the</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">y</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">values</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10026r25"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">[,-1]</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">For</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">the</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">reduce</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">phase</span><span 
+class="ecit-1000">,</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">we</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">need</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">to</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">get</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">rid</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">of</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">y</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">values</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">in</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">Xi</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10027r26"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">keyval</span><span 
+class="ectt-1000">(1,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">list</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">t</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">Xi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><span class="lstinline"><span 
+class="ectt-1000">%</span><span class="lstinline"></span><span 
+class="ectt-1000">*</span></span><span 
+class="ectt-1000">%</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">yi</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10028r27"></a></span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10029r28"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10030r29"></a></span><span 
+class="ectt-1000">Sum</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">function</span><span 
+class="ectt-1000">(.,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">YY</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">{</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10031r30"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">keyval</span><span 
+class="ectt-1000">(1,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">list</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">Reduce</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">&#8217;</span><span 
+class="ectt-1000">+</span><span 
+class="ectt-1000">&#8217;</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">YY</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10032r31"></a></span><span 
+class="ectt-1000">}</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10033r32"></a></span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">The</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">key</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">here</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">doesn</span><span 
+class="ecit-1000">&#8217;</span><span 
+class="ecit-1000">t</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">matter</span><span 
+class="ecit-1000">,</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">as</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">long</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">it</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">is</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">is</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">the</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">same</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">for</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">every</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10034r33"></a></span><span 
+class="ecit-1000">#</span><span 
+class="ecit-1000">&#x00A0;</span><span 
+class="ecit-1000">value</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10035r34"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10036r35"></a></span><span 
+class="ectt-1000">XtX</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">values</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">from</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">dfs</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10037r36"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">mapreduce</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">input</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">index</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10038r37"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">XtX</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10039r38"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">reduce</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Sum</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10040r39"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">combine</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">TRUE</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">[[1]]</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10041r40"></a></span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10042r41"></a></span><span 
+class="ectt-1000">Xty</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">values</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">from</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">dfs</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10043r42"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">mapreduce</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10044r43"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">input</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">X</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">index</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10045r44"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">map</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">Xty</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10046r45"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">reduce</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Sum</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10047r46"></a></span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">combine</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">TRUE</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">[[1]]</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10048r47"></a></span><span 
+class="ectt-1000">beta</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">hat</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">=</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">solve</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">XtX</span><span 
+class="ectt-1000">,</span><span 
+class="ectt-1000">&#x00A0;</span><span 
+class="ectt-1000">Xty</span><span 
+class="ectt-1000">)</span><span 
+class="ectt-1000">&#x00A0;</span><br /><span class="label"><a 
+ id="x1-10049r48"></a></span><span 
+class="ectt-1000">print</span><span 
+class="ectt-1000">(</span><span 
+class="ectt-1000">beta</span><span 
+class="ectt-1000">.</span><span 
+class="ectt-1000">hat</span><span 
+class="ectt-1000">)</span>
+   </div>
+    
+</body></html> 
+
+                                                                                         
+
+

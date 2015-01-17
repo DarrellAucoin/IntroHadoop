@@ -1,0 +1,6918 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+\end_preamble
+\use_default_options true
+\begin_modules
+theorems-starred
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 4
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\listings_params "backgroundcolor={\color{lightgrey}}"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Hadoop
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Overview
+\end_layout
+
+\begin_layout Subsection
+What is Hadoop?
+\end_layout
+
+\begin_layout Definition
+
+\series bold
+Hadoop
+\series default
+ is a MapReduce framework built on top of a distributed file system (HDFS
+ for Hadoop).
+ Hadoop is a database system designed around processing high throughput
+ of large data (gigabytes to petrabytes).
+ Traditional database systems (relational databases like SQL) have limitations
+ leading to the development of distributed systems like Hadoop:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data reads have not kept up with the data capacity:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Reading from harddrives have remained fairly constant while drive capacity
+ is increasing rapidly
+\end_layout
+
+\begin_layout Itemize
+Hadoop's answer to this is by having blocks of continuous data (64 MB by
+ default but 128MB or 256MB is sometimes used) of a file distributed across
+ a network of computers.
+ Reading the file in parallel decreases the total time needed to read the
+ file.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Processing capacity have reached a bottleneck, increasing the need for paralleli
+zation of processing tasks 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In PC's this means that to increase processing capacity meant increasing
+ the number of core's to process instructions (single core -> dual core
+ -> quad core -> ??) and run parallelizable code
+\end_layout
+
+\begin_layout Itemize
+Hadoop does this by linking groups of computers together and each computer
+ does a piece of the computation
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+Scalability: Ability of computer hardware or software to continue to function
+ well when the volume or size capacity increases.
+\end_layout
+
+\begin_layout Standard
+To increase the capacity of a Hadoop system, we simply add more computer
+ nodes to a cluster.
+\end_layout
+
+\begin_layout Subsubsection
+Hadoop vs RDBMS
+\end_layout
+
+\begin_layout Standard
+Hadoop and it's database projects (Hive, Pig, Spark) are sometimes refered
+ to as NoSQL.
+\end_layout
+
+\begin_layout Standard
+There are significant differences between Hadoop and RDBMS:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="3">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100line%">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+RDBMS (SQL)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Hadoop
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data Size
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gigabytes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Terabyte/Petrabytes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Access
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Interactive and batch
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Batch
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Updates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read and write many times
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write once, read many times
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Structure
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Static schema (highly structured)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dynamic schema (Semi-structured)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Integrity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+High
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Low
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Scaling
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nonlinear
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Linear
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Write-on Schema
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Read-on Schema
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data formating
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Normalized
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optimally De-normalized
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When going from a RDBMS to Hadoop, the biggest trade off is the guanrantee
+ of atomicity, consistency, isolation, and durability for scalability.
+\end_layout
+
+\begin_layout Description
+Write-on
+\begin_inset space ~
+\end_inset
+
+Schema: Information is inputted, transformed and written into the predefined
+ schema: we can enforce consistency through this.
+ 
+\end_layout
+
+\begin_layout Description
+Read-on
+\begin_inset space ~
+\end_inset
+
+Schema: Bring in files without any predefined gatekeeping or consistency
+ services.
+ The schema is created when reading the files using a set of predefined
+ rules.
+ For instance, a comma seperated file could have it's first entry interpretated
+ as a string, the second as an integer, the third as a float, etc.
+\end_layout
+
+\begin_layout Subsubsection
+What We Want to Do with Database Systems?
+\end_layout
+
+\begin_layout Description
+Filter
+\begin_inset space ~
+\end_inset
+
+Records: Keep only records with a certain set of criteria (WHERE, or GROUP
+ By clause in SQL)
+\end_layout
+
+\begin_layout Description
+Select
+\begin_inset space ~
+\end_inset
+
+Columns
+\begin_inset space ~
+\end_inset
+
+(or
+\begin_inset space ~
+\end_inset
+
+Attributes): Pick only a certain set of columns (SELECT clause in SQL)
+\end_layout
+
+\begin_layout Description
+Rearrange: Reorder records (ORDER BY clause in SQL)
+\end_layout
+
+\begin_layout Description
+Mutate
+\begin_inset space ~
+\end_inset
+
+Variables: Add a new variable(s) based on another variable (in SQL this
+ is done in the SELECT clause)
+\end_layout
+
+\begin_layout Description
+Summarize: Reduce a set of variables to a value (GROUP BY clause with aggregate
+ functions)
+\end_layout
+
+\begin_layout Subsection
+What is MapReduce?
+\end_layout
+
+\begin_layout Standard
+MapReduce is a programming paradigm model of using parallel, distributed
+ algorithims to process or generate data sets.
+ MapRedeuce is composed of two main components/functions:
+\end_layout
+
+\begin_layout Description
+Map(k,v): Filters and processes data.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Filter Records
+\end_layout
+
+\begin_layout Itemize
+Select Attributes
+\end_layout
+
+\begin_layout Itemize
+Mutate Variables
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Reduce(k,v): Aggregates data according to keys (k).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can Filter Records (much like the HAVING clause in SQL)
+\end_layout
+
+\begin_layout Itemize
+Mutate values
+\end_layout
+
+\begin_layout Itemize
+Summarize values based on keys
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Rearranging records requires either:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+changing the partitioning function (rarely done) or
+\end_layout
+
+\begin_layout Itemize
+sending the intermediate keys to a single reducer node grouped by a single
+ key or 
+\end_layout
+
+\begin_layout Itemize
+a second mapreduce job to take in the data from the previous job just for
+ the task of rearranging the records.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+What is HDFS (Hadoop Distributed File System)?
+\end_layout
+
+\begin_layout Definition
+
+\series bold
+HDFS (Hadoop Distributed File System)
+\series default
+ is a fault tolerant, distributed, scalable file-system accross multiple
+ interconnected computer systems (nodes).
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Fault
+\begin_inset space ~
+\end_inset
+
+tolerant means that a single node failure will not halt operations.
+ It does this by replicating the data accross multiple nodes (usually 3).
+\end_layout
+
+\begin_layout Description
+Distributed means that data is shared accross multiple computer nodes.
+ This means that one node can have data that another node does not.
+ The data nodes can 
+\begin_inset Quotes eld
+\end_inset
+
+talk
+\begin_inset Quotes erd
+\end_inset
+
+ to each other to balance the data.
+\end_layout
+
+\begin_layout Description
+Scalable means that new nodes can be easily added increasing the capacity
+ of a cluster roughly linearly.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename Images/DFS.pdf
+	lyxscale 75
+	scale 50
+	groupId 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Hadoop Implementation
+\end_layout
+
+\begin_layout Standard
+Hadoop is compiled in Java with some C and bash command-line utitlities.
+ Each node in the cluster has to use a Unix system (a variant of linux)
+ with all components that a MapReduce job will use installed in the same
+ local directory for the OS on every node.
+ 
+\end_layout
+
+\begin_layout Standard
+ie.
+ A node has to have R, Python, and any other resource including modules
+ and packages cannot have R installed in two different 
+\end_layout
+
+\begin_layout Description
+Note: There can be multiple map and reduce tasks from the same or different
+ jobs running on the same node (usually in different JVM).
+\end_layout
+
+\begin_layout Subsubsection
+Components of MapReduce in Hadoop
+\end_layout
+
+\begin_layout Paragraph
+Classical MapReduce (Hadoop 1.x)
+\end_layout
+
+\begin_layout Description
+JobTracker: The master node: manges jobs and resources in the cluster (TaskTrack
+ers).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+It schedules tasks as close to the data as possible 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Same node as block > Same rack as block > different rack
+\end_layout
+
+\begin_layout Itemize
+Jobs that uses files with blocks evenly distributed among the nodes run
+ faster.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+TaskTracker: Slave nodes: Responsible for running map and reduce tasks as
+ instructed by JobTracker.
+\end_layout
+
+\begin_layout Paragraph
+YARN MapReduce (Hadoop 2.x)
+\end_layout
+
+\begin_layout Description
+ResourceManager: Arbitrates resources among all applications in the system.
+\end_layout
+
+\begin_layout Description
+ApplicationMaster: A per-application framework tasked with negotiating resources
+ from the ResourceManager and working with the NodeManager(s) to execute
+ and manitor tasks the component tasks.
+\end_layout
+
+\begin_layout Description
+MRAppMaster: per application
+\end_layout
+
+\begin_layout Description
+NodeManager: YARN's per-node agent: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Keeping up-to-date with ResourceManager
+\end_layout
+
+\begin_layout Itemize
+Overseeing individual tasks life-cycle management
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Constructing a JVM, running the task, then deconstructing the JVM
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Monitoring resource usage for each task: memory, CPU
+\end_layout
+
+\begin_layout Itemize
+Tracking node-health
+\end_layout
+
+\begin_layout Itemize
+Logging management and auxiliary services 
+\end_layout
+
+\end_deeper
+\begin_layout Paragraph
+Components in Hadoop 1.x and 2.x
+\end_layout
+
+\begin_layout Description
+JobHistoryServer: Records historical information about completed applications.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Components of HDFS
+\end_layout
+
+\begin_layout Description
+NameNode: The master node: maintains the namespace of the directories and
+ files and manages the blocks on each DataNode.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Usually the most RAM intensive component of HDFS (keeping all metadata of
+ files/directories in memory)
+\end_layout
+
+\begin_layout Itemize
+The main reason YARN was created: YARN has HDFS Federation, a collection
+ of independent NameNodes
+\end_layout
+
+\end_deeper
+\begin_layout Description
+DataNode: The slave node: Provides the actual storage of the blocks of files.
+\end_layout
+
+\begin_layout Description
+Secondary
+\begin_inset space ~
+\end_inset
+
+NameNode: Performs periodic checkpoints of the NameNode and in the event
+ of NameNode failure, can restart the NameNode from last checkpoint (can
+ take a while and a chance of data loss).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Description
+Note: The files in HDFS is broken into HDFS blocks of continous sequential
+ memory (64 MB by default but 128MB or 256MB is sometimes used)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Regular PC's also have the concept of a block (512 bytes).
+ If you're familar with defraging a computer, defraging the computer is
+ rearranging the blocks to reduce head seeks
+\end_layout
+
+\begin_layout Itemize
+Due to parallelization, HDFS blocks are best utitilized by having them evenly
+ distributed across the cluster and sufficiently large to justify creating
+ a JVM for each map task.
+\end_layout
+
+\end_deeper
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+MapReduce Phases
+\end_layout
+
+\begin_layout Description
+Note: I will define possibly different data types for key-value pairs by
+ different subscripts.
+ ie.
+ 
+\begin_inset Formula $\left(k_{2},v_{2}\right)$
+\end_inset
+
+ can have different datatypes than 
+\begin_inset Formula $\left(k_{1},v_{1}\right)$
+\end_inset
+
+.
+ However, the datatypes for 
+\begin_inset Formula $\left(k_{2},v_{2}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $\left(k_{3},v_{3}\right)$
+\end_inset
+
+ are 
+\series bold
+\emph on
+usually
+\series default
+\emph default
+ the same.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\ar@(ul,ur)^{{sort,reduce}}\ar[dr]|-{(k_{3},v_{3})}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1}\ar@(ul,ur)^{{sort,reduce}}\ar[r]|-{(k_{3},v_{3})} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}\ar@(ul,ur)^{{sort,reduce}}\ar[uur]|-{(k_{3},v_{3})}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Record Reader
+\series default
+: Translates an input into records to be processed by the user-defined map
+ function in the form of a key-value pair on each map cluster.
+ Usually the key (
+\begin_inset Formula $k_{1}$
+\end_inset
+
+) is positional information and the value is the chunk of data composing
+ a single record.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In hadoop, each map task's is an input split which is usually simply a HDFS
+ block
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+this makes scheduling tasks on nodes (reduces network traffic)
+\end_layout
+
+\begin_layout Itemize
+if a file is broken mid-record in a block, hadoop requests the additional
+ information from the next block in the series
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Map
+\series default
+: The user defined function/code taking in the key-value pair (
+\begin_inset Formula $k_{1},v_{1}$
+\end_inset
+
+) and outputting zero or more new intermediate key-value pairs (
+\begin_inset Formula $k_{2,}v_{2}$
+\end_inset
+
+).
+ The selection of keys and values are significant:
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+key
+\begin_inset space ~
+\end_inset
+
+(
+\begin_inset Formula $k_{2}$
+\end_inset
+
+): Later, MapReduce will group and possibly aggregate data according to
+ these keys, choosing the right keys is here is important for a good MapReduce
+ job.
+\end_layout
+
+\begin_layout Description
+value
+\begin_inset space ~
+\end_inset
+
+(
+\begin_inset Formula $v_{2}$
+\end_inset
+
+): The data to be grouped according to it's keys.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Combiner
+\series default
+ 
+\series bold
+(optional)
+\series default
+: An optional user-defined reducer function/code aggegating data on the
+ individual mapper nodes taking in the intermediate key-value pairs for
+ that node and aggregating the values for that key on that mapper node.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This can usually reduce the amount of data to be sent over the network increasin
+g efficiency
+\begin_inset Formula 
+\[
+\left.\begin{array}{r}
+\left(\mbox{"hello world"},1\right)\\
+\left(\mbox{"hello world"},1\right)\\
+\left(\mbox{"hello world"},1\right)
+\end{array}\right\} \overset{\mbox{combiner}}{\longrightarrow}\left(\mbox{"hello world"},3\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Combiner should be written with the idea that it is executed over most be
+ not all map tasks.
+ ie.
+ 
+\begin_inset Formula $\left(k_{2},v_{2}\right)\mapsto\left(k_{2},v_{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Usually very similar or the same code as the reduce method.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Paritioner
+\series default
+: Takes the intermediate key-value pairs (
+\begin_inset Formula $k_{2},v_{2}$
+\end_inset
+
+) from the mapper/combiner and, by default, retrieves a hash code from the
+ key, and performs a modulus operation by the number of reducers: 
+\begin_inset Formula 
+\[
+\mbox{Reduce Node}=\mbox{hash}\left(k_{2}\right)\pmod{\mbox{\# of Reducers}}
+\]
+
+\end_inset
+
+This will usually result in a roughly balanced load accross the reducers
+ while ensuring that all key-value pairs are grouped by their key on a single
+ reducer.
+ A balancer system is in place for the cases when the key-values are too
+ unevenly distributed.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In hadoop, the intermediate keys (
+\begin_inset Formula $k_{2},v_{2}$
+\end_inset
+
+) are written to the local harddrive and grouped by which reduce they will
+ be sent to and their key.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Shuffle and Sort
+\series default
+: On the reducer node, the local machine takes the output files written
+ from the partitioners and downloads them to the local reducer machine.
+ The individual data pieces are then sorted by key to help group equivalent
+ keys together to the reduce phase into one larger data list.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Reduce
+\series default
+: Takes the grouped data by key and runs it through the user-defined reducer
+ function/code once per key.
+ The reducer function then sends zero or more key-value pairs to the final
+ step, the output format.
+\begin_inset Formula 
+\[
+\left(k_{2},v_{2}\right)\mapsto\left(k_{3},v_{3}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Usually 
+\begin_inset Formula $k_{3}$
+\end_inset
+
+ is the same type as 
+\begin_inset Formula $k_{2}$
+\end_inset
+
+, and ditto for 
+\begin_inset Formula $v_{3},v_{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+In Hadoop, user has to predefine the number of reduce tasks required (default
+ is 1).
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Can be 0 to have no reduce tasks, meaning the ouput of the map task is written
+ to HDFS
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+
+\series bold
+Output format
+\series default
+: Translates the final key-value pairs from the reduce function and writes
+ it to file (by default, a tab seperated format).
+ In the end, you will usually have a collection of files in the specified
+ output directory.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\xymatrix{ & \mbox{Mapper 0}\ar@(ul,ur)^{{map,combiner}}\ar[drr]|-{(k_{2},v_{2})}\ar[rr]|-{(k_{2},v_{2})}\ar[dddrr]|-{(k_{2},v_{2})} &  & \mbox{Reducer 0}\ar@(ul,ur)^{{sort,reduce}}\ar[dr]|-{(k_{3},v_{3})}\\
+\mbox{HDFS}\ar[ur]|-{\left(k_{1},v_{1}\right)}\ar[r]|-{\left(k_{1},v_{1}\right)}\ar[ddr]|-{\left(k_{1},v_{1}\right)} & \mbox{Mapper 1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer 1}\ar@(ul,ur)^{{sort,reduce}}\ar[r]|-{(k_{3},v_{3})} & \mbox{HDFS}\\
+ & \vdots &  & \vdots\\
+ & \mbox{Mapper M-1}\ar@(ul,ur)^{{map,combiner}} &  & \mbox{Reducer R-1}\ar@(ul,ur)^{{sort,reduce}}\ar[uur]|-{(k_{3},v_{3})}
+}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+HDFS Operation
+\end_layout
+
+\begin_layout Definition*
+
+\series bold
+HDFS (Hadoop File System)
+\series default
+: A distributed file system designed to store huge streamable files running
+ on commodity hardware.
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Distributed
+\begin_inset space ~
+\end_inset
+
+File
+\begin_inset space ~
+\end_inset
+
+System: A file system that manages and stores files across a network of
+ computer allowing files to be parititioned and stored across multiple computer
+ nodes.
+\end_layout
+
+\begin_layout Description
+Huge
+\begin_inset space ~
+\end_inset
+
+Files: File sizes from 100MB to petabytes.
+\end_layout
+
+\begin_layout Description
+Streamable: HDFS is based around a write-once, read-many times model.
+ To effectively parallelize reading the document, the document must be able
+ to be paritioned and each partition be read independently.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A LaTeX document is NOT streamable as the begining of the document defines
+ parameters that are used throught the whole document
+\end_layout
+
+\begin_layout Itemize
+A comma seperated value (CSV) text document IS streamable as it is readable
+ from any parition of the document
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Community
+\begin_inset space ~
+\end_inset
+
+Hardware: Hadoop runs on commonly available hardware making the chances
+ of node failure across the cluster high (especially in large clusters).
+ This is done instead of using more expensive and highly reliable enterprise
+ grade hardware.
+\begin_inset Newline newline
+\end_inset
+
+HDFS solves the problem of node failure by having a replication factor of
+ 3 (to ensure no data loss) and incorporating possible failure checks into
+ the design of hadoop.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+is
+\begin_inset space ~
+\end_inset
+
+not
+\begin_inset space ~
+\end_inset
+
+very
+\begin_inset space ~
+\end_inset
+
+good
+\begin_inset space ~
+\end_inset
+
+with:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+Low-latency requirements
+\series default
+: HDFS is designed with high throughput in mind, usually giving up low-latency
+ access for higher throughput in the design decisions.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Apache Spark as well as some other projects address this by creating another
+ (more RAM intensive) implementation of MapReduce sometimes between 10-100
+ times faster and are best (greatest speed-up) for iterative computations
+ like Machine Learning algorithims
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Spark cannot process as much data as Standard MapReduce 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Lots of small files
+\series default
+: The namenode holds the filesystem metadata in main memory, meaning more
+ files in the system means more memory needed in the namenode.
+ Too many files can mean slow down in the cluster or a system crash.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Best to either concatonate files together or compress the files into a compressi
+on format that is partitionable (each HDFS block is independently readable)
+\end_layout
+
+\begin_layout Itemize
+YARN (MapReduce 2) has less problems with lots of small files but is a problem
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Arbitrary file modifications
+\series default
+: Files in HDFS can only be written to by a single writer by appending to
+ the end of the file.
+ The file can only be changed at the end as otherwise it would have to shift
+ all of the other bits in the file (including other blocks) around.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Notes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+HDFS is highly configurable, departures from default configuration is usually
+ only needed for lauge clusters
+\end_layout
+
+\begin_layout Itemize
+HDFS has a java-implemented bash-like command shell
+\end_layout
+
+\begin_layout Itemize
+NameNode and Datanodes have built in web servers to check status of the
+ cluster
+\end_layout
+
+\begin_layout Itemize
+File permissions and authentication
+\end_layout
+
+\begin_layout Itemize
+Rack awareness: The inter-rack connection is the largest bottleneck in Hadoop
+ Network traffic, 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hadoop trys to keep tasks on the same node, rack as the block it's working
+ on
+\end_layout
+
+\end_deeper
+\begin_layout Description
+fsck: Utitility to diagonose health of filesystem, and help find missing
+ files or blocks
+\end_layout
+
+\begin_layout Description
+fetchdt: Utitlity to fetch DelegationToken and store it in a file on the
+ local system.
+\end_layout
+
+\begin_layout Description
+Balancer: Tool to balance the cluster when the data is unevenly distributed
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+HDFS Concepts
+\end_layout
+
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+Blocks: The continous sequential memory on disk (64 MB by default but 128MB
+ or 256MB is sometimes used) for independent paritions of files on HDFS.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The block size is a balance of reduction of head seeks on disk, RAM memory
+ usage of bringing in blocks for map tasks, and distributing the blocks
+ of the file across the cluster
+\end_layout
+
+\begin_layout Itemize
+A file smaller than the block will not occupy a full block's worth of underlying
+ storage
+\end_layout
+
+\begin_layout Itemize
+Filesystem maintaince tools fsck can be used to work on blocks
+\end_layout
+
+\end_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+Federation: For YARN (Hadoop 2.x) allows a cluster to have multiple namenodes
+ which manages mutually exclusive potions of the filesystem namespace.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+One NameNode might manage files/directories under /user and another manage
+ /share
+\end_layout
+
+\begin_layout Itemize
+Manages a namespace volume: metadata of namespace, block pool (all blocks
+ for files in namespace).
+\end_layout
+
+\begin_layout Itemize
+They are independent: if one NameNode fails, the others will still work
+ just fine.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Balancer: HDFS data is not always distributed evenly across the cluster,
+ the balancer moves blocks across the cluster to create a rough balance.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Keep one of the replicas of a block on the same node that it is writing
+ the block
+\end_layout
+
+\begin_layout Itemize
+One of the replicas is placed in the same rack as IO is preformed
+\end_layout
+
+\begin_layout Itemize
+Spread different replicas across racks to ensure no data loss with loss
+ of a rack (one replica on a different rack)
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Writing to HDFS
+\end_layout
+
+\begin_layout Subsubsection
+Reading from HDFS
+\end_layout
+
+\begin_layout Section
+Hadoop MapReduce Implementation
+\end_layout
+
+\begin_layout Itemize
+Client sends input/output location and supply map and reduce functions,
+ these and other job parameters, comprise the job configuration.
+\end_layout
+
+\begin_layout Enumerate
+In starting a MapReduce job, the input data is split into input splits,
+ data independent chunks to be sent to the map tasks.
+ Hadoop will usually define the input splits as blocks.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A MapReduce job can be configured to make input splits based based on lines
+ instead of blocks.
+ This will potentially cause alot of network traffic but can be handy for
+ specifying the number of mappers for a job (good for monte carlo simulations)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Map tasks are created as close to where the blocks are stored (on the same
+ node preferably).
+ Map Tasks are created for every input split with a seperate JVM instance.
+\end_layout
+
+\begin_layout Standard
+Usually split the input data-set
+\end_layout
+
+\begin_layout Itemize
+Hadoop Streaming is a utility which allows users to create and run jobs
+ with any executables (e.g.
+ shell utilities) as the mapper and/or the reducer.
+ 
+\end_layout
+
+\begin_layout Itemize
+Hadoop Pipes is a SWIG-compatible C++ API to implement MapReduce applications
+ (non JNI™ based).
+\end_layout
+
+\begin_layout Section
+Job Configuration Parameters
+\end_layout
+
+\begin_layout Section
+Failure Recovery
+\end_layout
+
+\begin_layout Description
+NameNode: (Hadoop 1.x) NameNode is a single point of failure.
+ Upon failure, all clients such as MapReduce jobs would be unable to read,
+ write, or list files until a new NameNode is brought online.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Recovery starts with an administrator starts a new primary namenode with
+ a replica of the filesystem metadata from the secondary namenode and configurin
+g datanodes and clients to use this new namenode.
+ It can then serve requests when it has:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Loaded the filesystem namespace into memory
+\end_layout
+
+\begin_layout Enumerate
+Replayed it's edit log
+\end_layout
+
+\begin_layout Enumerate
+Recieved enough block reports from the datanode to leave safe mode
+\end_layout
+
+\begin_layout Itemize
+It usually takes approximately 30+ mins with everything in place to recover
+ from a NameNode failure
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+High-Availability
+\begin_inset space ~
+\end_inset
+
+(HA): (Hadoop 2.x) A potential namenodes is in an active-standby configuration,
+ upon namenode failure the standby takes over the namenodes duties and becomes
+ the new namenode.
+ For this to happen, Hadoop needs to be configured so:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Namenode use a highly available shared storage (usually NFS) to share the
+ edit log.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+More shared storage options will be available in future releases of hadoop.
+ Apache ZooKeeper has some options
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Datanodes must send block reports to both namenodes
+\end_layout
+
+\begin_layout Enumerate
+Clients must be configured to handle namenode failover, transparent to the
+ users
+\end_layout
+
+\begin_layout Itemize
+In practice, failover time will be around a min to ensure that the active
+ namenode has definitely failed.
+\end_layout
+
+\begin_layout Description
+Failover
+\begin_inset space ~
+\end_inset
+
+and
+\begin_inset space ~
+\end_inset
+
+Fencing: The transition of the failed namenode to the stand-by namenode
+ is managed by the failover controller.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The first implementation of this in ZooKeeper ensures that only one namenode
+ is active at one time.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Each namenode runs a lightweight failover controller process whose job it
+ is to monitor it's namenode for failures by using a simple heartbeating
+ mechanism and triggers a failover should a namenode fail.
+\end_layout
+
+\begin_layout Itemize
+A slow network can trigger a failover transition, the HA implemntation using
+ a method called fencing that goes to great lengths to ensure that the previousl
+y active namenode is prevented from doing any damage and causing corruption
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Kipping the namenode's process
+\end_layout
+
+\begin_layout Itemize
+revoking it's access to the shared storage directory
+\end_layout
+
+\begin_layout Itemize
+Disabling its network port
+\end_layout
+
+\begin_layout Itemize
+As a last resort, the previously actively namenode is forced to power down
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Subsection
+Various Hadoop Projects
+\end_layout
+
+\begin_layout Standard
+Reference: 
+\begin_inset CommandInset href
+LatexCommand href
+name "http://wikibon.org/wiki/v/HBase,_Sqoop,_Flume_and_More:_Apache_Hadoop_Defined"
+target "http://wikibon.org/wiki/v/HBase,_Sqoop,_Flume_and_More:_Apache_Hadoop_Defined"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Hive: Hadoop-based data warehousing-like framework using allowing users
+ to create SQL-like queries (HQL) and convert them to MapReduce.
+ You unfortately cannot insert/update data via Hive.
+ It is easy to learn if you know SQL.
+\end_layout
+
+\begin_layout Description
+Pig: Pig Latin is a hadoop-based language that is relativlely easy to learn
+ and is adept at very deep, very long data pipelines, making it a good complemen
+t to Hive.
+\end_layout
+
+\begin_layout Description
+HBase: Non-relational database allowing low-latency, quick lookups in Hadoop.
+ Adding transactional capabilities allowing users to conduct updates, inserts,
+ and deletes.
+\end_layout
+
+\begin_layout Description
+Flume: A framework for populating Hadoop with data: web servers, application
+ servers and mobile devices.
+\end_layout
+
+\begin_layout Description
+Oozie: A workflow processing that lets users define a series of jobs written
+ in multiple languages: Hadoop, Pig, and Hive and then link them to one
+ another
+\end_layout
+
+\begin_layout Description
+Ambari: Web-based set of tools for deploying, administering and monitoring
+ Apache Hadoop clusters.
+\end_layout
+
+\begin_layout Description
+Avro: A data serialization system that allows for encoding the schema of
+ Hadoop files.
+ It is adept at parsing data and performing removed procedure calls.
+\end_layout
+
+\begin_layout Description
+Mahout: A data mining library using the most popular data mining algorithims
+ for performing clustering, regression testing and statistical modeling
+ and implements them using the Map Reduce model.
+\end_layout
+
+\begin_layout Description
+Sqoop: A conectivity tool for moving data from non-Hadoop databases (SQL,
+ etc.) into Hadoop.
+\end_layout
+
+\begin_layout Description
+HCatalog: A centralized metadata mangagement and sharing service for Hadoop,
+ allowing a unified view of all data in Hadoop clusters.
+\end_layout
+
+\begin_layout Description
+Spark: A project replacing MapReduce allowing (in certain cases) lower-latency
+ queries, and faster iterative computations on the same data such as machine
+ learning algorithims.
+\end_layout
+
+\begin_layout Subsection
+Hadoop ver 1.x vs ver 2.x
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "Reference"
+target "http://www.tomsitpro.com/articles/hadoop-2-vs-1,2-718.html"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Tabular
+<lyxtabular version="3" rows="16" columns="3">
+<features rotate="0" tabularvalignment="middle" tabularwidth="100line%">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="middle" width="5cm">
+<column alignment="left" valignment="top" width="5cm">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.x
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.x
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+NameNodes
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="3" alignment="left" valignment="middle" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Only 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Multiple (HDFS federation)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multirow="4" alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multirow="4" alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+horizontal scaling, performance increase, multiple namespaces
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Streaming
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Text only
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Text or datatype objects
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MapReduce
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data processing and cluster resource management
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data processing
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+YARN
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cluster resource management
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+I/O
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Intensive
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+More options
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Secure authentication
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Old configuration names
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Deprecated
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+New configuration names
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Old MapReduce API
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+New MapReduce API
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes (some missing libraries)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MapReduce 1 Runtime (Classic)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+MapReduce 2 Runtime (YARN)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HDFS federation
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+HDFS high-vailability
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+No
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Hadoop ver 1.x
+\end_layout
+
+\begin_layout Standard
+can be I/O intensive, not suitable for interactive analysis, and constrained
+ in support for graph, machine learning and on other memory intensive algorithms
+\end_layout
+
+\begin_layout Subsection
+Important Notes
+\end_layout
+
+\begin_layout Standard
+pg 112, skipping ahead
+\end_layout
+
+\begin_layout Itemize
+It is generally easier/more effiicient to process a small number of large
+ files than a large number of small files
+\end_layout
+
+\begin_layout Itemize
+Key for map phase is the offset of the begining of the line from the begining
+ of the file
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+HDFS
+\begin_inset space ~
+\end_inset
+
+block: Data stored in HDFS is broken into chucks, 64 MB by default, spread
+ accross one or more nodes in HDFS.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A good size split for map tasks is usually the size of an HDFS block, 64
+ MB by default.
+\end_layout
+
+\begin_layout Itemize
+Saves on bandwidth as this guarantees that input for a map task is not spread
+ out over several nodes
+\end_layout
+
+\begin_layout Itemize
+block size is large to reduce head seeks
+\end_layout
+
+\begin_layout Itemize
+map task run on a block at a time
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Hadoop prioritizes running map task on a node with input data, then rack
+ to reduce bandwidth
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Data Locality Optimization
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Map task write their output to local disk
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+is thrown away, if in HDFS, then replications are made
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Output of reduce is stored in HDFS for reliability
+\end_layout
+
+\begin_layout Itemize
+Difference between streamin and Java MapReduce API
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Java API: process one record at a time
+\end_layout
+
+\begin_layout Itemize
+Streaming: can decide how to process input, one record or multiple
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+need to use close() method when last record has been read
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Streaming:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If using text, can simply test out streaming file using Unix pipeline
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pseudo-distribution mode:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+local host
+\end_layout
+
+\begin_layout Itemize
+replication factor of 1
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Commandline:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop fs -ls 
+\end_layout
+
+\begin_layout Plain Layout
+
+Found 2 items 
+\end_layout
+
+\begin_layout Plain Layout
+
+-rw-r--r--   1 darrellaucoin supergroup      15164 2014-06-06 11:52 LICENSE.txt
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+drwxr-xr-x   - darrellaucoin supergroup          0 2014-06-23 17:54 input
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Column1: file mode, permissions etc.
+\end_layout
+
+\begin_layout Description
+Column2: Replication factor of file
+\end_layout
+
+\begin_layout Description
+Column3: Owner
+\end_layout
+
+\begin_layout Description
+Column4: Group
+\end_layout
+
+\begin_layout Description
+Column5: Size in bytes
+\end_layout
+
+\begin_layout Description
+Column6: Last modified
+\end_layout
+
+\begin_layout Description
+Column7: Absolute name of file/directory
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ mapred job -history
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+List the job history of cluster (hadoop job -history for Hadoop 1.x)
+\end_layout
+
+\begin_layout Description
+MapReduce
+\begin_inset space ~
+\end_inset
+
+1 3 failure modes to condsider
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+failure of the running task
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+child task failing: user code in the map or reduce task throws a run-time
+ exception.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+child JVM reports the error back to it's parent tasktracker before it exits
+\end_layout
+
+\begin_layout Itemize
+Error written into user logs
+\end_layout
+
+\begin_layout Itemize
+Tasktracker marks the task as failed, and freeing up a slot to run another
+ task
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Streaming tasks, the streaming process exits with a non-zero exit code,
+ marking it as failed
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Sudden exit of child JVM: a JVM bug exposed by the MapReduce user code
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tasktracker marks the attempt as failed
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hanging Tasks: Tasktracker hasn't recieved a progress update for a while
+ and marks the task as failed
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Child JVM is killed
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Time out period is 10 mins
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Jobtracker is notified of a failed task attempt (by tasktracker's heartbeat
+ call) and reschedule execution of task.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Try to reschedule a task on a tasktracker that as previously failed
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If a task fails 4 or more times, it will not be retried again
+\end_layout
+
+\begin_layout Itemize
+Some jobs can still be useable even after failed tasks: then you must set
+ the max percentage of tasks that can fail
+\backslash
+
+\backslash
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Task attempt may be killed (not failed) because it is a speculative duplicate
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+or tasktracker it was running on failed
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Killed task attempts do not count against the number of attempts to run
+ the task
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Users may also kill or fail task attempts via web UI or CLI (mapred job)
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+failure of the tasktracker:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tasktracker crashes or running very slowly: it will stop sending heartbeats
+ to jobtracker
+\end_layout
+
+\begin_layout Itemize
+After the default 10 mins of no heartbeats, jobtracker removes it from pool
+ to tasktrackers
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Jobtracker reschedules incomplete map tasks and complete map tasks that
+ belong it incomplete jobs
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tasktracker local filesystem is not accessiable as it failed
+\end_layout
+
+\begin_layout Itemize
+Any tasks in progress are also rescheduled
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Tasktracker can be blacklisted, even if it isn't failed
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If 
+\begin_inset Formula $>4$
+\end_inset
+
+ task from the same job fail on a particular tasktracker it is given a fault,
+ after default of 4 faults, tasktracker is blacklisted
+\end_layout
+
+\begin_layout Itemize
+A fault is removed once per day, or removed entirely after reconnection
+ to cluster after hardware replacement
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+failure of the jobtracker
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+All running jobs fail
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Single point of failure
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+After restarting jobtracker, any jobs that were running at the time was
+ stopped and need to resubmitted
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+YARN the task, application master, node manager, and resource manager.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Task failure: Similar to classic case
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Sudden exits of JVM and runtime exceptions go back to application master
+ and task attempt is marked as failed
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Application Master Failure:
+\end_layout
+
+\begin_layout Enumerate
+Node Manager Failure:
+\end_layout
+
+\begin_layout Enumerate
+Resource Manager Failure:
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Best to write map and reduce functions to use as little memory as possible
+ to allow more memory allocations to the shuffle process
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+Hadoop Streaming
+\series default
+: job configuration parameters are set as environment variables (replacing
+ nonalphanumeric characters with underscores to ensure they are valid names)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If you wish to find the value of mapred.job.id property in streaming python:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+os.environ["mapred_job_id"]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+You can set environment variables for streaming processes by supplying the
+ -cmdenv option to the streaming launcher
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+-cmdenv PARAMETER=value
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Speculative execution: reduce individual job execution time, can reduce
+ overall throughput.
+ (Can turn it on or off)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+reduce speculative execution tasks have to fetch same map outputs as orginal,
+ thus increasing network traffic
+\end_layout
+
+\begin_layout Itemize
+Trouble some for non-idempoentent tasks.
+ Many cases can rewrite task to be idempotent and use an OutputCommitter
+ to promote the output
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Skipping Bad Records:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Large data sets are messy: corrupt records, different formats, missing fields
+\end_layout
+
+\begin_layout Itemize
+Sometimes best to ignore offending records
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+May cause a run-time exception, failing the task.
+ If task fails 4 times, then whole job could be marked as failed.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Corruption in a file can manifest itself as a very long line (can set mapred.line
+recorder.maxlength to value in bytes that fits in memory)
+\end_layout
+
+\begin_layout Itemize
+Best to handle corruption in code, you can:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+detect and ignore it
+\end_layout
+
+\begin_layout Itemize
+abort the job by throwing an exception
+\end_layout
+
+\begin_layout Itemize
+count the number to bad records using counters
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Skpping mode in Hadoop
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Tasks report the records being processed back to the tasktracker
+\end_layout
+
+\begin_layout Itemize
+Tasktracker retries the task, skipping the records that causes the failure
+\end_layout
+
+\begin_layout Itemize
+Causes extra network traffic and bookkeeping maintain failed record ranges,
+ this skipping mode is turned on for tasks that fail twice
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Task fails
+\end_layout
+
+\begin_layout Enumerate
+Task fails
+\end_layout
+
+\begin_layout Enumerate
+Skipping mode is enabled: task fails, but the failed record is stored by
+ the tasktracker
+\end_layout
+
+\begin_layout Enumerate
+Skipping mode is enabled: Task succeeds by skipping bad record from 3.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Can only detect only 1 bad record per task attempt
+\end_layout
+
+\begin_layout Itemize
+Bad records that have been detected by Hadoop are saved as sequence files
+ in the job's output directory under _logs/skip subdirectory
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+
+\series bold
+Question
+\series default
+: How does one write to dfs from python
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Web UI
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset href
+LatexCommand href
+name "http://localhost:8088/"
+target "http://localhost:8088/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Interfaces
+\end_layout
+
+\begin_layout Standard
+There are two types of program interfaces with Hadoop:
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+JAVA API
+\series default
+: Interact with the JAVA components of Hadoop with JAVA compiled code.
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+Hadoop Streaming
+\series default
+: All passing of information is performed though stdin and stdout
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This allows a variety of programming languages to be used (basically anything
+ with stdin, stdout): C++, python, perl, bash, etc.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Hadoop Pipes: C++ interface using sockets
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A thin wrapper for communicating with the tasktracker child processes
+\end_layout
+
+\begin_layout Itemize
+Map and reduce are defined by extending Mapper and Reducer classes defined
+ in HadoopPipes namespace
+\end_layout
+
+\begin_layout Itemize
+Only runs in either cluster or pseudodistribued mode
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Hadoop Streaming
+\end_layout
+
+\begin_layout Section
+HDFS
+\end_layout
+
+\begin_layout Itemize
+Designed for storing very large files (up to petabytes) with streaming data
+ access patterns
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+built around the idea of write-once, read-many times
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Time to read the whole dataset is more important than latency in reading
+ the first record
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Run on common hardware (higher failure rate than enterprise computers)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+HDFS designed to carry on without noticeable interuption to the user in
+ cases of such failure
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+Disadvantages:
+\end_layout
+
+\begin_layout Itemize
+High-latency data access (HBase is a better choice for low latency)
+\end_layout
+
+\begin_layout Itemize
+NameNode memory is the limiting factor to number of files on system: can
+ possible handle millions of files but billions will.
+\end_layout
+
+\begin_layout Itemize
+Writes are always made at then end of a file
+\end_layout
+
+\begin_layout Subsection
+HDFS Concepts
+\end_layout
+
+\begin_layout Subsubsection
+Blocks
+\end_layout
+
+\begin_layout Standard
+Hard drives have block sizes: the min amount of data that be read or write.
+ Filesystems 
+\end_layout
+
+\begin_layout Section
+Debugging
+\end_layout
+
+\begin_layout Itemize
+Output files are named:
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+1.x 
+\emph on
+part-nnnnn
+\end_layout
+
+\begin_layout Description
+2.x 
+\emph on
+part-m-nnnnn
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Java API
+\end_layout
+
+\begin_layout Itemize
+When converting Mapper and Reducer classes to the new API, remember to change
+ the signature of the map() and reduce() methods to the new form.
+ Just extending it will not produce a compilation error but code will not
+ be invoked.
+\end_layout
+
+\begin_layout Section
+CLI Commands
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop [--config confdir] [COMMAND] [GENERIC_OPTIONS] [COMMAND_OPTIONS]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+--config
+\begin_inset space ~
+\end_inset
+
+confdir
+\family default
+ Overwrites the default configuation directory
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+COMMAND
+\family default
+ Command
+\end_layout
+
+\begin_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+fs
+\family default
+ Command dealing with the HDFS file system, this is followed by an option
+ like -ls (list files in directory)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Globbing still works like it does in bash
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+jar
+\begin_inset space ~
+\end_inset
+
+<jarfile>
+\family default
+ Run <jarfile> for a mapreduce job
+\begin_inset VSpace smallskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+version
+\family default
+ Print the version of hadoop
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+checknative
+\begin_inset space ~
+\end_inset
+
+[-a|-h]
+\family default
+ Check native hadoop and compression libaries availablity
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+distcp
+\begin_inset space ~
+\end_inset
+
+<srcurl>
+\begin_inset space ~
+\end_inset
+
+<desturl>
+\family default
+ Copy file or directories recursively
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+archive
+\begin_inset space ~
+\end_inset
+
+-archiveName
+\begin_inset space ~
+\end_inset
+
+NAME
+\begin_inset space ~
+\end_inset
+
+-p
+\begin_inset space ~
+\end_inset
+
+<parent path>
+\begin_inset space ~
+\end_inset
+
+<src>*
+\begin_inset space ~
+\end_inset
+
+<dest>
+\family default
+ Create a hadoop archive
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+classpath
+\family default
+ Prints the class path needed to get the Hadoop jar and the required libraries
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+CLASSNAME
+\family default
+ Run the class named CLASSNAME
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+
+\family typewriter
+fs
+\family default
+ Command Options
+\end_layout
+
+\begin_layout Standard
+With Hadoop 2.2, the hadoop file system has changed from 
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop [--config confdir] fs <Cmd> <args>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+to
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs [--config confdir] dfs <Cmd> <args>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-cat
+\begin_inset space ~
+\end_inset
+
+<src>
+\begin_inset space ~
+\end_inset
+
+...
+
+\family default
+ Prints <src> files.
+ Note: Globbing still works here.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Print all of the files in out
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -cat out/*
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-ls
+\begin_inset space ~
+\end_inset
+
+[-R]
+\begin_inset space ~
+\end_inset
+
+[<paths>]
+\family default
+ Print all files/directories in long format in <paths>.
+ Include -R option to do this recursively for subdirectories.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Print all files/directories steming from root
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -ls -R /
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename Hadoop/filesystem.pdf
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-put
+\begin_inset space ~
+\end_inset
+
+<localsrc(s)>
+\begin_inset space ~
+\end_inset
+
+<dst>
+\family default
+ Copy source(s) from local file system to destination filesystem.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Copy WarAndPeace.txt in current directory to input directory to my input
+ directory
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -put WarAndPeace.txt hdfs://user/darrell/input
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-copyFromLocal
+\begin_inset space ~
+\end_inset
+
+<localsrc(s)>
+\begin_inset space ~
+\end_inset
+
+<dst>
+\family default
+ Similar to put, except that the source is restricted to local file system.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-get
+\begin_inset space ~
+\end_inset
+
+
+\family default
+<HDFSfiles>
+\begin_inset space ~
+\end_inset
+
+<locDir> Copy files to local file system.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Copy result of hadoop job to Downloads directory.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -get out/* ~/Downloads
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-copyToLocal
+\begin_inset space ~
+\end_inset
+
+
+\family default
+<HDFSfiles>
+\begin_inset space ~
+\end_inset
+
+<locDir> Similar to get except that the destination is restricted to a local
+ file system.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-getmerge
+\family default
+ Takes a source directory and concatenates files into destination local
+ file.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Copy result of word count to Downloads directory.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -getmerge out ~/Downloads/wordcount.txt
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-cp
+\begin_inset space ~
+\end_inset
+
+<src>
+\begin_inset space ~
+\end_inset
+
+<dest>
+\family default
+ Copy <src> to <dest>
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-mkdir
+\begin_inset space ~
+\end_inset
+
+[-p]
+\begin_inset space ~
+\end_inset
+
+<path>
+\family default
+ Creates directory(ies), parents and children when option -p is passed.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Create path for new user /user/name/out
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -mkdir -p /user/name/out
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-mv
+\begin_inset space ~
+\end_inset
+
+<src>
+\begin_inset space ~
+\end_inset
+
+<dest>
+\family default
+ Move/rename files from <src> to <dest>
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Rename file1 to file2
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -mv /user/hadoop/file1 /user/hadoop/file2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-chgrp
+\begin_inset space ~
+\end_inset
+
+[-R]
+\begin_inset space ~
+\end_inset
+
+<group>
+\begin_inset space ~
+\end_inset
+
+<file/dir>
+\family default
+ Change group association of files.
+ Option -R makes the changes through subdirectories.
+ User must be owner of files or root.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Change the group association of all files/directories inside of /user/StatsClub/
+ to StatsClub
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -chgrp -R StatsClub /user/StatsClub/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-chmod
+\begin_inset space ~
+\end_inset
+
+[-R]
+\begin_inset space ~
+\end_inset
+
+<perm>
+\begin_inset space ~
+\end_inset
+
+<file/dir>
+\family default
+ Change permission(s) of file/directory.
+ Option -R makes the changes through subdirectories.
+ User must be owner of files or root.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Change the group permissions to read, write and execute all files/directories
+ in /user/StatsClub/
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -chmod -R g+rwx /user/StatsClub/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-chown
+\begin_inset space ~
+\end_inset
+
+[-R]
+\begin_inset space ~
+\end_inset
+
+[<owner>][:[<group>]]
+\begin_inset space ~
+\end_inset
+
+<file/dir>
+\family default
+ Change owner of file/directory.
+ Option -R makes the changes through subdirectories.
+ User must be owner of files or root.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Change the owner of the directory /user/darrell/out to StatsClub
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ sudo hdfs dfs -chown -R StatsClub /user/darrell/out
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-rm
+\begin_inset space ~
+\end_inset
+
+[-r]
+\begin_inset space ~
+\end_inset
+
+<Files/dir>
+\family default
+ Delete files specified.
+ If -r is given and a directory is given, recurvively delete all files/directori
+es in the directory.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Remove all files/directories in /user/darrell/out
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -rm -r  /user/darrell/out
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-expunge
+\family default
+ Empty the trash.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Unless specified, trash is emptied after deletion
+\end_layout
+
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-du
+\begin_inset space ~
+\end_inset
+
+[-s]
+\begin_inset space ~
+\end_inset
+
+<dir>
+\family default
+ Display aggregate length of files in <dir>.
+ If -s option, a summary of file lengths is given.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Display aggregate length of files in /user/darrellaucoin/out
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -du /user/darrellaucoin/out
+\end_layout
+
+\begin_layout Plain Layout
+
+0     /user/darrellaucoin/out/_SUCCESS 7763  /user/darrellaucoin/out/part-r-0000
+0
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-setrep
+\begin_inset space ~
+\end_inset
+
+[-R]
+\begin_inset space ~
+\end_inset
+
+<path>
+\family default
+ Changes the replication factor of a file (how many replicas of the files
+ is stored in HDFS).
+ -R opion passes this to files in subdirectories.
+\end_layout
+
+\begin_deeper
+\begin_layout Example
+Change the replication factor of files in /user/darrellaucoin/input to 3.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hdfs dfs -setrep -w 3 -R /user/darrellaucoin/input
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-stat
+\begin_inset space ~
+\end_inset
+
+<path>
+\family default
+ Return the stat information on path
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-tail
+\begin_inset space ~
+\end_inset
+
+[-f]
+\begin_inset space ~
+\end_inset
+
+<file>
+\family default
+ Display last kilobyte of file to stdout.
+ -f option is to wait for additional data appended if needed.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-test
+\begin_inset space ~
+\end_inset
+
+-[ezd]
+\begin_inset space ~
+\end_inset
+
+<file/dir>
+\family default
+ Checks to if (-e = file, -z = filelength()=0, -d = not a directory) and
+ returns 0 if true.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-text
+\begin_inset space ~
+\end_inset
+
+<file>
+\family default
+ Takes file and outputs file in text format (allows zip and TextRecordInputStrea
+m formats)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-touchz
+\begin_inset space ~
+\end_inset
+
+<file>
+\family default
+ Create a file of zero length.
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+
+\family typewriter
+-count
+\begin_inset space ~
+\end_inset
+
+[-q]
+\begin_inset space ~
+\end_inset
+
+<paths>
+\family default
+ Count the number of directories, files and bytes under <path>.
+ -q option includes more information.
+\end_layout
+
+\begin_layout Section
+Hadoop Streaming
+\end_layout
+
+\begin_layout Standard
+Hadoop Steaming allows other programming languages other than java to define
+ the mapper and reducer functions for mapreduce.
+ Any language that can read from stdin, and write to stdout will work if
+ installed on the hadoop cluster: python, bash, ruby, perl are just a few
+ examples.
+ 
+\end_layout
+
+\begin_layout Standard
+For my installation of Hadoop 2.2.0:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar
+ 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	-input myInputDirs 
+\backslash
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+	-output myOutputDir 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	-mapper /bin/cat 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	-reducer /bin/wc
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+You must specify the directory path to the hadoop-streaming jar file, they
+ are different with different version of hadoop
+\end_layout
+
+\begin_layout Subsection
+Streaming Options
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar
+ 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	-input <InputDirs> 
+\backslash
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+	-output <OutputDir> 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	[-file <MapperFileToBeSent>] 
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	-mapper <MapperFile> 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	[-file <ReducerFileToBeSent>] 
+\backslash
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+	-reducer <ReducerFile>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Hadoop streaming command options are listed here:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="16" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top" width="3.5cm">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="6cm">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional?
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-input
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+directoryname or filename
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Required
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Input location
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-ouput
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+directoryname
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Required
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Output directory
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-mapper
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Executable or JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Required
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mapper executable
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-reducer
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Executable or JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Required
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Reducer executable
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+filename
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Files that needs to be sent to clusters (Mappers, reducer, combiners and
+ other files they need).
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-combiner 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+streamingCommand or JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Combiner executable for map output.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-cmdenv 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+name=value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pass environment variable to streaming commands.
+ ie.
+ directories
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-inputformat 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Java Class specifying format of key-value pairs of text class for input.
+ TextInputFormat is default.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-outputformat 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Java Class specifying format of key-value pairs of text class for output.
+ TextOutputFormat is default.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-partitioner
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+JavaClassName
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Class that determines which reduce a key is sent to.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-verbose
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Verbose output.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-lazyOutput
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Create output lazily: output file is created only on the first call to output.col
+lect
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-numReduceTasks
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of reducers.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-mapdebug
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When map task fails.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-reducedebug
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+When reduce task fails.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Any executable using stdin and stdout can be used for the mapper, or reducer.
+ If the mapper, reducer or combiner file is not already on cluster machines,
+ the file needs to be went along with job to each cluster using -file option.
+ Any other files that may be used with the mapper/reducer must be included
+ as well.
+\end_layout
+
+\begin_layout Subsection
+Generic Command Options for Streaming
+\end_layout
+
+\begin_layout Description
+Note: Be sure to place the generic options before the streaming options,
+ otherwise the command will fail.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "backgroundcolor={\color{lightgrey}},language=bash"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar
+ 
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+
+	[genericOptions] [streamingOptions]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="4">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0pt">
+<column alignment="left" valignment="top" width="3.5cm">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="6cm">
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional?
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-conf
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<configuration_file>
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Application configuration file.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-D
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<property>=<value>
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Set property to value.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-fs 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<host>:<port> or local
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specify a namenode
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-jt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<host>:<port> or local
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specify a job tracker
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-files
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<file1>, <file2>, ...
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comma-separated files to be copied to the Map/Reduce cluster
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-libjars
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<jar1>, <jar2>, ...
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comma-separated jar files to be includein the classpath
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-archives
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Optional
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Comma-separated archives to be unarchived on the compute machines.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Hadoop Streaming and R (rmr2 package)
+\end_layout
+
+\begin_layout Standard
+For any R package to work with hadoop, it must be installed on all clusters
+ with the exact same location path.
+\end_layout
+
+\begin_layout Standard
+Many rmr2 function will return something called a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+, a stub with some information on finding and managing data (the data itself
+ is not loaded into memory until needed).
+ Some functions in rmr2 that return 
+\series bold
+\emph on
+Big Data Objects
+\series default
+\emph default
+ are mapreduce, to.dfs, and from.dfs.
+\end_layout
+
+\begin_layout Standard
+We can switch off hadoop, for debugging purposes with
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Information gathered here come from the rmr2 help function and the 
+\begin_inset CommandInset href
+LatexCommand href
+name "rmr2 tutorial"
+target "https://github.com/RevolutionAnalytics/rmr2/blob/master/docs/tutorial.md"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+rmr2 Functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mapreduce(input, output = NULL, map = to.map(identity), reduce = NULL,
+\end_layout
+
+\begin_layout Plain Layout
+
+	vectorized.reduce = FALSE, combine = NULL, in.memory.combine = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	input.format = "native",   output.format = "native",
+\end_layout
+
+\begin_layout Plain Layout
+
+	backend.parameters = list(),   verbose = TRUE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+mapreduce Defines and executes a map reduce job.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input Can be:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A set of file paths in HDFS
+\end_layout
+
+\begin_layout Itemize
+A 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ (a stub of information on some data in HDFS)
+\end_layout
+
+\begin_layout Itemize
+A 
+\bar under
+list
+\bar default
+ of a combination of both
+\end_layout
+
+\end_deeper
+\begin_layout Description
+output A path to the destination folder on HDFS; if missing, a 
+\series bold
+\emph on
+Big Data Object
+\series default
+\emph default
+ is returned.
+\end_layout
+
+\begin_layout Description
+map An optional R function of two arguments, returning either NULL or the
+ return value of keyval, that specifies the map operation to execute as
+ part of a mapreduce job.
+ 
+\begin_inset Newline newline
+\end_inset
+
+The two arguments represent multiple key-value pairs according to the definition
+ of the mapreduce model.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The map function must return key-value pairs.
+ Preferably using the function keyval:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+return( keyval(key, val) )
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where key, val can be vectors, lists, matricies, data.frames and val can
+ even be NULL
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Keys are matched to the corresponding values by position, according to the
+ second dimension if it is defined (that is rows in matrices and data frames,
+ position otherwise), analogous to the behavior of cbind, see keyval for
+ details.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+reduce An optional R function of two arguments, a key and a data structure
+ representing all the values associated with that key (the same type as
+ returned by the map call, merged with rbind for matrices and data frames
+ and c otherwise), returning either NULL or the return value of keyval,
+ that specifies the reduce operation to execute as part of a mapreduce job.
+\begin_inset Newline newline
+\end_inset
+
+The default is no reduce phase, that is the output of the map phase is the
+ output of the mapreduce job, see the vectorized.reduce argument for an alternate
+ interface
+\end_layout
+
+\begin_layout Description
+vectorized.reduce The argument to the reduce should be construed as a collection
+ of keys and values associated to them by position (by row when 2-dimensional).
+ Identical keys are consecutive and once a key is present once, all the
+ records associated with that key will be passed to the same reduce call
+ (complete group guarantee).
+ This form of reduce has been introduced mostly for efficiency reasons when
+ processing small reduce groups, because the records are small and few of
+ them are associated with the same key.
+ This option affects the combiner too.
+\end_layout
+
+\begin_layout Description
+combine refers to:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A function with the same signature and possible return values as the reduce
+ function, or 
+\end_layout
+
+\begin_layout Itemize
+TRUE, which means 
+\emph on
+use the reduce function
+\emph default
+ as combiner.
+\end_layout
+
+\begin_layout Itemize
+NULL means no combiner is used.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+in.memory.combine Apply the combiner just after calling the map function,
+ before returning the results to hadoop.
+ This is useful to reduce the amount of I/O and (de)serialization work when
+ combining on small sets of records has any effect (you may want to tune
+ the input format to read more data for each map call together with this
+ approach, see arguments read.size or nrow for a variety of formats)
+\end_layout
+
+\begin_layout Description
+input.format Input format specification, see make.input.format
+\begin_inset Formula 
+\[
+\mbox{input.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"hbase"} & \mbox{hbase table format}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format (some similarities to csv)}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+output.format Output format specification, see make.output.format
+\begin_inset Formula 
+\[
+\mbox{output.format}=\begin{cases}
+\mbox{"text"} & \mbox{Plain text}\\
+\mbox{"json"} & \mbox{JavaScript Object Notation}\\
+\mbox{"csv"} & \mbox{Comma Separated Values}\\
+\mbox{"native"}\\
+\mbox{"sequence.typedbytes"}\\
+\mbox{"pig.hive"} & \mbox{pig/hive table format (some similarities to csv)}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+backend.parameters This option is for advanced users only and may be removed
+ in the future.
+ Specify additional, backend-specific options, as in backend.parameters =
+ list(hadoop = list(D = "mapred.reduce.tasks=1"), local = list()).
+ It is recommended not to use this argument to change the semantics of mapreduce
+ (output should be independent of this argument).
+ Each backend can only see the nested list named after the backend itself.
+ The interpretation is the following: for the hadoop backend, generate an
+ additional hadoop streaming command line argument for each element of the
+ list, "-name value".
+ If the value is TRUE generate "-name" only, if it is FALSE skip.
+ One possible use is to specify the number of mappers and reducers on a
+ per-job basis.
+ It is not guaranteed that the generated streaming command will be a legal
+ command.
+ In particular, remember to put any generic options before any specific
+ ones, as per hadoop streaming manual.
+ For the local backend, the list is currently ignored.
+\end_layout
+
+\begin_layout Description
+verbose Run hadoop in verbose mode.
+ No effect on the local backend
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Note: Jobs can be chained together by simply providing the output for one
+ job as the input for another.
+\begin_inset Newline newline
+\end_inset
+
+The map function should not read from standard input and write to standard
+ output.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Logging and debugging messages should be written to standard error, and
+ will be redirected to the appropriate logs or to console by the backend.
+\end_layout
+
+\begin_layout Example
+Mapreduce job for doing a word count
+\end_layout
+
+\begin_layout Example
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+mapreduce(input='/user/darrellaucoin/input',
+\end_layout
+
+\begin_layout Plain Layout
+
+	output='/user/darrellaucoin/out',
+\end_layout
+
+\begin_layout Plain Layout
+
+	input.format="text",              	map=(k,lines) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		words.list = strsplit(lines, ' ') 
+\end_layout
+
+\begin_layout Plain Layout
+
+		words = unlist(words.list)
+\end_layout
+
+\begin_layout Plain Layout
+
+		return( keyval(words, 1) )
+\end_layout
+
+\begin_layout Plain Layout
+
+	},
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce=function(word, counts) {
+\end_layout
+
+\begin_layout Plain Layout
+
+		keyval(word, sum(counts)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+	}
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+keyval(key, val)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+keyval Create a key-value object (a collection of key-value pairs) (Pkg
+ rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+key Key object: vectors, lists, matricies, data.frames
+\end_layout
+
+\begin_layout Description
+val Value object: vectors, lists, matricies, data.frames or NULL
+\end_layout
+
+\end_deeper
+\begin_layout Description
+Note: To retrieve the keys/values from a keyval.Object: keys(keyval.Object)
+ or values(keyval.Object)
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+from.dfs(input, format = "native")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+from.dfs Read R objects from HDFS.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+input A valid path to HDFS or a big.data.object
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.input.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Returns a key-value pair collection to R
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Warning: This is useful only if a job produces something of reasonable size,
+ like a summary of the data, that can fit into memory and therefore inspected.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+to.dfs(kv, output = dfs.tempfile(), format = "native")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+to.dfs Write R objects from HDFS.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+output A valid path to HDFS
+\end_layout
+
+\begin_layout Description
+format Either
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+A string naming the format, or
+\end_layout
+
+\begin_layout Itemize
+A value returned by the function make.output.format
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Not possible to write out big data with to.dfs, but is useful for making
+ test cases, learning and debugging.
+\end_layout
+
+\begin_layout Itemize
+The return type is a 
+\series bold
+\emph on
+big data object
+\series default
+\emph default
+, a stub with some information on finding and managing data (the data itself
+ is not loaded into memory)
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+keys(kv)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+keys Get keys from a 
+\series bold
+\emph on
+big data object
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+values(kv)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+values Get values from a 
+\series bold
+\emph on
+big data object
+\end_layout
+
+\begin_layout Subsection
+Useful R Functions
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+system(command, intern = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       ignore.stdout = FALSE, ignore.stderr = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       wait = TRUE, input = NULL, show.output.on.console = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+       minimized = FALSE, invisible = TRUE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+system Invokes OS command specified by the character string command.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+command Character string to be invoked in terminal.
+\end_layout
+
+\begin_layout Description
+intern a logical (not NA) which indicates whether to capture the output
+ of the command as an R character vector.
+\end_layout
+
+\begin_layout Description
+ignore.stdout, ignore.stderr a logical (not NA) indicating whether messages
+ written to ‘stdout’ or ‘stderr’ should be ignored.
+\end_layout
+
+\begin_layout Description
+wait a logical (not NA) indicating whether the R interpreter should wait
+ for the command to finish, or run it asynchronously.
+ This will be ignored (and the interpreter will always wait) if intern =
+ TRUE.
+\end_layout
+
+\begin_layout Description
+input if a character vector is supplied, this is copied one string per line
+ to a temporary file, and the standard input of command is redirected to
+ the file.
+\end_layout
+
+\begin_layout Description
+show.output.on.console, minimized, invisible arguments that are accepted on
+ Windows but ignored on this platform, with a warning.
+\end_layout
+
+\end_deeper
+\begin_layout Example
+Command for hadoop to remove previous contents of out
+\end_layout
+
+\begin_layout Example
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+system("${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out")
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Example
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+file.path(..., fsep = .Platform$file.sep)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+file.path Construct a path from components to be easily translated accross
+ different OS (Mac, Windows, Linux).
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+...
+ character vectors
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+strsplit Split elements of a character vector x into substrings, split with
+ matches to the regular expression in split argument.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+x character vector 
+\end_layout
+
+\begin_layout Description
+split character vector containing regular expressions to tell when to break
+ the substring.
+ If split has length 0, x is split to individual characters.
+\end_layout
+
+\begin_layout Description
+perl logical.
+ Should perl-compatible regular expressions be used?
+\end_layout
+
+\begin_layout Description
+useBytes logical.
+ Should matching be done byte by byte?
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+unlist(x, recursive = TRUE, use.names = TRUE)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+unlist Simplifies a list structure x to a vector containing atomic components
+ which occur in x.
+ (Pkg base)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+x a list or vector
+\end_layout
+
+\begin_layout Description
+recurvisve logical
+\end_layout
+
+\begin_layout Description
+use.names logical.
+ Should names be preserved?
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+\noindent
+Debugging
+\end_layout
+
+\begin_layout Standard
+Debugging is essential to running a MapReduce job and ensuring everything
+ is working correctly.
+ As such, we have two functions to help us debugg code:
+\end_layout
+
+\begin_layout Description
+Rprof when we are running on local mode (using rmr.options(backend = "local")
+ ).
+ When local mode is turned on, hadoop is never run but a simulation of hadoop
+ entirely within R is run, as such Rprof is used to collect any debugging
+ information we might need.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+summaryRprof
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Functions will only be recorded in the profile log if they put a context
+ on the call stack
+\end_layout
+
+\begin_layout Itemize
+Individual statements will be recorded in the profile log if line.profiling
+ is set to TRUE, and if the code being executed was parsed with source reference
+s.
+\end_layout
+
+\end_deeper
+\begin_layout Description
+rmr.options when we are running on hadoop (either in pseudo-distribution
+ or full-distribution mode).
+ When in hadoop mode, there are several options to collect information to
+ help debug.
+\end_layout
+
+\begin_layout Itemize
+When trying to look for bugs it is usually best look in local mode to find
+ potential problems within R, then failing that look in hadoop mode for
+ any problems (connections problems between R and Hadoop etc.)
+\end_layout
+
+\begin_layout Standard
+Profiling works by writing out the call stack every interval seconds, to
+ the file specified
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options(backend = c("hadoop", "local"),
+\end_layout
+
+\begin_layout Plain Layout
+
+	profile.nodes = c("off", "calls", "memory", "both"),
+\end_layout
+
+\begin_layout Plain Layout
+
+	hdfs.tempdir = "/tmp",
+\end_layout
+
+\begin_layout Plain Layout
+
+	exclude.objects = NULL,
+\end_layout
+
+\begin_layout Plain Layout
+
+	backend.parameters = list())
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+rmr.options Set and get package options.
+ (Pkg rmr2)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+...
+ Names of options to get values of, as length of one character vectors.
+\end_layout
+
+\begin_layout Description
+backend Use either hadoop, or the current R interpreter, sequentially, for
+ learning and debugging.
+\begin_inset Formula 
+\[
+\mbox{backend}=\begin{cases}
+\mbox{"local"} & \mbox{implemented in R (helpful for debugging)}\\
+\mbox{"hadoop"} & \mbox{implemented in Hadoop}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+profile.nodes Collect profiling and memory information when running additional
+ R interpreters (besides the current one) on the cluster.
+ No effect on the local backend, use 
+\emph on
+Rprof
+\emph default
+ instead.
+ For backward compatibility, "calls" is equivalent to TRUE and "off" to
+ FALSE
+\begin_inset Formula 
+\[
+\mbox{profile.nodes}=\begin{cases}
+\mbox{"off"} & \mbox{No collection}\\
+\mbox{"calls"} & \mbox{Collect R calls}\\
+\mbox{"memory"} & \mbox{Collect memory information}\\
+\mbox{"both"} & \mbox{Collect both}
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+The profiling data is collected in the following files:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+file.path(rmr.options("dfs.tempdir"), "Rprof", <job id>, <attempt id>)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Description
+hdfs.tempdir The directory to use for temporary files, including mapreduce
+ intermediate results files, on the distributed file system (not used when
+ running on the local backend).
+\end_layout
+
+\begin_layout Description
+exclude.objects Objects in the Global environment that are not needed by
+ the map or reduce functions, as character vector.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+This is useful when you have some large R objects that is not needed by
+ the map reduce job (you don't need to copy these objects to the nodes)
+\end_layout
+
+\end_deeper
+\begin_layout Description
+backend.parameters Parameters to pass directly to the backend.
+ See equally named argument for the function mapreduce.
+ Use this setting for backend parameters that need to be different from
+ default but can be the same from job to job
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\noindent
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Rprof(filename = "Rprof.out", append = FALSE, interval = 0.02,
+\end_layout
+
+\begin_layout Plain Layout
+
+	memory.profiling = FALSE, gc.profiling = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+	line.profiling = FALSE, numfiles = 100L, bufsize = 10000L) 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Rprof Simplifies a list structure x to a vector containing atomic components
+ which occur in x.
+ (Pkg utils)
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+filename The file to be used for recording the profiling results.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Set to NULL or "" to disable profiling.
+\end_layout
+
+\begin_layout Description
+append logical: should the file be over-written or appended to?
+\end_layout
+
+\begin_layout Description
+interval real: time interval between samples.
+\end_layout
+
+\begin_layout Description
+memory.profiling logical: write memory use information to the file?
+\end_layout
+
+\begin_layout Description
+gc.profiling logical: record whether GC is running?
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+GC is 
+\end_layout
+
+\end_deeper
+\begin_layout Description
+line.profiling logical: write line locations to the file?
+\end_layout
+
+\begin_layout Description
+numfiles,
+\begin_inset space ~
+\end_inset
+
+bufsize integers: line profiling memory allocation
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Linear Least Squares Using RHadoop
+\end_layout
+
+\begin_layout Standard
+To understand the MapReduce framework, lets solve a familar problem of Linear
+ Regression.
+ For Hadoop/MapReduce to work we MUST figure out how to parallelize our
+ code, in other words how to use the hadoop system to only need to make
+ a subset of our calculations on a subset of our data.
+\end_layout
+
+\begin_layout Description
+Assumption: The value of 
+\begin_inset Formula $p$
+\end_inset
+
+, the number of explanatory variables is small enough for R to easily handle
+ and 
+\begin_inset Formula $n\gg p$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We know from linear regression, that our estimate of 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+ :
+\begin_inset Formula 
+\[
+X^{T}X\hat{\beta}=X^{T}y
+\]
+
+\end_inset
+
+and the matrix 
+\begin_inset Formula $\left(X^{T}X\right)_{p\times p}$
+\end_inset
+
+ and 
+\begin_inset Formula $\left(X^{T}y\right)_{p\times1}$
+\end_inset
+
+ should be small enough for R to solve for 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+ with relative ease.
+ We would therfore only need to find 
+\begin_inset Formula $X^{T}X,X^{T}y$
+\end_inset
+
+ to get 
+\begin_inset Formula $\hat{\beta}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+To break up this calculation we break our matrix 
+\begin_inset Formula $X$
+\end_inset
+
+ into submatricies 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+: 
+\begin_inset Formula 
+\begin{eqnarray*}
+X=\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix} &  & y=\begin{bmatrix}y_{1}\\
+y_{2}\\
+y_{3}\\
+\vdots\\
+y_{n}
+\end{bmatrix}
+\end{eqnarray*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{eqnarray*}
+\implies X^{T}X & = & \begin{bmatrix}X_{1}^{T} & X_{2}^{T} & X_{3}^{T} & \cdots & X_{n}^{T}\end{bmatrix}\begin{bmatrix}X_{1}\\
+X_{2}\\
+X_{3}\\
+\vdots\\
+X_{n}
+\end{bmatrix}\\
+ & = & \begin{bmatrix}X_{1}^{T}X_{1}+ & X_{2}^{T}X_{2}+ & X_{3}^{T}X_{3}+ & \cdots & +X_{n}^{T}X_{n}\end{bmatrix}
+\end{eqnarray*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\implies X^{T}y=\begin{bmatrix}X_{1}^{T}y_{1}+ & X_{2}^{T}y_{2}+ & X_{3}^{T}y_{3}+ & \cdots & +X_{n}^{T}y_{n}\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+ can be easily calculated in the map phase of our MapReduce job and the
+ addition of 
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+'s and 
+\begin_inset Formula $X_{i}^{T}y_{i}$
+\end_inset
+
+'s can be done in the aggregation phase (the reduce phase).
+\end_layout
+
+\begin_layout Subsubsection
+Setup
+\end_layout
+
+\begin_layout Standard
+First lets setup the system, and create some variables to test our code
+ on:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,language=R"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+\end_layout
+
+\begin_layout Plain Layout
+
+Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoo
+p-streaming-2.2.0.jar")
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rmr2)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(data.table)
+\end_layout
+
+\begin_layout Plain Layout
+
+#Setup variables 
+\end_layout
+
+\begin_layout Plain Layout
+
+p = 10 
+\end_layout
+
+\begin_layout Plain Layout
+
+num.obs = 2000 
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.true = 1:(p+1) 
+\end_layout
+
+\begin_layout Plain Layout
+
+# Make our X matrix 
+\end_layout
+
+\begin_layout Plain Layout
+
+X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p), ncol = p))
+\end_layout
+
+\begin_layout Plain Layout
+
+y = X %*% beta.true + rnorm(num.obs) 
+\end_layout
+
+\begin_layout Plain Layout
+
+X.index = to.dfs(cbind(y, X)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+rm(X, y, num.obs, p) 
+\end_layout
+
+\begin_layout Plain Layout
+
+############################
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note that since we are only doing a test run in pseudo-distribution mode,
+ we can't make the num.obs too large as that would take too long for a single
+ node (our computer) to run.
+ After 
+\begin_inset Formula $y$
+\end_inset
+
+ and 
+\begin_inset Formula $X$
+\end_inset
+
+ are written to HDFS, we remove them, it is good practice to remove variables
+ we no longer need.
+ Or at least not to send unnecessary variables to our clusters: relieving
+ unnecessary IO burdens in initialization:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+rmr.options(exclude.objects=c('X','y'))
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Map-Reduce Functions
+\end_layout
+
+\begin_layout Itemize
+To get our 
+\begin_inset Formula $X_{i}$
+\end_inset
+
+ in each cluster node, we must first remove the 
+\begin_inset Formula $y$
+\end_inset
+
+ values.
+ 
+\end_layout
+
+\begin_layout Itemize
+In order to aggregate over all values, we must return a fixed value as the
+ key in our map functions (otherwise they will only aggregate over the same
+ key values)
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+map.XtX = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #For our calucation, we need to get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% Xi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+map.Xty = function(., Xi) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	yi = Xi[,1] # Retrieve the y values
+\end_layout
+
+\begin_layout Plain Layout
+
+	Xi = Xi[,-1] #For the reduce phase, we need to get rid of y values in Xi
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(t(Xi) %*% yi)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+Sum = function(., YY) {
+\end_layout
+
+\begin_layout Plain Layout
+
+	keyval(1, list(Reduce('+', YY))) 
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+# The key here doesn't matter, as long it is is the same for every # value
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+The reason we are returning a list in the map function is because otherwise
+ Reduce will only return a some of the elements of the matricies.
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+list prevents this by Reduce iterating though the elements of the list (the
+ individual 
+\begin_inset Formula $X_{i}^{T}X_{i}$
+\end_inset
+
+ matricies) and applying the binary function '+' to each one.
+\end_layout
+
+\begin_layout Itemize
+list is used in the reduce function 'Sum' because we will also use this
+ as a combiner function and if we didn't use a list we would have the same
+ problem as above.
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+MapReduce Job
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+XtX = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.XtX,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Xty = values(from.dfs(
+\end_layout
+
+\begin_layout Plain Layout
+
+	mapreduce(
+\end_layout
+
+\begin_layout Plain Layout
+
+	input = X.index,
+\end_layout
+
+\begin_layout Plain Layout
+
+	map = map.Xty,
+\end_layout
+
+\begin_layout Plain Layout
+
+	reduce = Sum,
+\end_layout
+
+\begin_layout Plain Layout
+
+	combine = TRUE)))[[1]]
+\end_layout
+
+\begin_layout Plain Layout
+
+beta.hat = solve(XtX, Xty)
+\end_layout
+
+\begin_layout Plain Layout
+
+print(beta.hat)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Full Code
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "Hadoop_linear_reg.R"
+lstparams "breaklines=true,language=R"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parameter Estimation with Hadoop 
+\end_layout
+
+\begin_layout Enumerate
+Use map to estimate that parameter 
+\begin_inset Formula $\theta$
+\end_inset
+
+ with the sample given to the map function and average them in the reducer
+ to find a result
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Need a decent number of map nodes to use Central limit theorem on our estimate
+ 
+\begin_inset Formula $\hat{\theta}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+To be unbiased:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+map nodes have to have equal number of values
+\end_layout
+
+\begin_layout Itemize
+Each input split must (usually) be a representative sample
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Use sufficient statistics (or sketches) to find the projections of the data
+ onto the space of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ that can be partitioned communitative elements
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Map does the projection (ie for mean 
+\begin_inset Formula $y_{m}=\sum y_{i}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Reduce finalizes the result (ie.
+ for mean 
+\begin_inset Formula $\hat{\theta}=\frac{1}{N}\sum y_{m}$
+\end_inset
+
+)
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Debugging
+\end_layout
+
+\begin_layout Subsection
+Tools
+\end_layout
+
+\begin_layout Enumerate
+Local and Pseudo-distributed Mode for Hadoop
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Local Mode for Hadoop (everything runs in one JVM instance)
+\end_layout
+
+\begin_layout Itemize
+Pseudo-distributed mode: New JVM for each task
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Counters
+\end_layout
+
+\begin_layout Enumerate
+Writing to stderr
+\end_layout
+
+\begin_layout Enumerate
+Web UI
+\end_layout
+
+\begin_layout Subsection
+Debugging MapReduce Programs
+\end_layout
+
+\begin_layout Enumerate
+Run job in Hadoop with local mode on a subset of the data
+\end_layout
+
+\begin_layout Enumerate
+Run job in pseduo-distribution mode on a sebset of the data (preferably
+ with more than 1 map task)
+\end_layout
+
+\begin_layout Enumerate
+Run job in a cluster
+\end_layout
+
+\begin_layout Subsubsection
+Debugging Hadoop Java API Programs
+\end_layout
+
+\begin_layout Subsubsection
+Debugging Hadoop Pipes Programs
+\end_layout
+
+\begin_layout Subsubsection
+Debugging Hadoop Streaming Programs
+\end_layout
+
+\begin_layout Subsection
+Possible Problems
+\end_layout
+
+\begin_layout Enumerate
+File Corruption in block(s)
+\end_layout
+
+\begin_layout Enumerate
+Bad formatting of file (misuse of comma, etc.)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Is the formatting uniform?
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Error in code
+\end_layout
+
+\begin_layout Enumerate
+Combination of error in code and file formatting
+\end_layout
+
+\begin_layout Enumerate
+Exception created by combination of JVM and code
+\end_layout
+
+\begin_layout Enumerate
+Error created from lack of memory (bad alloc)
+\end_layout
+
+\begin_layout Enumerate
+System too slow:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Too many files for NameNode?
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Resources
+\end_layout
+
+\begin_layout Standard
+Wikipedia: 
+\begin_inset CommandInset href
+LatexCommand href
+name "HDFS"
+target "http://en.wikipedia.org/wiki/HDFS#HDFS"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+HortonWorks for 
+\begin_inset CommandInset href
+LatexCommand href
+name "Hadoop 1.x"
+target "http://docs.hortonworks.com/HDPDocuments/HDP1/HDP-1.2.0/bk_getting-started-guide/content/ch_hdp1_getting_started_chp2_1.html"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset href
+LatexCommand href
+name "Hadoop 2.x"
+target "http://docs.hortonworks.com/HDPDocuments/HDP2/HDP-2.0.0.2/bk_getting-started-guide/content/ch_hdp2_getting_started_chp2_1.html"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
