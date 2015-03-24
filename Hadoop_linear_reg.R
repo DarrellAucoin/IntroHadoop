@@ -1,6 +1,6 @@
-Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
-Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
-Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.5.2")
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.5.2/bin/hadoop")
+Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.5.2/share/hadoop/tools/lib/hadoop-streaming-2.5.2.jar")
 
 library(rmr2) 
 library(data.table)

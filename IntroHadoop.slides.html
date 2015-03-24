@@ -1760,7 +1760,7 @@ div.text_cell_render{
 <center>
 
 <p><p class="gap05"<p></p>
-<h1>Intro to Hadoop</h1>
+<h1>Introducton to <img src="Images/hadoop-logo.jpg" alt="alt text"></h1>
 
 <p><p class="gap05"<p></p>
 <h3>Darrell Aucoin</h3>
@@ -1862,7 +1862,7 @@ div.text_cell_render{
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[1]:
+In&nbsp;[2]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -1879,10 +1879,10 @@ In&nbsp;[1]:
 
 
 <div class="output_area"><div class="prompt output_prompt">
-    Out[1]:</div>
+    Out[2]:</div>
 
 <div class="output_html rendered_html output_subarea output_pyout">
-<iframe src=http://wiki.apache.org/hadoop/PoweredBy#A width=800 height=700></iframe>
+<iframe src=http://wiki.apache.org/hadoop/PoweredBy#A width=1000 height=600></iframe>
 </div>
 
 </div>
@@ -2054,6 +2054,7 @@ In&nbsp;[1]:
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
+<li>When a client submits a MapReduce Job, the job is split into several tasks and the nodes takes on a fixed number of tasks per node</li>
 <li>Written in mainly in Java, with some components written in C and bash</li>
 <li>Designed around processing high throughput of large data rather than response times  </li>
 <li>Hadoop is highly configurable, both in it&#39;s operations and job configurations</li>
@@ -2118,7 +2119,7 @@ In&nbsp;[1]:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Definition.</strong> <em>MapReduce</em> is a programming paradigm model of using parallel, distributed algorithims to process or generate data sets. MapRedeuce is composed of two main components/functions:</p>
+<p><strong>Definition.</strong> <em>MapReduce</em> is a programming paradigm model of using parallel, distributed algorithims to process or generate data sets. MapRedeuce is composed of two main functions:</p>
 <p><strong>Map(k,v)</strong>: Filters and sorts data.</p>
 <p><strong>Reduce(k,v)</strong>: Aggregates data according to keys (k).</p>
 </div>
@@ -2272,13 +2273,24 @@ In&nbsp;[1]:
 </div>
 </div>
 </div>
-    </div>
+    </div><div class="fragment">
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>DataNode</strong> Provides the actual storage of the blocks of files.</p>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Secondary NameNode</strong> Performs periodic checkpoints of the NameNode and in the event of NameNode failure, can restart the NameNode from last checkpoint (can take a while and a chance of data loss).</p>
 <ul>
 <li>Secondary Namespace lags behind primary, thus total failure of primary will likely result in data loss</li>
@@ -2286,7 +2298,8 @@ In&nbsp;[1]:
 </ul>
 </div>
 </div>
-</div></section>
+</div>
+    </div></section>
     </section><section>
     <section>
     
@@ -2579,8 +2592,7 @@ $$\left.\begin{array}{r}
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Partitioner</strong> Sends intermediate key-value pairs (k,v) to reducer by $$\mbox{Reducer}=\mbox{hash}\left(\mbox{k}\right)\pmod{R}$$
-<img src="images/MapReducePartitioner.png" alt="alt text"></p>
+<p><strong>Partitioner</strong> Sends intermediate key-value pairs (k,v) to reducer by   $$\mbox{Reducer}=\mbox{hash}\left(\mbox{k}\right)\pmod{R}$$<br><img src="images/MapReducePartitioner.png" alt="alt text"></p>
 </div>
 </div>
 </div><div style=display:none>
@@ -2680,7 +2692,7 @@ $$\left.\begin{array}{r}
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Definition. HDFS (Hadoop File System)</strong>: A distributed file system designed to store huge streamable files running on commodity hardware.</p>
+<p><strong>HDFS (Hadoop File System)</strong>: A distributed file system designed to store huge streamable files running on commodity hardware.</p>
 </div>
 </div>
 </div><div class="fragment">
@@ -2853,40 +2865,198 @@ $$\left.\begin{array}{r}
 <p>There are several ways that a MapReduce job may fail. Failure recovery is thus built into Hadoop:</p>
 <ol>
 <li>A task failing.<ol>
-<li>A corrupt block being read.</li>
+<li>Exception is thrown. i.e. A corrupt block being read.</li>
 <li>Node running out of memory.</li>
 <li>A task operating too long without a status update.</li>
 </ol>
 </li>
 <li>A node failing (going offline).</li>
 <li>A NameNode failing (the worst point of failure).</li>
-<li>Bad formatting of file (misuse of a comma, etc.)</li>
-<li></li>
 </ol>
 </div>
 </div>
-</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="task-failing">Task Failing</h2>
-<h3 id="corrupt-block">Corrupt Block</h3>
-<p>If a mapper reads a corrupt portion of a block, then either the mapper function handles it or the task fails. By default, if a map task fails, then it is first rerun on the same node then tried one last time on a different node.</p>
+<h2 id="Task-Failing">Task Failing<a class="anchor-link" href="#Task-Failing">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If a map or reduce throws a exeception and it isn&#39;t caught in code, then the task fails.</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>By default, if a map task fails, then it is first rerun on the same node then tried one last time on a different node.</p>
 <ul>
 <li>By default, if a task fails 3 times then the job fails.</li>
 </ul>
-<h3 id="running-out-of-memory">Running Out of Memory</h3>
-<h3 id="lack-of-updates">Lack of Updates</h3>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Possible Causes of exceptions:</p>
+<ul>
+<li>Reading a corrupt block <ul>
+<li>Handle the exception in code (catch the exception)</li>
+<li>A bad record can be skipped by enabling skipping mode using <code>SkipBadRecords</code> class</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Bad formatting of the file<ul>
+<li>Ensure correct formatting of the file</li>
+<li>Handle problems in code</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Node running out of memory<ul>
+<li>Write memory efficient code</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Lack-of-Updates">Lack of Updates<a class="anchor-link" href="#Lack-of-Updates">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>After 10 mins, by default, of no updates from a task Hadoop tries to kill the task and rerun the task while running procedures to ensure consistency.</p>
-<h2 id="node-failing">Node Failing</h2>
-<h2 id="namenode-failing">NameNode Failing</h2>
-<p>If a NameNode fails then the whole system (or at least a partition of it for 2.x) is down. The system recovers by setting up a new NameNode via the information in the Secondary NameNode as well as the edit logs. However since there is a lag between the NameNode&#39;s operation and edit logs there is almost always <em>data loss</em> after recovery.</p>
+<ul>
+<li>Ensure regular updates: either updating a counter, or writing to stderr (which is then sent to the client)<ul>
+<li>This is really important for monte carlo simulations on hadoop.</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Node-Failing">Node Failing<a class="anchor-link" href="#Node-Failing">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If a DataNode fails, Hadoop tries isolating the node from the system and reassigning tasks that DataNode was operating on.</p>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="NameNode-Failing">NameNode Failing<a class="anchor-link" href="#NameNode-Failing">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If a NameNode fails then the whole system (or at least a partition of it for 2.x) is down. The system recovers by setting up a new NameNode via the information in the Secondary NameNode as well as the edit logs. However since there is a lag between the NameNode&#39;s operation and edit logs there is almost always <strong>data loss</strong> after recovery.</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>One cause of NameNode failure is too many files in the system:<ul>
+<li>The NameNode keeps all metadata for HDFS files in memory, more files means more memory is needed and NameNode failing due to lack of memory.</li>
+<li>It is <strong>HIGHLY</strong> recommended to keep most if not all data for a MapReduce job in a single file</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>With Hadoop 1.x can take about 30 mins for a new NameNode to be setup while Hadoop 2.x usually takes a min or two.</p>
 </div>
 </div>
 </div>
+    </div></section>
+    </section><section>
+    <section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -2926,7 +3096,8 @@ $$\left.\begin{array}{r}
 </ol>
 </div>
 </div>
-</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -2947,7 +3118,8 @@ $$\left.\begin{array}{r}
 </code></pre>
 </div>
 </div>
-</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -2964,14 +3136,24 @@ $$\left.\begin{array}{r}
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Hadoop Streaming allows Hadoop to use any programming languages with stdin, stdout: C++, Python, Perl, etc.</p>
-<pre><code>$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar \
+<pre><code>$ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*.jar \
     -input &lt;InputDirs&gt; \     
     -output &lt;OutputDir&gt; \
     [-file &lt;MapperFileToBeSent&gt;] \ 
     -mapper &lt;MapperFile&gt; \
     [-file &lt;ReducerFileToBeSent&gt;] \ 
     -reducer &lt;ReducerFile&gt;
-</code></pre><ul>
+</code></pre>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li>Hadoop Cheatsheet gives an outline of how to use this<ul>
 <li>Remember any files to be used must be sent using -file option (the mapper and reducer nodes need a copy of the files)</li>
 </ul>
@@ -2980,6 +3162,8 @@ $$\left.\begin{array}{r}
 </div>
 </div>
 </div>
+    </div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3003,7 +3187,8 @@ $$\left.\begin{array}{r}
 </ul>
 </div>
 </div>
-</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3028,7 +3213,8 @@ $$\left.\begin{array}{r}
 </code></pre>
 </div>
 </div>
-</div>
+</div><aside class="notes">
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3043,6 +3229,8 @@ $$\left.\begin{array}{r}
 </div>
 </div>
 </div>
+    </aside><aside class="notes">
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -3148,31 +3336,28 @@ int main(int argc, char *argv[]) {
 </div>
 </div>
 </div>
+    </aside></section>
+    </section><section>
+    <section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="#">#<a class="anchor-link" href="##">&#182;</a></h1>
+<h2 id="MapReduce-Web-UI">MapReduce Web UI<a class="anchor-link" href="#MapReduce-Web-UI">&#182;</a></h2>
 </div>
 </div>
 </div>
-</section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
+
+<div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
-In&nbsp;[]:
 </div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre> 
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="http://localhost:50070/dfshealth.jsp">http://localhost:50070/dfshealth.jsp</a></p>
 </div>
 </div>
-</div>
-
 </div><div class="fragment">
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -3197,7 +3382,7 @@ In&nbsp;[3]:
     Out[3]:</div>
 
 <div class="output_html rendered_html output_subarea output_pyout">
-<iframe src=http://localhost:50070/dfshealth.jsp width=1000 height=700></iframe>
+<iframe src=http://localhost:50070/dfshealth.jsp width=1000 height=600></iframe>
 </div>
 
 </div>
@@ -3208,26 +3393,20 @@ In&nbsp;[3]:
 </div>
     </div></section><section>
     
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
+<div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
-In&nbsp;[]:
 </div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre> 
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="http://localhost:8088/cluster">http://localhost:8088/cluster</a></p>
 </div>
 </div>
-</div>
-
 </div><div class="fragment">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[2]:
+In&nbsp;[4]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -3243,10 +3422,10 @@ In&nbsp;[2]:
 
 
 <div class="output_area"><div class="prompt output_prompt">
-    Out[2]:</div>
+    Out[4]:</div>
 
 <div class="output_html rendered_html output_subarea output_pyout">
-<iframe src=http://localhost:8088/cluster width=1000 height=700></iframe>
+<iframe src=http://localhost:8088/cluster width=1000 height=600></iframe>
 </div>
 
 </div>
@@ -3264,7 +3443,7 @@ In&nbsp;[2]:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="HDFS-Commands">HDFS Commands<a class="anchor-link" href="#HDFS-Commands">&#182;</a></h1>
+<h1 id="Hadoop-Commands">Hadoop Commands<a class="anchor-link" href="#Hadoop-Commands">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -3274,9 +3453,81 @@ In&nbsp;[2]:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-common/CommandsManual.html">HDFS Commands</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[22]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">HTML</span><span class="p">(</span><span class="s">&#39;&lt;iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-common/CommandsManual.html width=1000 height=600&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+</pre></div>
 
 </div>
 </div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[22]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-common/CommandsManual.html width=1000 height=600></iframe>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="http://hadoop.apache.org/docs/r2.5.2/hadoop-yarn/hadoop-yarn-site/YarnCommands.html">Yarn Commands</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[23]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">HTML</span><span class="p">(</span><span class="s">&#39;&lt;iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-yarn/hadoop-yarn-site/YarnCommands.html width=1000 height=600&gt;&lt;/iframe&gt;&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">
+    Out[23]:</div>
+
+<div class="output_html rendered_html output_subarea output_pyout">
+<iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-yarn/hadoop-yarn-site/YarnCommands.html width=1000 height=600></iframe>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
@@ -3342,6 +3593,28 @@ In&nbsp;[2]:
 <td>Copy localFiles to HDFSdir</td>
 <td></td>
 </tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead>
+<tr>
+<th>Cmd</th>
+<th>args</th>
+<th></th>
+<th>Description</th>
+<th>args Description</th>
+</tr>
+</thead>
+<tbody>
 <tr>
 <td><code>-get</code></td>
 <td></td>
@@ -3389,7 +3662,7 @@ In&nbsp;[2]:
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[2]:
+In&nbsp;[4]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -3407,7 +3680,7 @@ In&nbsp;[2]:
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-15/02/27 18:01:42 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/02/28 14:02:33 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 Found 2 items
 drwxr-xr-x   - darrellaucoin supergroup          0 2015-01-20 16:33 input
 drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
@@ -3420,16 +3693,25 @@ drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
 </div>
 
 </div>
-    </div><div class="fragment">
+    </div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<pre><code>$ echo "Hello world!" &gt; ~/example.txt
-$ hdfs dfs -put ~/example.txt /user/darrellaucoin
-$ hdfs dfs -ls
+<pre><code>$ echo &quot;Hello world!&quot; &gt; ~/example.txt
+</code></pre>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>$ hdfs dfs -put ~/example.txt /user/darrellaucoin
 </code></pre>
 </div>
 </div>
@@ -3439,13 +3721,12 @@ $ hdfs dfs -ls
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[3]:
+In&nbsp;[5]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="o">!</span> <span class="nb">echo</span> <span class="s2">&quot;Hello world!&quot;</span> &gt; ~/example.txt
 <span class="o">!</span> hdfs dfs -put ~/example.txt /user/darrellaucoin
-<span class="o">!</span> hdfs dfs -ls 
 </pre></div>
 
 </div>
@@ -3459,12 +3740,7 @@ In&nbsp;[3]:
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-15/02/27 18:07:19 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-15/02/27 18:07:23 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-Found 3 items
--rw-r--r--   1 darrellaucoin supergroup         13 2015-02-27 18:07 example.txt
-drwxr-xr-x   - darrellaucoin supergroup          0 2015-01-20 16:33 input
-drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
+15/02/28 14:02:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 
 </pre>
 </div>
@@ -3481,7 +3757,7 @@ drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<pre><code>$ hdfs dfs -cat example.txt
+<pre><code>$ hdfs dfs -ls
 </code></pre>
 </div>
 </div>
@@ -3491,7 +3767,55 @@ drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[4]:
+In&nbsp;[6]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="o">!</span> hdfs dfs -ls 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+15/02/28 14:02:44 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Found 3 items
+-rw-r--r--   1 darrellaucoin supergroup         13 2015-02-28 14:02 example.txt
+drwxr-xr-x   - darrellaucoin supergroup          0 2015-01-20 16:33 input
+drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>$ hdfs dfs -cat example.txt
+</code></pre>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[7]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -3509,8 +3833,55 @@ In&nbsp;[4]:
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>
-15/02/27 18:08:25 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/02/28 14:02:50 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 Hello world!
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>$ hdfs dfs -rm example.txt
+</code></pre>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">
+In&nbsp;[8]:
+</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="o">!</span> hdfs dfs -rm example.txt
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+15/02/28 14:02:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+15/02/28 14:03:00 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
+Deleted example.txt
 
 </pre>
 </div>
@@ -3656,31 +4027,231 @@ Hello world!
 </table>
 </div>
 </div>
-</div></section><section>
+</div><aside class="notes">
     
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
+<div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
-In&nbsp;[]:
 </div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">! hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*.jar \</span>
-<span class="sd">    -input &lt;InputDirs&gt; \     </span>
-<span class="sd">    -output &lt;OutputDir&gt; \</span>
-<span class="sd">    -file &lt;MapperFileToBeSent&gt; \ </span>
-<span class="sd">    -mapper &lt;MapperFile&gt; \</span>
-<span class="sd">    -file &lt;ReducerFileToBeSent&gt; \ </span>
-<span class="sd">    -reducer &lt;ReducerFile&gt;</span>
-<span class="sd">&#39;&#39;&#39;</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MapReduce-Properties">MapReduce Properties<a class="anchor-link" href="#MapReduce-Properties">&#182;</a></h1>
 </div>
 </div>
 </div>
 
-</div></section>
+    </aside><aside class="notes">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Map-Side Tuning Properties</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mapreduce.compress.map.output</td>
+<td>bool</td>
+<td>false</td>
+<td>Compress map outputs?</td>
+</tr>
+<tr>
+<td>mapreduce.map.output.compression.codec</td>
+<td>Class name</td>
+<td>org.apache.hadoop.io.compress.DefaultCodec</td>
+<td>Compression codec for map output</td>
+</tr>
+<tr>
+<td>io.sort.mb</td>
+<td>int</td>
+<td>100</td>
+<td>Memory buffer size (Mb) while sorting map output</td>
+</tr>
+<tr>
+<td>io.sort.spill.percent</td>
+<td>float</td>
+<td>0.80</td>
+<td>Threshold usage for map output memory buffer and record boundaries index to start spilling to disk</td>
+</tr>
+<tr>
+<td>io.sort.factor</td>
+<td>int</td>
+<td>10</td>
+<td>The max number of streams to</td>
+</tr>
+<tr>
+<td>mapreduce.input.lineinputformat.linespermap</td>
+<td>int</td>
+<td>1</td>
+<td>Used with NLineInputFormat, Defines input splits with a number of lines</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>-inputformat org.apache.hadoop.mapred.lib.NLineInputFormat</p>
+<p>Reduce-Side Tuning Prorperties</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Task Envonment Properties</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>mapreduce.job.id</td>
+<td>string</td>
+<td>Job ID</td>
+<td></td>
+</tr>
+<tr>
+<td>mapreduce.tip.id</td>
+<td>string</td>
+<td>Task ID</td>
+<td></td>
+</tr>
+<tr>
+<td>mapreduce.task.id</td>
+<td>string</td>
+<td>Task attempt ID</td>
+<td></td>
+</tr>
+<tr>
+<td>mapreduce.task.partition</td>
+<td>int</td>
+<td>Index of task in the job</td>
+<td></td>
+</tr>
+<tr>
+<td>mapreduce.task.is.map</td>
+<td>boolean</td>
+<td>Is task a map task?</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Streaming Environment Properties</p>
+<p>Hadoop sets job configuration parameters as environment variables for Streaming programs. However, it replaces nonalphanumeric characters with underscores to make sure they are valid names. The following Python expression illustrates how you can retrieve the value of the mapred.job.id property from within a Python Streaming script:</p>
+<p>os.environ[&quot;mapred_job_id&quot;]</p>
+<p>Task JVM Reuse Properties</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+    </aside></section>
     </section><section>
     <section>
     
@@ -3757,9 +4328,65 @@ export HADOOP_STREAMING=${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*
 <li>A <em>list</em> of a combination of both</li>
 </ul>
 </li>
-<li><p><strong>output</strong> A path to the destination folder on HDFS; if missing, a Big Data Object is returned.</p>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>output</strong> A path to the destination folder on HDFS; if missing, a Big Data Object is returned.</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>map</strong> An optional R map function that returns either NULL or a keyval object </li>
+</ul>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><strong>reduce</strong> An optional R reduce function that returns either NULL or a keyval object </li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><p><strong>combine</strong> refers to:</p>
+<ul>
+<li><p>A function with the same signature and possible return values as the reduce function, or </p>
 </li>
-<li><p><strong>map</strong> An optional R map function that returns either NULL or a keyval object </p>
+<li><p>TRUE, which means use the reduce function as combiner.</p>
+</li>
+<li><p>NULL means no combiner is used.</p>
+</li>
+</ul>
 </li>
 </ul>
 </div>
@@ -3773,18 +4400,6 @@ export HADOOP_STREAMING=${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><p><strong>reduce</strong> An optional R reduce function that returns either NULL or a keyval object </p>
-</li>
-<li><p><strong>combine</strong> refers to:</p>
-<ul>
-<li><p>A function with the same signature and possible return values as the reduce function, or </p>
-</li>
-<li><p>TRUE, which means use the reduce function as combiner.</p>
-</li>
-<li><p>NULL means no combiner is used.</p>
-</li>
-</ul>
-</li>
 <li><strong>input.format</strong> Input format specification, see make.input.format<br>$$\mbox{input.format}=\begin{cases}
 \mbox{"text"} &amp; \mbox{Plain text}\\
 \mbox{"json"} &amp; \mbox{JavaScript Object Notation}\\
@@ -4145,7 +4760,53 @@ strsplit(str, split = &#39; &#39;)
 </ol>
 </div>
 </div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Job,-Task,-and-Task-Attempt-IDs">Job, Task, and Task Attempt IDs<a class="anchor-link" href="#Job,-Task,-and-Task-Attempt-IDs">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The format of a job ID is composed of the time that the
+        jobtracker (not the job) started and an incrementing counter
+        maintained by the jobtracker to uniquely identify the job to that
+        instance of the jobtracker. So the job with this ID:job_200904110811_0002is the second (0002; job IDs
+        are 1-based) job run by the jobtracker, which started at 08:11 on
+        April 11, 2009. The counter is formatted with leading zeros to make
+        job IDs sort nicely—in directory listings, for example. However, when
+        the counter reaches 10000, it is not reset, resulting in longer job IDs (which
+        don’t sort so well).Tasks belong to a job, and their IDs are formed by replacing the
+        job prefix of a job
+        ID with a task prefix and adding a
+        suffix to identify the task within the job. For example:task_200904110811_0002_m_000003is the fourth (000003, task
+        IDs are 0-based) map (m) task of
+        the job with ID job_200904110811_0002. The task
+        IDs are created for a job when it is initialized, so they do not
+        necessarily dictate the order in which the tasks will be
+        executed.Tasks may be executed more than once, due to failure (see Task failure) or speculative execution (see Speculative Execution), so to identify different instances
+        of a task execution, task attempts are given unique IDs on the
+        jobtracker. For example:attempt_200904110811_0002_m_000003_0is the first (0; attempt IDs
+        are 0-based) attempt at running task task_200904110811_0002_m_000003. Task
+        attempts are allocated during the job run as needed, so their ordering
+        represents the order in which they were created for tasktrackers to
+        run.The final count in the task attempt ID is incremented by 1,000
+        if the job is restarted after the jobtracker is restarted and recovers
+        its running jobs (although this behavior is disabled by default; see
+        Jobtracker failure)</p>
+</div>
+</div>
+</div></section><section>
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -4162,7 +4823,341 @@ strsplit(str, split = &#39; &#39;)
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Hadoop has various counters associated with a job (i.e. how many map, reduce tasks have run etc.).  </p>
-<p>Counters have the dual purpose of keeping the system informed that a task is still running as well as metrics on a jobs progress.  Custom counters can be </p>
+<p>Counters have the dual purpose of keeping the system informed that a task is still running as well as metrics on a jobs progress.  Custom counters can also be written in Java.  </p>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="built-in-counters">Built-in Counters</h3>
+<p>For Hadoop 2.x</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Name/Enum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MapReduce Task Counters</td>
+<td>org.apache.hadoop.mapreduce.TaskCounter</td>
+</tr>
+<tr>
+<td>Job Counters</td>
+<td>org.apache.hadoop.mapreduce.JobCounter</td>
+</tr>
+<tr>
+<td>Filesystem Counters</td>
+<td>org.apache.hadoop.mapreduce.FileSystemCounter</td>
+</tr>
+<tr>
+<td>File Input Format Counters</td>
+<td>org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter</td>
+</tr>
+<tr>
+<td>File Output Format Counters</td>
+<td>org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="task-counters">Task Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAP_INPUT_RECORDS</td>
+<td>Number of input records consumed</td>
+</tr>
+<tr>
+<td>COMBINE_INPUT_RECORDS</td>
+<td>Number of input records consumed by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_GROUPS</td>
+<td>Number of distinct key groups consumed by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_RECORDS</td>
+<td>Number of input records consumed by reducers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_RECORDS</td>
+<td>Number of output records by mappers</td>
+</tr>
+<tr>
+<td>COMBINE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by reducers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div style=display:none>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAP_INPUT_RECORDS</td>
+<td>Number of input records consumed</td>
+</tr>
+<tr>
+<td>COMBINE_INPUT_RECORDS</td>
+<td>Number of input records consumed by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_GROUPS</td>
+<td>Number of distinct key groups consumed by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_RECORDS</td>
+<td>Number of input records consumed by reducers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_RECORDS</td>
+<td>Number of output records by mappers</td>
+</tr>
+<tr>
+<td>COMBINE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by reducers</td>
+</tr>
+<tr>
+<td>MAP_SKIPPED_RECORDS</td>
+<td>Number of skipped input records</td>
+</tr>
+<tr>
+<td>MAP_INPUT_BYTES</td>
+<td>Number of uncompressed bytes consumed</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_BYTES</td>
+<td>Number of uncompressed bytes by mappers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_MATERIALIZED_BYTES</td>
+<td>Number of bytes by mappers to HD</td>
+</tr>
+<tr>
+<td>REDUCE_SKIPPED_GROUPS</td>
+<td>Number of distinct keys skipped by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_SKIPPED_RECORDS</td>
+<td>Number of input records skipped by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_SHUFFLE_BYTES</td>
+<td>Number of bytes of map output copied by shuffle to reducers</td>
+</tr>
+<tr>
+<td>SPILLED_RECORDS</td>
+<td>Number of records spilled to disk by mappers and reducers</td>
+</tr>
+<tr>
+<td>CPU_MILLISECONDS</td>
+<td>Cumulative CPU time for a task in miliseconds</td>
+</tr>
+<tr>
+<td>PHYSICAL_MEMORY_BYTES</td>
+<td>The physical memory being used by a task in bytes</td>
+</tr>
+<tr>
+<td>VIRTUAL_MEMORY_BYTES</td>
+<td>The virtual memory being used by a task in bytes</td>
+</tr>
+<tr>
+<td>COMMITTED_HEAP_BYTES</td>
+<td>Total amount of memory available in the JVM in bytes</td>
+</tr>
+<tr>
+<td>SHUFFLED_MAPS</td>
+<td>Number of files transferred from mappers to reducers by shuffle</td>
+</tr>
+<tr>
+<td>FAILED_SHUFFLE</td>
+<td>Number of failed file transfers to reducers by shuffle</td>
+</tr>
+<tr>
+<td>MERGED_MAP_OUTPUTS</td>
+<td>Number of map outputs that have been merged in reducer</td>
+</tr>
+<tr>
+<td>BYTES_READ</td>
+<td>Number of bytes read by mapper and reducers</td>
+</tr>
+<tr>
+<td>BYTES_WRITTEN</td>
+<td>Number of bytes written by mappers and reducers</td>
+</tr>
+<tr>
+<td>SPLIT_RAW_BYTES</td>
+<td>Bytes of input-split objects read by mappers. This is split metadata.</td>
+</tr>
+<tr>
+<td>GC_TIME_MILLIS</td>
+<td>Milliseconds for garbage collection in tasks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="file-input-format-counters">File Input Format Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BYTES_READ</td>
+<td>Bytes read by mappers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="file-output-format">File Output Format</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BYTES_WRITTEN</td>
+<td>Bytes written reducers or (for map-only jobs) mappers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="job-counters">Job Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TOTAL_LAUNCHED_MAPS</td>
+<td>Number of map launched tasks</td>
+</tr>
+<tr>
+<td>TOTAL_LAUNCHED_REDUCES</td>
+<td>Number of launched reduce tasks</td>
+</tr>
+<tr>
+<td>TOTAL_LAUNCHED_UBERTASKS</td>
+<td>Number of uber tasks</td>
+</tr>
+<tr>
+<td>NUM_UBER_SUBMAPS</td>
+<td>Number of maps in uber tasks</td>
+</tr>
+<tr>
+<td>NUM_UBER_SUBREDUCES</td>
+<td>Number of reduces in uber tasks</td>
+</tr>
+<tr>
+<td>NUM_FAILED_MAPS</td>
+<td>Number of failed maps</td>
+</tr>
+<tr>
+<td>NUM_FAILED_REDUCES</td>
+<td>Number of failed reduces</td>
+</tr>
+<tr>
+<td>NUM_FAILED_UBERTASKS</td>
+<td>Number of failed uber tasks</td>
+</tr>
+<tr>
+<td>DATA_LOCAL_MAPS</td>
+<td>Number of data local mappers</td>
+</tr>
+<tr>
+<td>RACK_LOCAL_MAPS</td>
+<td>Number of rack local mappers</td>
+</tr>
+<tr>
+<td>OTHER_LOCAL_MAPS</td>
+<td>Number of non-local rack mappers</td>
+</tr>
+<tr>
+<td>SLOTS_MILLIS_MAPS</td>
+<td>Total time running mappers (milliseconds)</td>
+</tr>
+<tr>
+<td>SLOTS_MILLIS_REDUCES</td>
+<td>Total time running reducers (milliseconds)</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div></section><section>
@@ -4234,7 +5229,7 @@ strsplit(str, split = &#39; &#39;)
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><strong>backend</strong> Use either hadoop, or the current R interpreter, sequentially, for learning and debugging.<br>$$\mbox{backend}=\begin{cases}
+<li><strong>backend</strong> Use either hadoop, or the current R interpreter, sequentially, for learning and debugging.<br>$$=\begin{cases}
 \mbox{"local"} &amp; \mbox{implemented in R (helpful for debugging)}\\
 \mbox{"hadoop"} &amp; \mbox{implemented in Hadoop}
 \end{cases}$$  </li>
@@ -4242,7 +5237,7 @@ strsplit(str, split = &#39; &#39;)
 </div>
 </div>
 </div>
-    </div><div class="fragment">
+    </div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4259,8 +5254,7 @@ strsplit(str, split = &#39; &#39;)
 </ul>
 </div>
 </div>
-</div>
-    </div><div style=display:none>
+</div><div style=display:none>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4295,7 +5289,7 @@ strsplit(str, split = &#39; &#39;)
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[5]:
+In&nbsp;[17]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -4303,6 +5297,23 @@ In&nbsp;[5]:
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+The rpy2.ipython extension is already loaded. To reload it, use:
+  %reload_ext rpy2.ipython
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -4340,13 +5351,23 @@ Sys.setenv(&quot;HADOOP_STREAMING&quot;=
 library(rmr2)
 library(data.table)
 system(&#39;${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out/&#39;)
-
 map=function(k,lines) {
     words.list = strsplit(lines, &#39; &#39;) 
     words = unlist(words.list)
     return( keyval(words, 1) ) 
 }
-reduce=function(word, counts) {
+</code></pre>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>reduce=function(word, counts) {
     keyval(word, sum(counts)) 
 }
 mapreduce(input=&#39;/user/darrellaucoin/input/War_and_Peace.txt&#39;,
@@ -4358,13 +5379,12 @@ mapreduce(input=&#39;/user/darrellaucoin/input/War_and_Peace.txt&#39;,
 </code></pre>
 </div>
 </div>
-</div>
-    </div><div class="fragment">
+</div><div class="fragment">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[]:
+In&nbsp;[18]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -4397,6 +5417,25 @@ mapreduce<span class="p">(</span>input<span class="o">=</span><span class="s">&#
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_text output_subarea ">
+<pre>
+[1] &quot;/user/darrellaucoin/out&quot;
+
+</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     </div></section><section>
     
@@ -4417,7 +5456,7 @@ results[order(results$count, decreasing=T), ]
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[6]:
+In&nbsp;[19]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -4441,8 +5480,6 @@ results<span class="p">[</span>order<span class="p">(</span>results<span class="
 
 <div class="output_text output_subarea ">
 <pre>
-data.table 1.9.4  For help type: ?data.table
-*** NB: by=.EACHI is now explicit. See README to restore previous behaviour.
                                        word count
     1:                                  the 31708
     2:                                  and 20570
@@ -4504,7 +5541,18 @@ data.table 1.9.4  For help type: ?data.table
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>$\left(X^{T}X\right)_{p\times p}$ and $\left(X^{T}y\right)_{p\times1}$ is small enough for R to solve for $\hat{\beta}$, thus we only need $X^{T}X,X^{T}y$ to get $\hat{\beta}$.<br>To break up this calculation we break our matrix $X$ into submatricies $X_{i}$:<br>$$X=\begin{bmatrix}X_{1}\\
+<p>$\left(X^{T}X\right)_{p\times p}$ and $\left(X^{T}y\right)_{p\times1}$ is small enough for R to solve for $\hat{\beta}$, thus we only need $X^{T}X,X^{T}y$ to get $\hat{\beta}$.  </p>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To break up this calculation we break our matrix $X$ into submatricies $X_{i}$:<br>$$X=\begin{bmatrix}X_{1}\\
 X_{2}\\
 X_{3}\\
 \vdots\\
@@ -4517,8 +5565,7 @@ y_{n}
 \end{bmatrix}$$  </p>
 </div>
 </div>
-</div>
-    </div></section><section>
+</div><div class="fragment">
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4534,7 +5581,8 @@ X_{n}
 <p>$$X^{T}X	=	\begin{bmatrix}X_{1}^{T}X_{1}+ &amp; X_{2}^{T}X_{2}+ &amp; X_{3}^{T}X_{3}+ &amp; \cdots &amp; +X_{n}^{T}X_{n}\end{bmatrix}$$  </p>
 </div>
 </div>
-</div><div class="fragment">
+</div>
+    </div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4550,8 +5598,7 @@ y_{n}
 <p>$$ X^{T}y=\begin{bmatrix}X_{1}^{T}y_{1}+ &amp; X_{2}^{T}y_{2}+ &amp; X_{3}^{T}y_{3}+ &amp; \cdots &amp; +X_{n}^{T}y_{n}\end{bmatrix}$$</p>
 </div>
 </div>
-</div>
-    </div></section><section>
+</div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4572,9 +5619,18 @@ X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p),
     ncol = p))
 y = X %*% beta.true + rnorm(num.obs) 
 X.index = to.dfs(cbind(y, X)) 
-rm(X, y, num.obs, p) 
-##########################
-map.XtX = function(., Xi) {
+rm(X, y, num.obs, p)
+</code></pre>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<pre><code>map.XtX = function(., Xi) {
     Xi = Xi[,-1] #Get rid of y values in Xi
     keyval(1, list(t(Xi) %*% Xi)) 
 }
@@ -4594,7 +5650,7 @@ Sum = function(., YY) {
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[8]:
+In&nbsp;[20]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -4683,7 +5739,7 @@ print(beta.hat)
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[12]:
+In&nbsp;[21]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
@@ -4718,17 +5774,17 @@ print<span class="p">(</span>beta.hat<span class="p">)</span>
 <div class="output_text output_subarea ">
 <pre>
            [,1]
- [1,]  1.101433
- [2,]  1.971132
- [3,]  3.066573
- [4,]  3.873524
- [5,]  5.087140
- [6,]  6.013308
- [7,]  6.999709
- [8,]  8.129049
- [9,]  8.948950
-[10,] 10.109008
-[11,] 11.018380
+ [1,]  1.045835
+ [2,]  1.980511
+ [3,]  2.993829
+ [4,]  4.011599
+ [5,]  5.074755
+ [6,]  6.008534
+ [7,]  6.947164
+ [8,]  8.024570
+ [9,]  9.024757
+[10,]  9.888609
+[11,] 10.893023
 
 </pre>
 </div>
@@ -4739,13 +5795,49 @@ print<span class="p">(</span>beta.hat<span class="p">)</span>
 </div>
 
 </div>
-    </div>
+    </div><aside class="notes">
+    
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p id="#">#<a class="anchor-link" href="##">&#182;</a></p>
+<p>15/02/28 16:58:19 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable<br>packageJobJar: [/usr/local/hadoop/2.5.2/hdfs/tmp/hadoop-unjar2544978824408962002/] [] /var/folders/p3/jb65k2x55g1brywqlf6m10p00000gn/T/streamjob622039766772640798.jar tmpDir=null<br>15/02/28 16:58:20 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032<br>15/02/28 16:58:20 INFO client.RMProxy: Connecting to ResourceManager at /0.0.0.0:8032<br>15/02/28 16:58:21 INFO mapred.FileInputFormat: Total input paths to process : 1<br>15/02/28 16:58:21 INFO mapreduce.JobSubmitter: number of splits:2<br>15/02/28 16:58:22 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1425160610091_0002<br>15/02/28 16:58:22 INFO impl.YarnClientImpl: Submitted application application_1425160610091_0002<br>15/02/28 16:58:22 INFO mapreduce.Job: The url to track the job: <a href="http://v1020-wn-6-180.campus-dynamic.uwaterloo.ca:8088/proxy/application_1425160610091_0002/">http://v1020-wn-6-180.campus-dynamic.uwaterloo.ca:8088/proxy/application_1425160610091_0002/</a><br>15/02/28 16:58:22 INFO mapreduce.Job: Running job: job_1425160610091_0002<br>15/02/28 16:58:30 INFO mapreduce.Job: Job job_1425160610091_0002 running in uber mode : false<br>15/02/28 16:58:30 INFO mapreduce.Job:  map 0% reduce 0%<br>15/02/28 16:58:39 INFO mapreduce.Job:  map 50% reduce 0%<br>15/02/28 16:58:47 INFO mapreduce.Job:  map 100% reduce 0%<br>15/02/28 16:58:54 INFO mapreduce.Job:  map 100% reduce 100%<br>15/02/28 16:58:54 INFO mapreduce.Job: Job job_1425160610091_0002 completed successfully<br>15/02/28 16:58:54 INFO mapreduce.Job: Counters: 50<br>    File System Counters<br>        FILE: Number of bytes read=413<br>        FILE: Number of bytes written=311808<br>        FILE: Number of read operations=0<br>        FILE: Number of large read operations=0<br>        FILE: Number of write operations=0<br>        HDFS: Number of bytes read=26712<br>        HDFS: Number of bytes written=546<br>        HDFS: Number of read operations=13<br>        HDFS: Number of large read operations=0<br>        HDFS: Number of write operations=2<br>    Job Counters<br>        Launched map tasks=2<br>        Launched reduce tasks=1<br>        Data-local map tasks=2<br>        Total time spent by all maps in occupied slots (ms)=51344<br>        Total time spent by all reduces in occupied slots (ms)=20704<br>        Total time spent by all map tasks (ms)=12836<br>        Total time spent by all reduce tasks (ms)=5176<br>        Total vcore-seconds taken by all map tasks=12836<br>        Total vcore-seconds taken by all reduce tasks=5176<br>        Total megabyte-seconds taken by all map tasks=52576256<br>        Total megabyte-seconds taken by all reduce tasks=21200896<br>    Map-Reduce Framework<br>        Map input records=3<br>        Map output records=3<br>        Map output bytes=400<br>        Map output materialized bytes=419<br>        Input split bytes=186<br>        Combine input records=3<br>        Combine output records=3<br>        Reduce input groups=1<br>        Reduce shuffle bytes=419<br>        Reduce input records=3<br>        Reduce output records=3<br>        Spilled Records=6<br>        Shuffled Maps =2<br>        Failed Shuffles=0<br>        Merged Map outputs=2<br>        GC time elapsed (ms)=348<br>        CPU time spent (ms)=0<br>        Physical memory (bytes) snapshot=0<br>        Virtual memory (bytes) snapshot=0<br>        Total committed heap usage (bytes)=531628032<br>    Shuffle Errors<br>        BAD_ID=0<br>        CONNECTION=0<br>        IO_ERROR=0<br>        WRONG_LENGTH=0<br>        WRONG_MAP=0<br>        WRONG_REDUCE=0<br>    File Input Format Counters<br>        Bytes Read=26526<br>    File Output Format Counters<br>        Bytes Written=546<br>    rmr<br>        reduce calls=2<br>15/02/28 16:58:54 INFO streaming.StreamJob: Output directory: /tmp/file72e60803cf9<br>15/02/28 16:58:55 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable<br>15/02/28 16:58:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable<br>15/02/28 16:58:59 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.<br>Deleted /tmp/file72e243880be<br>15/02/28 16:59:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable<br>15/02/28 16:59:03 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable<br>15/02/28 16:59:05 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable  </p>
+</div>
+</div>
+</div>
+    </aside><div style=display:none>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+
+</div>
+</div>
+</div>
+    </div><div style=display:none>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>mapreduce.input.lineinputformat.linespermap</strong> When using NLineInputFormat, the number of lines of input data to include in each split.</p>
+</div>
+</div>
+</div>
+    </div></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Your-Data-isn't-THAT-BIG">Your Data isn't THAT BIG<a class="anchor-link" href="#Your-Data-isn't-THAT-BIG">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -4755,7 +5847,56 @@ print<span class="p">(</span>beta.hat<span class="p">)</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Debugging">Debugging<a class="anchor-link" href="#Debugging">&#182;</a></h1>
+<p>Hadoop has several difficulties and limitations:</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Paradigm shift of MapReduce: re-vision (and recoding) algorithms into the paradigm of MapReduce</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Debugging code is more difficult than just regular code</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Data security isn&#39;t as well defined as most SQL engines</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Alternatives">Alternatives<a class="anchor-link" href="#Alternatives">&#182;</a></h2>
 </div>
 </div>
 </div>
@@ -4765,15 +5906,169 @@ print<span class="p">(</span>beta.hat<span class="p">)</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Counters</p>
+<p><strong>Q:</strong> Is there a way of fitting the data in memory?</p>
 </div>
 </div>
-</div><div style=display:none>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>A gigabyte csv file can be loaded into memory on most computers</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Q:</strong> Can the process be done reading lines from a file?</p>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>R and Python have functions like <code>readLines</code> that can read a file line by line</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Q:</strong> Can a SQL server handle the information/calculation?</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>SQL doesn&#39;t require all data to be loaded into memory to execute it&#39;s queries<ul>
+<li>SQL can handle queries over many Gigabytes of data </li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>SQL tables can be indexed (unlike Hadoop) making for faster processing time  </li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>R packages like <code>dplyr</code> can translate <em>some</em> R-code into SQL queries and can execute said code with a SQL backend<ul>
+<li>Can also execute SQL queries from R, importing the results into a dataframe</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>PostgreSQL has an extension (<a href="http://madlib.net/">MADlib</a>) allowing Machine Learning algorithms to run over large datasets on PostgreSQL</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Q:</strong> What if the data isn&#39;t structured for SQL tables? i.e. JSON file, binary blobs</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>PostgreSQL does have a JSON datatype</li>
+</ul>
+</div>
+</div>
+</div>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Can process the file using a script, reading line by line and then write to file as needed</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Questions?">Questions?<a class="anchor-link" href="#Questions?">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div style=display:none>
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">
-In&nbsp;[]:
+In&nbsp;[15]:
 </div>
 <div class="inner_cell">
     <div class="input_area">
