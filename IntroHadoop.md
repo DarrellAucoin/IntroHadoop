@@ -1,8 +1,41 @@
+
+<head>
+<script type="text/javascript"
+  src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-
+MML_HTMLorMML">
+</script>
+
+</head>
+
+<style>
+
+@font-face {
+    font-family: "Computer Modern";
+    src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf');
+}
+#notebook_panel { /* main background */
+    background: #888;
+    color: #f6f6f6;
+}
+#notebook li { /* More space between bullet points */
+margin-top:0.8em;
+}
+div.text_cell_render{
+    font-family: 'Arvo' sans-serif;
+    line-height: 130%;
+    font-size: 135%;
+    width:1000px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+</style>
+
+
 <center>
 
 <p class="gap05"<p>
-<h1>Introducton to </h1>
-![alt text](Images/hadoop-logo.jpg)
+<h1>Introducton to ![alt text](Images/hadoop-logo.jpg)</h1>
 
 <p class="gap05"<p>
 <h3>Darrell Aucoin</h3>
@@ -13,10 +46,14 @@
 </center>
 > In pioneer days they used oxen for heavy pulling, and when one ox couldn’t
 budge a log, they didn’t try to grow a larger ox. We shouldn’t be trying for
-bigger computers, but for more systems of computers.  
+bigger computers, but for more systems of computers.
 > —Grace Hoppe
 
-
+<style type="text/css">
+.input_prompt, .input_area, .output_prompt {
+    display:none !important;
+}
+</style>
 
 # Motivation
 
@@ -34,7 +71,10 @@ of tasks
 Impala)
 
 __Q:__ Who uses Hadoop?
-A list of companies that uses Hadoop is listed [here](http://wiki.apache.org/hadoop/PoweredBy#A)
+
+
+<iframe src=http://wiki.apache.org/hadoop/PoweredBy#A width=1000 height=600></iframe>
+
 
 
 __Q:__ Why learn Hadoop?
@@ -45,19 +85,20 @@ knowledge of Hadoop and related tools are correlated to the highest salaries in
 Data Science
     - The highest salaries are correlated to joint knowledge of Hadoop and SQL
 
-## Hadoop vs RDBMS (SQL)
+## Hadoop vs RDBMS (SQL)  
 
-| | RDBMS (SQL) | Hadoop |
-|-|-------------|--------|
-| Data Size | Gigabytes | Terabyte/Petrabytes |
-| Access | Interactive and batch | Batch |
-| Updates | Read and write many times | Write once, read many times |
+
+|  | RDBMS (SQL) | Hadoop |  
+|--|-------------|--------|  
+| Data Size | Gigabytes | Terabyte/Petrabytes |  
+| Access | Interactive and batch | Batch |  
+| Updates | Read and write many times | Write once, read many times |  
 | Structure | Static schema (highly structured) | Dynamic schema (Semi-
-structured) |
-| Integrity | High | Low |
-| Scaling | Nonlinear | Linear |
-| Schema | Write-on Schema | Read-on Schema |
-| Data formating | Normalized | Optimally De-normalized |
+structured) |  
+| Integrity | High | Low |  
+| Scaling | Nonlinear | Linear |  
+| Schema | Write-on Schema | Read-on Schema |  
+| Data formating | Normalized | Optimally De-normalized |  
 
 When going from a RDBMS to Hadoop, the biggest trade off is the guanrantee of
 atomicity, consistency, isolation, and durability for scalability.
@@ -77,7 +118,7 @@ __Definition.__ __Hadoop__ is a MapReduce framework built on top of a
 distributed file system (HDFS for Hadoop).
 
 - Hadoop is distributed system, meaning it's an interconnected system of
-computers that look to user as just one single entity.
+computers that looks to the user as just one single entity.
 <center>
 ![alt text](Images/Distributed_Hadoop.png)
 </center>
@@ -263,15 +304,11 @@ intermediate keys on a mapper node
 
 - This can usually reduce the amount of data to be sent over the network
 increasing efficiency
-$$\left.\begin{array}{r}
-\left(\mbox{"hello world"},1\right)\\
-\left(\mbox{"hello world"},1\right)\\
-\left(\mbox{"hello world"},1\right)
-\end{array}\right\} \overset{\mbox{combiner}}{\longrightarrow}\left(\mbox{"hello
-world"},3\right)$$
+![alt text](images/combiner.png)
 
 - Combiner should be written with the idea that it is executed over most but not
-all map tasks. ie. $$\left(k_{2},v_{2}\right)\mapsto\left(k_{2},v_{2}\right)$$
+all map tasks. ie. 
+![alt text](images/combiner_key_value.png)
 
 - Usually very similar or the same code as the reduce method.
 
@@ -304,6 +341,12 @@ __Reduce__ _User Defined Function_ that aggregates data (v) according to keys
 __Output Format__ Translates final key-value pairs to file format (tab-seperated
 by default).
 ![alt text](images/MapReduceOutput.png)
+
+## MapReduce Example: Word Count
+
+![alt text](http://xiaochongzhang.me/blog/wp-
+content/uploads/2013/05/MapReduce_Work_Structure.png)
+Image Source: [Xiaochong Zhang's Blog](http://xiaochongzhang.me/blog/)
 
 # HDFS Operation
 
@@ -470,7 +513,8 @@ Three basic ways of runing MapReduce jobs:
 ### Java MapReduce
 
 Hadoop is written in Java code, thus one of the main ways of running MapReduce
-jobs is with Java.
+jobs is with Java.  
+
 ```
 $ hadoop jar <java file> [mainClass] args...
 ```
@@ -478,7 +522,8 @@ $ hadoop jar <java file> [mainClass] args...
 ### Hadoop Streaming
 
 Hadoop Streaming allows Hadoop to use any programming languages with stdin,
-stdout: C++, Python, Perl, etc.
+stdout: C++, Python, Perl, etc.  
+
 ```
 $ hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*.jar \
         -input <InputDirs> \
@@ -511,7 +556,8 @@ printing like in 1.x
 We can connect to Hadoop C++ via pipes operator. Pipes makes a socket connect
 from Java to C++.
 
-We can run a pipes job by the command:
+We can run a pipes job by the command:  
+
 ```
 hadoop pipes \
     -input inputPath \
@@ -519,157 +565,20 @@ hadoop pipes \
     -program path/to/C++/executable
 ```
 
-The
-
-__`Pipes.hh`__
-
-__`StringUtils.hh`__
-
-__`hdfs.h`__
-
-__`SerialUtils.hh`__
-
-__`TemplateFactory.hh`__
-
-```
-#include "hadoop/Pipes.hh"
-#include "hadoop/TemplateFactory.hh"
-#include "hadoop/StringUtils.hh"
-
-using namespace std;
-
-class MapperClass : public HadoopPipes::Mapper {
-public:
-    // Constructor: does nothing
-    MapperClass( HadoopPipes::TaskContext& context ) {
-    }
-
-    void map( HadoopPipes::MapContext& context ) {
-        ...
-        context.emit( key, value );
-    }
-};
-
-class ReducerClass : public HadoopPipes::Reducer {
-public:
-    // constructor: does nothing
-    ReducerClass(HadoopPipes::TaskContext& context) {
-    }
-
-    // reduce function
-    void reduce( HadoopPipes::ReduceContext& context ) {
-        ...
-        //--- emit (key, value) ---
-        context.emit(context.getInputKey(), value);
-  }
-};
-
-int main(int argc, char *argv[]) {
-  return HadoopPipes::runTask(HadoopPipes::TemplateFactory<
-                              MapperClass, ReducerClass >() );
-}
-```
-
-
-
-```
-#include <algorithm>
-#include <limits>
-#include <string>
-
-#include  "stdint.h"  // <--- to prevent uint64_t errors!
-
-#include "hadoop/Pipes.hh"
-#include "hadoop/TemplateFactory.hh"
-#include "hadoop/StringUtils.hh"
-
-using namespace std;
-
-class WordCountMapper : public HadoopPipes::Mapper {
-public:
-  // constructor: does nothing
-  WordCountMapper( HadoopPipes::TaskContext& context ) {
-  }
-
-  // map function: receives a line, outputs (word,"1")
-  // to reducer.
-  void map( HadoopPipes::MapContext& context ) {
-    //--- get line of text ---
-    string line = context.getInputValue();
-
-    //--- split it into words ---
-    vector< string > words =
-      HadoopUtils::splitString( line, " " );
-
-    //--- emit each word tuple (word, "1" ) ---
-    for ( unsigned int i=0; i < words.size(); i++ ) {
-      context.emit( words[i], HadoopUtils::toString( 1 ) );
-    }
-  }
-};
-
-class WordCountReducer : public HadoopPipes::Reducer {
-public:
-  // constructor: does nothing
-  WordCountReducer(HadoopPipes::TaskContext& context) {
-  }
-
-  // reduce function
-  void reduce( HadoopPipes::ReduceContext& context ) {
-    int count = 0;
-
-    //--- get all tuples with the same key, and count their numbers ---
-    while ( context.nextValue() ) {
-      count += HadoopUtils::toInt( context.getInputValue() );
-    }
-
-    //--- emit (word, count) ---
-    context.emit(context.getInputKey(), HadoopUtils::toString( count ));
-  }
-};
-
-int main(int argc, char *argv[]) {
-  return HadoopPipes::runTask(HadoopPipes::TemplateFactory<
-                              WordCountMapper,
-                              WordCountReducer >() );
-}
-```
-
 ## MapReduce Web UI
+
+For Hadoop you can check on the Hadoop system using the systems web UI. For the local node cluster, the web site URL is:
 
 http://localhost:50070/dfshealth.jsp
 
 
-    HTML('<iframe src=http://localhost:50070/dfshealth.jsp width=1000 height=600></iframe>')
-
-
-
-
-<iframe src=http://localhost:50070/dfshealth.jsp width=1000 height=600></iframe>
-
-
-
 http://localhost:8088/cluster
-
-
-    HTML('<iframe src=http://localhost:8088/cluster width=1000 height=600></iframe>')
-
-
-
-
-<iframe src=http://localhost:8088/cluster width=1000 height=600></iframe>
-
 
 
 # Hadoop Commands
 
 [HDFS Commands](http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-
 common/CommandsManual.html)
-
-
-    HTML('<iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-common/CommandsManual.html width=1000 height=600></iframe>')
-
-
 
 
 <iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-project-dist/hadoop-common/CommandsManual.html width=1000 height=600></iframe>
@@ -680,11 +589,6 @@ common/CommandsManual.html)
 site/YarnCommands.html)
 
 
-    HTML('<iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-yarn/hadoop-yarn-site/YarnCommands.html width=1000 height=600></iframe>')
-
-
-
-
 <iframe src=http://hadoop.apache.org/docs/r2.5.2/hadoop-yarn/hadoop-yarn-site/YarnCommands.html width=1000 height=600></iframe>
 
 
@@ -692,9 +596,12 @@ site/YarnCommands.html)
 ## Common HDFS File Commands
 
 Commands for HDFS is very similar to bash
+
+
 ```
 $ hdfs [--config confdir] dfs <Cmd> <args>
 ```
+
 | Cmd | args | | Description | args Description |
 |-----|------|-|-------------|------------------|
 | `-ls` | `-R` | path(s) | List files in path(s) | `-R` =including subdirs |
@@ -715,14 +622,10 @@ $ hdfs [--config confdir] dfs <Cmd> <args>
 ```
 $ hdfs dfs -ls
 ```
-
-
-    ! hdfs dfs -ls 
-
-    15/02/28 14:02:33 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
-    Found 2 items
-    drwxr-xr-x   - darrellaucoin supergroup          0 2015-01-20 16:33 input
-    drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out
+    15/02/28 14:02:33 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable   
+    Found 2 items  
+    drwxr-xr-x   - darrellaucoin supergroup          0 2015-01-20 16:33 input  
+    drwxr-xr-x   - darrellaucoin supergroup          0 2015-02-15 16:31 out  
 
 
 ```
@@ -734,8 +637,6 @@ $ hdfs dfs -put ~/example.txt /user/darrellaucoin
 ```
 
 
-    ! echo "Hello world!" > ~/example.txt
-    ! hdfs dfs -put ~/example.txt /user/darrellaucoin
 
     15/02/28 14:02:38 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 
@@ -744,8 +645,6 @@ $ hdfs dfs -put ~/example.txt /user/darrellaucoin
 $ hdfs dfs -ls
 ```
 
-
-    ! hdfs dfs -ls 
 
     15/02/28 14:02:44 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
     Found 3 items
@@ -759,8 +658,6 @@ $ hdfs dfs -cat example.txt
 ```
 
 
-    ! hdfs dfs -cat example.txt
-
     15/02/28 14:02:50 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
     Hello world!
 
@@ -770,8 +667,6 @@ $ hdfs dfs -rm example.txt
 ```
 
 
-    ! hdfs dfs -rm example.txt
-
     15/02/28 14:02:57 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
     15/02/28 14:03:00 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
     Deleted example.txt
@@ -779,27 +674,32 @@ $ hdfs dfs -rm example.txt
 
 ## Hadoop Streaming Command
 
+
 ```
 $ hadoop [--config confdir] jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-
 streaming-*.jar \
         [genericOptions] <streamingOptions>
 ```
+
 ####streamingOptions
 
-| Cmd | | Description |
-|-----|-|-------------|
-| `-input` | dir/filename | Input location |
-| `-output` | dir | Output location |
-| `-mapper` | executable | Mapper executable |
-| `-reducer` | executable | Reducer executable |
+
+| Cmd | args | Description |  
+|-----|------|-------------|  
+| `-input` | dir/filename | Input location |  
+| `-output` | dir | Output location |   
+| `-mapper` | executable | Mapper executable |  
+| `-reducer` | executable | Reducer executable |  
 | `-file` | filename | File that needs to be sent to clusters (Mappers, reducer,
-combiners and other files they need) |
+combiners and other files they need) |  
+
 
 ```
 $ hadoop [--config confdir] jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-
 streaming-*.jar \
         [genericOptions] <streamingOptions>
 ```
+
 
 | Cmd | | Description |
 |-----|-|-------------|
@@ -810,11 +710,13 @@ pairs of text class for input. TextInputFormat is default |
 pairs of text class for output. TextOutputFormat is default |
 | `-numReduceTasks` | integer | The number of reducers to use |
 
+
 ```
 $ hadoop [--config confdir] jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-
 streaming-*.jar \
         [genericOptions] <streamingOptions>
 ```
+
 - Be sure to place the generic options before the streaming options, otherwise
 the command will fail.
 
@@ -826,352 +728,12 @@ the command will fail.
 | `-files` | file1, file2, ... | Comma-separated files to be copied to the
 Map/Reduce cluster |
 
-```
-! hadoop jar ${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-streaming-*.jar \
-    -input <InputDirs> \
-    -output <OutputDir> \
-    -file <MapperFileToBeSent> \
-    -mapper <MapperFile> \
-    -file <ReducerFileToBeSent> \
-    -reducer <ReducerFile>
-```
-
 # MapReduce Properties
 
-Map-Side Tuning Properties
+Hadoop is __highly__ configurable, both on the admin and MapReduce job side.
+- Most options are for performance tuning but some can do significantly change a MapReduce job 
+	- i.e. change the input split to number of lines instead block size (useful for Monte Carlo simulations and web crawling multiple websites)
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| mapreduce.compress.map.output | bool | false | Compress map outputs? |
-| mapreduce.map.output.compression.codec | Class name |
-org.apache.hadoop.io.compress.DefaultCodec | Compression codec for map output |
-| io.sort.mb | int | 100 | Memory buffer size (Mb) while sorting map output |
-| io.sort.spill.percent | float | 0.80 | Threshold usage for map output memory
-buffer and record boundaries index to start spilling to disk |
-| io.sort.factor | int | 10 | The max number of streams to  |
-|  |  |  |  |
-|  |  |  |  |
-
-
-Reduce-Side Tuning Prorperties
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-
-Task Envonment Properties
-
-| Property | Type | Description | Example |
-|----------|------|-------------|---------|
-| mapreduce.job.id | string | Job ID | |
-| mapreduce.tip.id | string | Task ID |  |
-| mapreduce.task.id | string | Task attempt ID |  |
-| mapreduce.task.partition | int | Index of task in the job |  |
-| mapreduce.task.is.map | boolean | Is task a map task? |  |
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-
-Streaming Environment Properties
-
-Hadoop sets job configuration parameters as environment variables for Streaming
-programs. However, it replaces nonalphanumeric characters with underscores to
-make sure they are valid names. The following Python expression illustrates how
-you can retrieve the value of the mapred.job.id property from within a Python
-Streaming script:
-
-os.environ["mapred_job_id"]
-
-Task JVM Reuse Properties
-
-| Property | Type | Description | Example |
-|----------|------|-------------|---------|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
-
-
-
-# Hadoop Streaming and R
-
-## Setting Environment Settings for R
-
-Either run the following code in R, each time you need to do a Hadoop job:
-
-```
-#The Hadoop installation directory
-Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.*")
-#The location for Hadoop executable
-Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.*/bin/hadoop")
-#The location of hadoop streaming jar file
-Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.*/share/hadoop/tools/lib
-/hadoop-streaming-2.*.jar")
-```
-
-or include the following into ~/.bashrc file
-
-```
-export HADOOP_PREFIX=${HADOOP_HOME}
-export HADOOP_CMD=${HADOOP_HOME}/bin/hadoop
-export HADOOP_STREAMING=${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-
-streaming-*.jar
-```
-
-## rmr2: mapreduce
-
-__mapreduce__ Defines and executes a map reduce job. (Pkg rmr2)
-```
-mapreduce(input, output = NULL, map = to.map(identity),
-    reduce = NULL, combine = NULL,
-    input.format = "native",
-    output.format = "native",
-    vectorized.reduce = FALSE,
-    in.memory.combine = FALSE,
-    backend.parameters = list(),
-    verbose = TRUE)
-```
-
-- __input__ Can be:
-    - A set of file paths in HDFS
-    - A __Big Data Object__ (a stub of information on some data in HDFS)
-    - A _list_ of a combination of both
-
-- __output__ A path to the destination folder on HDFS; if missing, a Big Data
-Object is returned.
-
-- __map__ An optional R map function that returns either NULL or a keyval object
-
-- __reduce__ An optional R reduce function that returns either NULL or a keyval
-object
-
-- __combine__ refers to:
-
-    - A function with the same signature and possible return values as the
-reduce function, or
-
-    - TRUE, which means use the reduce function as combiner.
-
-    - NULL means no combiner is used.
-
-- __input.format__ Input format specification, see make.input.format
-$$\mbox{input.format}=\begin{cases}
-\mbox{"text"} & \mbox{Plain text}\\
-\mbox{"json"} & \mbox{JavaScript Object Notation}\\
-\mbox{"csv"} & \mbox{Comma Separated Values}\\
-\mbox{"native"} & \mbox{R saved datatypes}\\
-\mbox{"sequence.typedbytes"}\\
-\mbox{"hbase"} & \mbox{hbase table format}\\
-\mbox{"pig.hive"} & \mbox{pig/hive table format}
-\end{cases}$$
-
-- __output.format__ Output format specification, see make.output.format
-$$\mbox{output.format}=\begin{cases}
-\mbox{"text"} & \mbox{Plain text}\\
-\mbox{"json"} & \mbox{JavaScript Object Notation}\\
-\mbox{"csv"} & \mbox{Comma Separated Values}\\
-\mbox{"native"} & \mbox{R saved datatypes}\\
-\mbox{"sequence.typedbytes"}\\
-\mbox{"pig.hive"} & \mbox{pig/hive table format}
-\end{cases}$$
-
-## rmr2: keyval
-
-- __keyval(key, val)__ Function that returns key-value pair, only val can ever
-be NULL. This is what mapper, reducer and combiner functions return.
-
-## rmr2: from.dfs
-
-__from.dfs__ Read R objects from HDFS.
-```
-from.dfs(input, format = "native")
-```
-
-- __input__ A valid path to HDFS or a big.data.object
-
-- __format__ Either
-
-    - A string naming the format, or
-
-    - A value returned by the function make.input.format
-
-## rmr2: to.dfs
-
-__to.dfs__ Write R objects to HDFS and return a Big Data Object. (Useful for
-test purposes only)
-```
-to.dfs(kv, output = dfs.tempfile(), format = "native")
-```
-
-- __input__ A valid path to HDFS or a big.data.object
-
-- __format__ Either
-
-    - A string naming the format, or
-
-    - A value returned by the function make.input.format
-
-## rmr2: keys( ) and values( )
-
-__keys__ Get keys from a big data object or HDFS file path
-```
-keys(kv)
-```
-
-__values__ Get values from a big data object or HDFS file path
-
-```
-values(kv)
-```
-
-## rmr2: Preamble
-
-For rmr2 to work, some variables need to be set in bash:
-```
-Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
-Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
-Sys.setenv("HADOOP_STREAMING"=
-    "/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
-```
-
-## Some Useful R Functions
-
-### system
-__system__ Invokes OS command specified by the character string command. (Pkg
-base)
-```
-system(command, intern = FALSE,
-       ignore.stdout = FALSE, ignore.stderr = FALSE,
-       wait = TRUE, input = NULL, show.output.on.console = TRUE,
-       minimized = FALSE, invisible = TRUE)
-```
-
-- __command__ Character string to be invoked in terminal.
-
-- __intern__ a logical (not NA) which indicates whether to capture the output of
-the command as an R character vector.
-
-- __ignore.stdout, ignore.stderr__ a logical (not NA) indicating whether
-messages written to ‘stdout’ or ‘stderr’ should be ignored.
-
-- __wait__ a logical (not NA) indicating whether the R interpreter should wait
-for the command to finish, or run it asynchronously. This will be ignored (and
-the interpreter will always wait) if intern = TRUE.
-
-- __input__ if a character vector is supplied, this is copied one string per
-line to a temporary file, and the standard input of command is redirected to the
-file.
-
-- __show.output.on.console__, minimized, invisible arguments that are accepted
-on Windows but ignored on this platform, with a warning.
-
-__Example:__ Command for hadoop to remove previous contents of out
-```
-system("${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out")
-```
----
-### file.path
-__file.path__ Construct a path from components to be easily translated accross
-different OS (Mac, Windows, Linux). (Pkg base)
-```
-file.path(...)
-```
-
-- __...__ character vectors
-
-__Example:__ Command for hadoop to remove previous contents of out
-```
-hdfs.root <-'/user/darrellaucoin'
-input <- file.path(hdfs.root, 'input')
-```
----
-### strsplit
-__strsplit__ Split elements of a character vector x into substrings, split with
-matches to the regular expression in split argument. (Pkg base)
-```
-strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE)
-```
-
-- __x__ character vector
-
-- __split__ character vector containing regular expressions to tell when to
-break the substring. If split has length 0, x is split to individual characters.
-
-- __perl__ logical. Should perl-compatible regular expressions be used?
-
-- __useBytes__ logical. Should matching be done byte by byte?
-
-__Example:__
-```
-str = 'this is a string'
-strsplit(str, split = ' ')
-```
----
-### list
-__list__ construct a list from the objects. A list is like a vector that can
-have different datatypes.
-```
-list(x, all.names = FALSE)
-```
-
-- __...__ objects to coerced into a list
-
-- __x__ object to coerced into a list
-
-- __all.names__ logical. whether to copy all values or (default) only those
-whose names do not begin with a dot.
-
-__Example:__
-```
-a.list = list(1,2,3,'string', 2.23, lm(y~x))
-```
----
-### unlist
-__unlist__ Simplifies a list structure x to a vector containing atomic
-components which occur in x. (Pkg base)
-```
-unlist(x, recursive = TRUE, use.names = TRUE)
-```
-
-- __x__ a list or vector
-
-- __recurvisve__ logical
-
-- __use.names__ logical. Should names be preserved?
-__Example:__
-```
-vec = unlist(a.list)
-```
----
-### write
-__write__
-```
-write(x, file = "data",
-      ncolumns = if(is.character(x)) 1 else 5,
-      append = FALSE, sep = " ")
-```
-
-- __x__ the data to be written
-
-- __file__ connection or character string naming the file to written to.
-    - For Hadoop, we want to write to standard error (`stderr()`) for it to go
-to the client.
-
-- __ncolumns__ number of columns to write the data in
-
-- __append__ if TRUE the data are appended to the connection.
-
-- __sep__ string used to serparate the columns
-
-__Example:__
-```
-write("prints to stderr", stderr())
-```
 
 # Debugging Hadoop
 
@@ -1181,43 +743,6 @@ single JVM instance, thus making tracking down problems easier.
 2. __Pseudo-Distribution__: Essentially a 1 node cluster. Useful for finding
 problems related to the distributed nature of Hadoop.
 3. __Full-Distribution__: A hadoop system installed on a cluster.
-
-## Job, Task, and Task Attempt IDs
-
-The format of a job ID is composed of the time that the
-        jobtracker (not the job) started and an incrementing counter
-        maintained by the jobtracker to uniquely identify the job to that
-        instance of the jobtracker. So the job with this
-ID:job_200904110811_0002is the second (0002; job IDs
-        are 1-based) job run by the jobtracker, which started at 08:11 on
-        April 11, 2009. The counter is formatted with leading zeros to make
-        job IDs sort nicely—in directory listings, for example. However, when
-        the counter reaches 10000, it is not reset, resulting in longer job IDs
-(which
-        don’t sort so well).Tasks belong to a job, and their IDs are formed by
-replacing the
-        job prefix of a job
-        ID with a task prefix and adding a
-        suffix to identify the task within the job. For
-example:task_200904110811_0002_m_000003is the fourth (000003, task
-        IDs are 0-based) map (m) task of
-        the job with ID job_200904110811_0002. The task
-        IDs are created for a job when it is initialized, so they do not
-        necessarily dictate the order in which the tasks will be
-        executed.Tasks may be executed more than once, due to failure (see Task
-failure) or speculative execution (see Speculative Execution), so to identify
-different instances
-        of a task execution, task attempts are given unique IDs on the
-        jobtracker. For example:attempt_200904110811_0002_m_000003_0is the first
-(0; attempt IDs
-        are 0-based) attempt at running task task_200904110811_0002_m_000003.
-Task
-        attempts are allocated during the job run as needed, so their ordering
-        represents the order in which they were created for tasktrackers to
-        run.The final count in the task attempt ID is incremented by 1,000
-        if the job is restarted after the jobtracker is restarted and recovers
-        its running jobs (although this behavior is disabled by default; see
-        Jobtracker failure)
 
 ## Counters
 
@@ -1314,6 +839,286 @@ metadata. |
 | SLOTS_MILLIS_MAPS | Total time running mappers (milliseconds) |
 | SLOTS_MILLIS_REDUCES | Total time running reducers (milliseconds) |
 
+# Hadoop Streaming and R
+
+## Setting Environment Settings for R
+
+Either run the following code in R, each time you need to do a Hadoop job:
+
+```
+#The Hadoop installation directory
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.*")
+#The location for Hadoop executable
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.*/bin/hadoop")
+#The location of hadoop streaming jar file
+Sys.setenv("HADOOP_STREAMING"="/usr/local/hadoop/2.*/share/hadoop/tools/lib
+/hadoop-streaming-2.*.jar")
+```
+
+or include the following into ~/.bashrc file
+
+```
+export HADOOP_PREFIX=${HADOOP_HOME}
+export HADOOP_CMD=${HADOOP_HOME}/bin/hadoop
+export HADOOP_STREAMING=${HADOOP_HOME}/share/hadoop/tools/lib/hadoop-
+streaming-*.jar
+```
+
+## rmr2: mapreduce
+
+__mapreduce__ Defines and executes a map reduce job. (Pkg rmr2)
+
+```
+mapreduce(input, output = NULL, map = to.map(identity),
+    reduce = NULL, combine = NULL,
+    input.format = "native",
+    output.format = "native",
+    vectorized.reduce = FALSE,
+    in.memory.combine = FALSE,
+    backend.parameters = list(),
+    verbose = TRUE)
+```
+
+- __input__ Can be:
+    - A set of file paths in HDFS
+    - A __Big Data Object__ (a stub of information on some data in HDFS)
+    - A _list_ of a combination of both
+
+- __output__ A path to the destination folder on HDFS; if missing, a Big Data
+Object is returned.
+
+- __map__ An optional R map function that returns either NULL or a keyval object
+
+- __reduce__ An optional R reduce function that returns either NULL or a keyval
+object
+
+- __combine__ refers to:
+
+    - A function with the same signature and possible return values as the
+reduce function, or
+
+    - TRUE, which means use the reduce function as combiner.
+
+    - NULL means no combiner is used.
+
+- __input.format__ Input format specification, see make.input.format
+![alt text](Images/input.format.png)
+
+- __output.format__ Output format specification, see make.output.format
+![alt text](Images/output.format.png)
+
+## rmr2: keyval
+
+- __keyval(key, val)__ Function that returns key-value pair, only val can ever
+be NULL. This is what mapper, reducer and combiner functions return.
+
+## rmr2: from.dfs
+
+__from.dfs__ Read R objects from HDFS.  
+
+```
+from.dfs(input, format = "native")
+```
+
+- __input__ A valid path to HDFS or a big.data.object
+
+- __format__ Either
+
+    - A string naming the format, or
+
+    - A value returned by the function make.input.format
+
+## rmr2: to.dfs
+
+__to.dfs__ Write R objects to HDFS and return a Big Data Object. (Useful for
+test purposes only)  
+
+```
+to.dfs(kv, output = dfs.tempfile(), format = "native")
+```
+
+- __input__ A valid path to HDFS or a big.data.object
+
+- __format__ Either
+
+    - A string naming the format, or
+
+    - A value returned by the function make.input.format
+
+## rmr2: keys( ) and values( )
+
+__keys__ Get keys from a big data object or HDFS file path
+```
+keys(kv)
+```
+
+__values__ Get values from a big data object or HDFS file path
+
+```
+values(kv)
+```
+
+## rmr2: Preamble
+
+For rmr2 to work, some variables need to be set in bash:
+```
+Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.2.0")
+Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.2.0/bin/hadoop")
+Sys.setenv("HADOOP_STREAMING"=
+    "/usr/local/hadoop/2.2.0/share/hadoop/tools/lib/hadoop-streaming-2.2.0.jar")
+```
+
+## Some Useful R Functions
+
+### system
+__system__ Invokes OS command specified by the character string command. (Pkg
+base)
+
+```
+system(command, intern = FALSE,
+       ignore.stdout = FALSE, ignore.stderr = FALSE,
+       wait = TRUE, input = NULL, show.output.on.console = TRUE,
+       minimized = FALSE, invisible = TRUE)
+```
+
+- __command__ Character string to be invoked in terminal.
+
+- __intern__ a logical (not NA) which indicates whether to capture the output of
+the command as an R character vector.
+
+- __ignore.stdout, ignore.stderr__ a logical (not NA) indicating whether
+messages written to ‘stdout’ or ‘stderr’ should be ignored.
+
+- __wait__ a logical (not NA) indicating whether the R interpreter should wait
+for the command to finish, or run it asynchronously. This will be ignored (and
+the interpreter will always wait) if intern = TRUE.
+
+- __input__ if a character vector is supplied, this is copied one string per
+line to a temporary file, and the standard input of command is redirected to the
+file.
+
+- __show.output.on.console__, minimized, invisible arguments that are accepted
+on Windows but ignored on this platform, with a warning.
+
+__Example:__ Command for hadoop to remove previous contents of out  
+
+```
+system("${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out")
+```
+
+---
+### file.path
+__file.path__ Construct a path from components to be easily translated accross
+different OS (Mac, Windows, Linux). (Pkg base)  
+
+```
+file.path(...)
+```
+
+- __...__ character vectors
+
+__Example:__ Command for hadoop to remove previous contents of out  
+
+```
+hdfs.root <-'/user/darrellaucoin'
+input <- file.path(hdfs.root, 'input')
+```
+
+---
+
+### strsplit
+__strsplit__ Split elements of a character vector x into substrings, split with
+matches to the regular expression in split argument. (Pkg base)
+
+```
+strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE)
+```
+
+- __x__ character vector
+
+- __split__ character vector containing regular expressions to tell when to
+break the substring. If split has length 0, x is split to individual characters.
+
+- __perl__ logical. Should perl-compatible regular expressions be used?
+
+- __useBytes__ logical. Should matching be done byte by byte?
+
+__Example:__
+
+```
+str = 'this is a string'
+strsplit(str, split = ' ')
+```
+
+---
+### list
+__list__ construct a list from the objects. A list is like a vector that can
+have different datatypes.
+
+```
+list(x, all.names = FALSE)
+```
+
+- __...__ objects to coerced into a list
+
+- __x__ object to coerced into a list
+
+- __all.names__ logical. whether to copy all values or (default) only those
+whose names do not begin with a dot.
+
+__Example:__
+
+```
+a.list = list(1,2,3,'string', 2.23, lm(y~x))
+```
+
+---
+### unlist
+__unlist__ Simplifies a list structure x to a vector containing atomic
+components which occur in x. (Pkg base)
+
+```
+unlist(x, recursive = TRUE, use.names = TRUE)
+```
+
+- __x__ a list or vector
+
+- __recurvisve__ logical
+
+- __use.names__ logical. Should names be preserved?
+__Example:__
+
+```
+vec = unlist(a.list)
+```
+---
+### write
+__write__
+
+```
+write(x, file = "data",
+      ncolumns = if(is.character(x)) 1 else 5,
+      append = FALSE, sep = " ")
+```
+
+- __x__ the data to be written
+
+- __file__ connection or character string naming the file to written to.
+    - For Hadoop, we want to write to standard error (`stderr()`) for it to go
+to the client.
+
+- __ncolumns__ number of columns to write the data in
+
+- __append__ if TRUE the data are appended to the connection.
+
+- __sep__ string used to serparate the columns
+
+__Example:__
+
+```
+write("prints to stderr", stderr())
+```
+
 ## Debugging Hadoop within R
 
 Debugging is essential to running a MapReduce job and ensuring everything is
@@ -1335,6 +1140,7 @@ of hadoop entirely within R is run, as such Rprof is used to collect any
 debugging information we might need.
 
 __rmr.options__ Set and get package options. (Pkg rmr2)
+
 ```
 rmr.options(backend = c("hadoop", "local"),
         profile.nodes = c("off", "calls", "memory", "both"),
@@ -1347,21 +1153,15 @@ rmr.options(backend = c("hadoop", "local"),
 
 - __backend__ Use either hadoop, or the current R interpreter, sequentially, for
 learning and debugging.
-$$=\begin{cases}
-\mbox{"local"} & \mbox{implemented in R (helpful for debugging)}\\
-\mbox{"hadoop"} & \mbox{implemented in Hadoop}
-\end{cases}$$
+
+![alt text](Images/backend.png)
 
 - __profile.nodes__ Collect profiling and memory information when running
 additional R interpreters (besides the current one) on the cluster. No effect on
 the local backend, use Rprof instead. For backward compatibility, "calls" is
 equivalent to TRUE and "off" to FALSE
-$$\mbox{profile.nodes}=\begin{cases}
-\mbox{"off"} & \mbox{No collection}\\
-\mbox{"calls"} & \mbox{Collect R calls}\\
-\mbox{"memory"} & \mbox{Collect memory information}\\
-\mbox{"both"} & \mbox{Collect both}
-\end{cases}$$
+
+![alt text](Images/profile.nodes.png)
 
 __Rprof__ when we are running on local mode (using `rmr.options(backend =
 "local")` ). When local mode is turned on, hadoop is never run but a simulation
@@ -1376,11 +1176,6 @@ set to TRUE, and if the code being executed was parsed with source references.
 
 # Hadoop Examples
 
-
-    %load_ext rpy2.ipython
-
-    The rpy2.ipython extension is already loaded. To reload it, use:
-      %reload_ext rpy2.ipython
 
 
 ## Word Count
@@ -1400,9 +1195,7 @@ map=function(k,lines) {
     words = unlist(words.list)
     return( keyval(words, 1) )
 }
-```
 
-```
 reduce=function(word, counts) {
     keyval(word, sum(counts))
 }
@@ -1412,66 +1205,11 @@ mapreduce(input='/user/darrellaucoin/input/War_and_Peace.txt',
     map=map,
     reduce=reduce
 )
-```
-
-
-    %%R
-    Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.5.2")
-    Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.5.2/bin/hadoop")
-    Sys.setenv("HADOOP_STREAMING"=
-        "/usr/local/hadoop/2.5.2/share/hadoop/tools/lib/hadoop-streaming-2.5.2.jar")
-    library(rmr2)
-    library(data.table)
-    system('${HADOOP_CMD} fs -rm -r /user/darrellaucoin/out/')
-    
-    map=function(k,lines) {
-        words.list = strsplit(lines, ' ') 
-        words = unlist(words.list)
-        return( keyval(words, 1) ) 
-    }
-    reduce=function(word, counts) {
-        keyval(word, sum(counts)) 
-    }
-    mapreduce(input='/user/darrellaucoin/input/War_and_Peace.txt',
-        output='/user/darrellaucoin/out',
-        input.format="text",
-        map=map,
-        reduce=reduce
-    )
-
-
-    [1] "/user/darrellaucoin/out"
-
-
-
-```
 count = from.dfs('/user/darrellaucoin/out')
 results = as.data.table(count)
 setnames(results, c('word', 'count'))
 results[order(results$count, decreasing=T), ]
 ```
-
-
-    %%R
-    count = from.dfs('/user/darrellaucoin/out')
-    results = as.data.table(count)
-    setnames(results, c('word', 'count')) 
-    results[order(results$count, decreasing=T), ]
-
-
-                                           word count
-        1:                                  the 31708
-        2:                                  and 20570
-        3:                                   to 16322
-        4:                                   of 14854
-        5:                                    a 10040
-       ---                                           
-    42062:         insignificance--particularly     1
-    42063:        http://pglaf.org/fundraising.     1
-    42064:       http://gutenberg.org/license).     1
-    42065:      Hofs-kriegs-wurst-schnapps-Rath     1
-    42066: http://www.gutenberg.org/2/6/0/2600/     1
-
 
 
 ## Linear Regression
@@ -1486,46 +1224,15 @@ enough for R to easily handle i.e.
 $$n\gg p$$
 
 We know from linear regression, that our estimate of $\hat{\beta}$:
-$$X^{T}X\hat{\beta}=X^{T}y$$
+![alt text](Images/linear_reg1.png)
 
 $\left(X^{T}X\right)_{p\times p}$ and $\left(X^{T}y\right)_{p\times1}$ is small
 enough for R to solve for $\hat{\beta}$, thus we only need $X^{T}X,X^{T}y$ to
 get $\hat{\beta}$.
 
-To break up this calculation we break our matrix $X$ into submatricies $X_{i}$:
-$$X=\begin{bmatrix}X_{1}\\
-X_{2}\\
-X_{3}\\
-\vdots\\
-X_{n}
-\end{bmatrix}           y=\begin{bmatrix}y_{1}\\
-y_{2}\\
-y_{3}\\
-\vdots\\
-y_{n}
-\end{bmatrix}$$
+To break up this calculation we break our matrix $X$ into submatricies $X_{i}$:  
 
-$$X^{T}X        =       \begin{bmatrix}X_{1}^{T} & X_{2}^{T} & X_{3}^{T} &
-\cdots & X_{n}^{T}\end{bmatrix}\begin{bmatrix}X_{1}\\
-X_{2}\\
-X_{3}\\
-\vdots\\
-X_{n}
-\end{bmatrix} \implies$$
-
-$$X^{T}X        =       \begin{bmatrix}X_{1}^{T}X_{1}+ & X_{2}^{T}X_{2}+ &
-X_{3}^{T}X_{3}+ & \cdots & +X_{n}^{T}X_{n}\end{bmatrix}$$
-
-$$X^{T}y=\begin{bmatrix}X_{1}^{T} & X_{2}^{T} & X_{3}^{T} & \cdots &
-X_{n}^{T}\end{bmatrix}\begin{bmatrix}y_{1}\\
-y_{2}\\
-y_{3}\\
-\vdots\\
-y_{n}
-\end{bmatrix}\implies$$
-
-$$ X^{T}y=\begin{bmatrix}X_{1}^{T}y_{1}+ & X_{2}^{T}y_{2}+ & X_{3}^{T}y_{3}+ &
-\cdots & +X_{n}^{T}y_{n}\end{bmatrix}$$
+![alt text](Images/linear_reg.png)
 
 ```
 Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.5.2")
@@ -1543,9 +1250,6 @@ X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p),
 y = X %*% beta.true + rnorm(num.obs)
 X.index = to.dfs(cbind(y, X))
 rm(X, y, num.obs, p)
-```
-
-```
 map.XtX = function(., Xi) {
     Xi = Xi[,-1] #Get rid of y values in Xi
     keyval(1, list(t(Xi) %*% Xi))
@@ -1558,38 +1262,9 @@ map.Xty = function(., Xi) {
 Sum = function(., YY) {
     keyval(1, list(Reduce('+', YY)))
 }
+
 ```
 
-
-    %%R
-    Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.5.2")
-    Sys.setenv("HADOOP_CMD"="/usr/local/hadoop/2.5.2/bin/hadoop")
-    Sys.setenv("HADOOP_STREAMING"=
-        "/usr/local/hadoop/2.5.2/share/hadoop/tools/lib/hadoop-streaming-2.5.2.jar")
-    library(rmr2)
-    library(data.table)
-    #Setup variables 
-    p = 10 
-    num.obs = 200
-    beta.true = 1:(p+1) 
-    X = cbind(rep(1,num.obs), matrix(rnorm(num.obs * p), 
-        ncol = p))
-    y = X %*% beta.true + rnorm(num.obs) 
-    X.index = to.dfs(cbind(y, X)) 
-    rm(X, y, num.obs, p) 
-    ##########################
-    map.XtX = function(., Xi) {
-        Xi = Xi[,-1] #Get rid of y values in Xi
-        keyval(1, list(t(Xi) %*% Xi)) 
-    }
-    map.Xty = function(., Xi) {
-        yi = Xi[,1] # Retrieve the y values
-        Xi = Xi[,-1] #Get rid of y values in Xi
-        keyval(1, list(t(Xi) %*% yi)) 
-    }
-    Sum = function(., YY) {
-        keyval(1, list(Reduce('+', YY))) 
-    }
 
 - The reason we are returning a list in the map function is because otherwise
 Reduce will only return a some of the elements of the matricies.
@@ -1619,36 +1294,6 @@ beta.hat = solve(XtX, Xty)
 print(beta.hat)
 ```
 
-
-    %%R
-    XtX = values(from.dfs(
-        mapreduce(input = X.index,
-        map = map.XtX,
-        reduce = Sum,
-        combine = TRUE)))[[1]]
-    
-    Xty = values(from.dfs(
-        mapreduce(
-        input = X.index,
-        map = map.Xty,
-        reduce = Sum,
-        combine = TRUE)))[[1]]
-    beta.hat = solve(XtX, Xty)
-    print(beta.hat)
-
-
-               [,1]
-     [1,]  1.045835
-     [2,]  1.980511
-     [3,]  2.993829
-     [4,]  4.011599
-     [5,]  5.074755
-     [6,]  6.008534
-     [7,]  6.947164
-     [8,]  8.024570
-     [9,]  9.024757
-    [10,]  9.888609
-    [11,] 10.893023
 
 
 
@@ -1755,44 +1400,64 @@ library for your platform... using builtin-java classes where applicable
 library for your platform... using builtin-java classes where applicable
 
 
+```
 
-__mapreduce.input.lineinputformat.linespermap__ When using NLineInputFormat, the
-number of lines of input data to include in each split.
+               [,1]
+     [1,]  1.045835
+     [2,]  1.980511
+     [3,]  2.993829
+     [4,]  4.011599
+     [5,]  5.074755
+     [6,]  6.008534
+     [7,]  6.947164
+     [8,]  8.024570
+     [9,]  9.024757
+    [10,]  9.888609
+    [11,] 10.893023
+```
 
 
 # Your Data isn't THAT BIG
 
 Hadoop has several difficulties and limitations:
+
 - Paradigm shift of MapReduce: re-vision (and recoding) algorithms into the
 paradigm of MapReduce
+
 - Debugging code is more difficult than just regular code
+
 - Data security isn't as well defined as most SQL engines
 
 ## Alternatives
 
-Is there a way of fitting the data in memory?
+__Q:__ Is there a way of fitting the data in memory?
+
 - A gigabyte csv file can be loaded into memory on most computers
 
-Can the process be done reading lines from a file?
+__Q:__ Can the process be done reading lines from a file?
+
 - R and Python have functions like `readLines` that can read a file line by line
 
-Can a SQL server handle the information/calculation?
+__Q:__ Can a SQL server handle the information/calculation?
+
 - SQL doesn't require all data to be loaded into memory to execute it's queries
     - SQL can handle queries over many Gigabytes of data
+
 - SQL tables can be indexed (unlike Hadoop) making for faster processing time
+
 - R packages like `dplyr` can translate _some_ R-code into SQL queries and can
 execute said code with a SQL backend
     - Can also execute SQL queries from R, importing the results into a
 dataframe
+
 - PostgreSQL has an extension ([MADlib](http://madlib.net/)) allowing Machine
 Learning algorithms to run over large datasets on PostgreSQL
 
-What if the data isn't structured for SQL tables? i.e. JSON file, binary blobs
+__Q:__ What if the data isn't structured for SQL tables? i.e. JSON file, binary
+blobs
+
 - PostgreSQL does have a JSON datatype
+
 - Can process the file using a script, reading line by line and then write to
 file as needed
 
-# Questions?
-
-
-    #sudo ipython nbconvert IntroHadoop.ipynb --to slides --post serve
