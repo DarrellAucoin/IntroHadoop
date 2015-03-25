@@ -35,7 +35,8 @@ div.text_cell_render{
 <center>
 
 <p class="gap05"<p>
-<h1>Introducton to ![alt text](Images/hadoop-logo.jpg)</h1>
+<h1>Introducton to </h1>
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/hadoop-logo.jpg)
 
 <p class="gap05"<p>
 <h3>Darrell Aucoin</h3>
@@ -87,18 +88,16 @@ Data Science
 
 ## Hadoop vs RDBMS (SQL)  
 
-
-|  | RDBMS (SQL) | Hadoop |  
-|--|-------------|--------|  
+| t | SQL | Hadoop |  
+|---|-----|--------|  
 | Data Size | Gigabytes | Terabyte/Petrabytes |  
 | Access | Interactive and batch | Batch |  
-| Updates | Read and write many times | Write once, read many times |  
-| Structure | Static schema (highly structured) | Dynamic schema (Semi-
-structured) |  
+| Updates | Read and write many times |   Write once, read many times | 
 | Integrity | High | Low |  
 | Scaling | Nonlinear | Linear |  
 | Schema | Write-on Schema | Read-on Schema |  
 | Data formating | Normalized | Optimally De-normalized |  
+| Structure | Static schema, highly structured | Dynamic schema, Semi-structured |    
 
 When going from a RDBMS to Hadoop, the biggest trade off is the guanrantee of
 atomicity, consistency, isolation, and durability for scalability.
@@ -120,7 +119,7 @@ distributed file system (HDFS for Hadoop).
 - Hadoop is distributed system, meaning it's an interconnected system of
 computers that looks to the user as just one single entity.
 <center>
-![alt text](Images/Distributed_Hadoop.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/Distributed_Hadoop.png)
 </center>
 
 - When a client submits a MapReduce Job, the job is split into several tasks and
@@ -275,7 +274,7 @@ defined map function in the form of a key-value pair on each map cluster.
 - The key is positional information (the number of bytes from start of file) and
 the value is the chunk of data composing a single record.
 
-![alt text](images/MapReduceInput.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceInput.png)
 
 - In hadoop, each map task's is an input split which is usually simply a HDFS
 block
@@ -288,7 +287,7 @@ information from the next block in the series
 
 __Map__ _User defined function_ outputing intermediate key-value pairs for the
 reducers
-![alt text](images/MapReduceMapper.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceMapper.png)
 
 __key__ ($k_{2}$): Later, MapReduce will group and possibly aggregate data
 according to these keys, choosing the right keys is here is important for a good
@@ -300,23 +299,25 @@ __value__ ($v_{2}$): The data to be grouped according to it's keys.
 
 __Combiner__ _User defined function_ that aggregates data according to
 intermediate keys on a mapper node
-![alt text](images/MapReduceCombiner.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceCombiner.png)
 
 - This can usually reduce the amount of data to be sent over the network
 increasing efficiency
-![alt text](images/combiner.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/combiner.png)
 
 - Combiner should be written with the idea that it is executed over most but not
 all map tasks. ie. 
-![alt text](images/combiner_key_value.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/combiner_key_value.png)
 
 - Usually very similar or the same code as the reduce method.
 
 ## Partitioner
 
 __Partitioner__ Sends intermediate key-value pairs (k,v) to reducer by
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/Reducer_hash.png)
+
 $$\mbox{Reducer}=\mbox{hash}\left(\mbox{k}\right)\pmod{R}$$
-![alt text](images/MapReducePartitioner.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReducePartitioner.png)
 
 - will usually result in a roughly balanced load accross the reducers while
 ensuring that all key-value pairs are grouped by their key on a single reducer.
@@ -328,19 +329,19 @@ harddrive and grouped by which reduce they will be sent to and their key.
 ## Shuffle and Sort
 
 __Shuffle and Sort__ On reducer node, sorts by key to help group equivalent keys
-![alt text](images/MapReduceSort.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceSort.png)
 
 ## Reduce
 
 __Reduce__ _User Defined Function_ that aggregates data (v) according to keys
 (k) to send key-value pairs to output
-![alt text](images/MapReduceReduce.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceReduce.png)
 
 ## Output Format
 
 __Output Format__ Translates final key-value pairs to file format (tab-seperated
 by default).
-![alt text](images/MapReduceOutput.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/MapReduceOutput.png)
 
 ## MapReduce Example: Word Count
 
@@ -614,7 +615,8 @@ $ hdfs [--config confdir] dfs <Cmd> <args>
 |-----|------|-|-------------|------------------|
 | `-get` |  | HDFSfiles localDir | Copy HDFSfiles to localDest |  |
 | `-getmerge` |  | HDFSfiles localDir | Concatenate HDFSfiles to localDest |  |
-|
+
+
 - More commands are on the cheatsheet attached
 
 ### HDFS File Command Examples
@@ -690,8 +692,7 @@ streaming-*.jar \
 | `-output` | dir | Output location |   
 | `-mapper` | executable | Mapper executable |  
 | `-reducer` | executable | Reducer executable |  
-| `-file` | filename | File that needs to be sent to clusters (Mappers, reducer,
-combiners and other files they need) |  
+| `-file` | filename | File that needs to be sent to clusters (Mappers, reducer, combiners and other files they need) |  
 
 
 ```
@@ -701,14 +702,12 @@ streaming-*.jar \
 ```
 
 
-| Cmd | | Description |
-|-----|-|-------------|
-| `-combiner` | executable | Combiner executable |
-| `-inputformat` | JavaClassName | Java Class specifying format of key-value
-pairs of text class for input. TextInputFormat is default |
-| `-outputformat` | JavaClassName | Java Class specifying format of key-value
-pairs of text class for output. TextOutputFormat is default |
-| `-numReduceTasks` | integer | The number of reducers to use |
+| Cmd | | Description |  
+|-----|-|-------------|  
+| `-combiner` | executable | Combiner executable |  
+| `-inputformat` | JavaClassName | Java Class specifying format of key-value pairs of text class for input. TextInputFormat is default |   
+| `-outputformat` | JavaClassName | Java Class specifying format of key-value pairs of text class for output. TextOutputFormat is default |    
+| `-numReduceTasks` | integer | The number of reducers to use |  
 
 
 ```
@@ -756,15 +755,13 @@ be written in Java.
 ### Built-in Counters
 For Hadoop 2.x
 
-| Group | Name/Enum |
-|-------|-----------|
-| MapReduce Task Counters | org.apache.hadoop.mapreduce.TaskCounter |
-| Job Counters | org.apache.hadoop.mapreduce.JobCounter |
-| Filesystem Counters | org.apache.hadoop.mapreduce.FileSystemCounter |
-| File Input Format Counters |
-org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter |
-| File Output Format Counters |
-org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter |
+| Group | Name/Enum |  
+|-------|-----------|  
+| MapReduce Task Counters | org.apache.hadoop.mapreduce.TaskCounter |  
+| Job Counters | org.apache.hadoop.mapreduce.JobCounter |  
+| Filesystem Counters | org.apache.hadoop.mapreduce.FileSystemCounter |  
+| File Input Format Counters | org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter |  
+| File Output Format Counters | org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter |  
 
 #### Task Counters
 
@@ -778,37 +775,34 @@ org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter |
 | COMBINE_OUTPUT_RECORDS | Number of output records produced by combiners |
 | REDUCE_OUTPUT_RECORDS | Number of output records produced by reducers |
 
-| Counter | Description |
-|---------|-------------|
-| MAP_INPUT_RECORDS | Number of input records consumed |
-| COMBINE_INPUT_RECORDS | Number of input records consumed by combiners |
-| REDUCE_INPUT_GROUPS | Number of distinct key groups consumed by reducers |
-| REDUCE_INPUT_RECORDS | Number of input records consumed by reducers |
-| MAP_OUTPUT_RECORDS | Number of output records by mappers |
-| COMBINE_OUTPUT_RECORDS | Number of output records produced by combiners |
-| REDUCE_OUTPUT_RECORDS | Number of output records produced by reducers |
-| MAP_SKIPPED_RECORDS | Number of skipped input records |
-| MAP_INPUT_BYTES | Number of uncompressed bytes consumed |
-| MAP_OUTPUT_BYTES | Number of uncompressed bytes by mappers |
-| MAP_OUTPUT_MATERIALIZED_BYTES | Number of bytes by mappers to HD |
-| REDUCE_SKIPPED_GROUPS | Number of distinct keys skipped by reducers |
-| REDUCE_SKIPPED_RECORDS | Number of input records skipped by reducers |
-| REDUCE_SHUFFLE_BYTES | Number of bytes of map output copied by shuffle to
-reducers |
-| SPILLED_RECORDS | Number of records spilled to disk by mappers and reducers |
-| CPU_MILLISECONDS | Cumulative CPU time for a task in miliseconds |
-| PHYSICAL_MEMORY_BYTES | The physical memory being used by a task in bytes |
-| VIRTUAL_MEMORY_BYTES | The virtual memory being used by a task in bytes |
-| COMMITTED_HEAP_BYTES | Total amount of memory available in the JVM in bytes |
-| SHUFFLED_MAPS | Number of files transferred from mappers to reducers by
-shuffle  |
-| FAILED_SHUFFLE | Number of failed file transfers to reducers by shuffle |
-| MERGED_MAP_OUTPUTS | Number of map outputs that have been merged in reducer |
-| BYTES_READ | Number of bytes read by mapper and reducers |
-| BYTES_WRITTEN | Number of bytes written by mappers and reducers |
-| SPLIT_RAW_BYTES | Bytes of input-split objects read by mappers. This is split
-metadata. |
-| GC_TIME_MILLIS | Milliseconds for garbage collection in tasks |
+| Counter | Description |  
+|---------|-------------|  
+| MAP_INPUT_RECORDS | Number of input records consumed |  
+| COMBINE_INPUT_RECORDS | Number of input records consumed by combiners |  
+| REDUCE_INPUT_GROUPS | Number of distinct key groups consumed by reducers |  
+| REDUCE_INPUT_RECORDS | Number of input records consumed by reducers |  
+| MAP_OUTPUT_RECORDS | Number of output records by mappers |  
+| COMBINE_OUTPUT_RECORDS | Number of output records produced by combiners |  
+| REDUCE_OUTPUT_RECORDS | Number of output records produced by reducers |  
+| MAP_SKIPPED_RECORDS | Number of skipped input records |  
+| MAP_INPUT_BYTES | Number of uncompressed bytes consumed |  
+| MAP_OUTPUT_BYTES | Number of uncompressed bytes by mappers |  
+| MAP_OUTPUT_MATERIALIZED_BYTES | Number of bytes by mappers to HD |  
+| REDUCE_SKIPPED_GROUPS | Number of distinct keys skipped by reducers |  
+| REDUCE_SKIPPED_RECORDS | Number of input records skipped by reducers |  
+| REDUCE_SHUFFLE_BYTES | Number of map output bytes copied by shuffle to reducers |  
+| SPILLED_RECORDS | Number of records spilled to disk by mappers and reducers |  
+| CPU_MILLISECONDS | Cumulative CPU time for a task in miliseconds |  
+| PHYSICAL_MEMORY_BYTES | The physical memory being used by a task in bytes |  
+| VIRTUAL_MEMORY_BYTES | The virtual memory being used by a task in bytes |  
+| COMMITTED_HEAP_BYTES | Total amount of memory available in the JVM in bytes |  
+| SHUFFLED_MAPS | Number of files transferred from mappers to reducers by shuffle |  
+| FAILED_SHUFFLE | Number of failed file transfers to reducers by shuffle |  
+| MERGED_MAP_OUTPUTS | Number of map outputs that have been merged in reducer |  
+| BYTES_READ | Number of bytes read by mapper and reducers |  
+| BYTES_WRITTEN | Number of bytes written by mappers and reducers |  
+| SPLIT_RAW_BYTES | Bytes of input-split objects read by mappers |  
+| GC_TIME_MILLIS | Milliseconds for garbage collection in tasks |  
 
 #### File Input Format Counters
 | Counter | Description |
@@ -902,10 +896,10 @@ reduce function, or
     - NULL means no combiner is used.
 
 - __input.format__ Input format specification, see make.input.format
-![alt text](Images/input.format.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/input.format.png)
 
 - __output.format__ Output format specification, see make.output.format
-![alt text](Images/output.format.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/output.format.png)
 
 ## rmr2: keyval
 
@@ -1154,14 +1148,14 @@ rmr.options(backend = c("hadoop", "local"),
 - __backend__ Use either hadoop, or the current R interpreter, sequentially, for
 learning and debugging.
 
-![alt text](Images/backend.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/backend.png)
 
 - __profile.nodes__ Collect profiling and memory information when running
 additional R interpreters (besides the current one) on the cluster. No effect on
 the local backend, use Rprof instead. For backward compatibility, "calls" is
 equivalent to TRUE and "off" to FALSE
 
-![alt text](Images/profile.nodes.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/profile.nodes.png)
 
 __Rprof__ when we are running on local mode (using `rmr.options(backend =
 "local")` ). When local mode is turned on, hadoop is never run but a simulation
@@ -1224,7 +1218,7 @@ enough for R to easily handle i.e.
 $$n\gg p$$
 
 We know from linear regression, that our estimate of $\hat{\beta}$:
-![alt text](Images/linear_reg1.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/linear_reg1.png)
 
 $\left(X^{T}X\right)_{p\times p}$ and $\left(X^{T}y\right)_{p\times1}$ is small
 enough for R to solve for $\hat{\beta}$, thus we only need $X^{T}X,X^{T}y$ to
@@ -1232,7 +1226,7 @@ get $\hat{\beta}$.
 
 To break up this calculation we break our matrix $X$ into submatricies $X_{i}$:  
 
-![alt text](Images/linear_reg.png)
+![alt text](https://github.com/NormallySane/IntroHadoop/blob/master/images/linear_reg.png)
 
 ```
 Sys.setenv("HADOOP_PREFIX"="/usr/local/hadoop/2.5.2")

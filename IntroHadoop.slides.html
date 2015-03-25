@@ -2039,7 +2039,7 @@ In&nbsp;[2]:
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li>Hadoop is distributed system, meaning it&#39;s an interconnected system of computers that look to user as just one single entity.<center>
+<li>Hadoop is distributed system, meaning it&#39;s an interconnected system of computers that looks to the user as just one single entity.<center>
 <img src="Images/Distributed_Hadoop.png" alt="alt text">
 </center></li>
 </ul>
@@ -2552,7 +2552,7 @@ In&nbsp;[2]:
 <img src="images/MapReduceCombiner.png" alt="alt text"></p>
 </div>
 </div>
-</div><aside class="notes">
+</div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -2560,22 +2560,42 @@ In&nbsp;[2]:
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <ul>
-<li><p>This can usually reduce the amount of data to be sent over the network increasing efficiency
-$$\left.\begin{array}{r}
+<li>This can usually reduce the amount of data to be sent over the network increasing efficiency  </li>
+</ul>
+<p>$$\left.\begin{array}{r}
 \left(\mbox{"hello world"},1\right)\\
 \left(\mbox{"hello world"},1\right)\\
 \left(\mbox{"hello world"},1\right)
-\end{array}\right\} \overset{\mbox{combiner}}{\longrightarrow}\left(\mbox{"hello world"},3\right)$$</p>
-</li>
-<li><p>Combiner should be written with the idea that it is executed over most but not all map tasks. ie. $$\left(k_{2},v_{2}\right)\mapsto\left(k_{2},v_{2}\right)$$</p>
-</li>
-<li><p>Usually very similar or the same code as the reduce method.</p>
-</li>
+\end{array}\right\} \overset{\mbox{combiner}}{\longrightarrow}\left(\mbox{"hello world"},3\right) $$</p>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Combiner should be written with the idea that it is executed over most but not all map tasks. ie. $$\left(k_{2},v_{2}\right)\mapsto\left(k_{2},v_{2}\right)$$</li>
 </ul>
 </div>
 </div>
 </div>
-    </aside></section><section>
+    </div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li>Usually very similar or the same code as the reduce method.</li>
+</ul>
+</div>
+</div>
+</div>
+    </div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -2690,7 +2710,7 @@ $$\left.\begin{array}{r}
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="http://www.widriksson.com/wp-content/uploads/2014/10/Hadoop-MapReduce-WordCount.png" alt="alt text"><br>Image Source: <a href="http://www.widriksson.com/raspberry-pi-hadoop-cluster/">Jonas Widriksson Blog</a></p>
+<p><img src="http://xiaochongzhang.me/blog/wp-content/uploads/2013/05/MapReduce_Work_Structure.png" alt="alt text"><br>Image Source: <a href="http://xiaochongzhang.me/blog/">Xiaochong Zhang&#39;s Blog</a></p>
 </div>
 </div>
 </div></section>
@@ -3233,130 +3253,7 @@ $$\left.\begin{array}{r}
 </code></pre>
 </div>
 </div>
-</div><aside class="notes">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The </p>
-<p><strong><code>Pipes.hh</code></strong> </p>
-<p><strong><code>StringUtils.hh</code></strong> </p>
-<p><strong><code>hdfs.h</code></strong> </p>
-<p><strong><code>SerialUtils.hh</code></strong> </p>
-<p><strong><code>TemplateFactory.hh</code></strong> </p>
-</div>
-</div>
-</div>
-    </aside><aside class="notes">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<pre><code>#include &quot;hadoop/Pipes.hh&quot;
-#include &quot;hadoop/TemplateFactory.hh&quot;
-#include &quot;hadoop/StringUtils.hh&quot;
-
-using namespace std;
-
-class MapperClass : public HadoopPipes::Mapper {
-public:
-    // Constructor: does nothing
-    MapperClass( HadoopPipes::TaskContext&amp; context ) {
-    }
-
-    void map( HadoopPipes::MapContext&amp; context ) {
-        ...
-        context.emit( key, value );
-    }
-};
-
-class ReducerClass : public HadoopPipes::Reducer {
-public:
-    // constructor: does nothing
-    ReducerClass(HadoopPipes::TaskContext&amp; context) {
-    }
-
-    // reduce function
-    void reduce( HadoopPipes::ReduceContext&amp; context ) {
-        ...
-        //--- emit (key, value) ---
-        context.emit(context.getInputKey(), value);
-  }
-};
-
-int main(int argc, char *argv[]) {
-  return HadoopPipes::runTask(HadoopPipes::TemplateFactory&lt; 
-                              MapperClass, ReducerClass &gt;() );
-}
-</code></pre><pre><code>#include &lt;algorithm&gt;
-#include &lt;limits&gt;
-#include &lt;string&gt;
-
-#include  &quot;stdint.h&quot;  // &lt;--- to prevent uint64_t errors! 
-
-#include &quot;hadoop/Pipes.hh&quot;
-#include &quot;hadoop/TemplateFactory.hh&quot;
-#include &quot;hadoop/StringUtils.hh&quot;
-
-using namespace std;
-
-class WordCountMapper : public HadoopPipes::Mapper {
-public:
-  // constructor: does nothing
-  WordCountMapper( HadoopPipes::TaskContext&amp; context ) {
-  }
-
-  // map function: receives a line, outputs (word,&quot;1&quot;)
-  // to reducer.
-  void map( HadoopPipes::MapContext&amp; context ) {
-    //--- get line of text ---
-    string line = context.getInputValue();
-
-    //--- split it into words ---
-    vector&lt; string &gt; words =
-      HadoopUtils::splitString( line, &quot; &quot; );
-
-    //--- emit each word tuple (word, &quot;1&quot; ) ---
-    for ( unsigned int i=0; i &lt; words.size(); i++ ) {
-      context.emit( words[i], HadoopUtils::toString( 1 ) );
-    }
-  }
-};
-
-class WordCountReducer : public HadoopPipes::Reducer {
-public:
-  // constructor: does nothing
-  WordCountReducer(HadoopPipes::TaskContext&amp; context) {
-  }
-
-  // reduce function
-  void reduce( HadoopPipes::ReduceContext&amp; context ) {
-    int count = 0;
-
-    //--- get all tuples with the same key, and count their numbers ---
-    while ( context.nextValue() ) {
-      count += HadoopUtils::toInt( context.getInputValue() );
-    }
-
-    //--- emit (word, count) ---
-    context.emit(context.getInputKey(), HadoopUtils::toString( count ));
-  }
-};
-
-int main(int argc, char *argv[]) {
-  return HadoopPipes::runTask(HadoopPipes::TemplateFactory&lt; 
-                              WordCountMapper, 
-                              WordCountReducer &gt;() );
-}
-</code></pre>
-</div>
-</div>
-</div>
-    </aside></section>
+</div></section>
     </section><section>
     <section>
     
@@ -4047,7 +3944,9 @@ Deleted example.txt
 </table>
 </div>
 </div>
-</div><aside class="notes">
+</div></section>
+    </section><section>
+    <section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4059,7 +3958,18 @@ Deleted example.txt
 </div>
 </div>
 
-    </aside><aside class="notes">
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hadoop is <strong>highly</strong> configurable, both on the admin and MapReduce job side. </p>
+<ul>
+<li>Most options are for performance tuning</li>
+</ul>
+</div>
+</div>
+</div><aside class="notes">
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -4272,6 +4182,388 @@ Deleted example.txt
 </div>
 </div>
     </aside></section>
+    </section><section>
+    <section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Debugging-Hadoop">Debugging Hadoop<a class="anchor-link" href="#Debugging-Hadoop">&#182;</a></h1>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hadoop can run in 3 different modes, 2 of which are are useful for debugging:</p>
+<ol>
+<li><strong>Local</strong>: Hadoop installed an a single machine, everything is run in a single JVM instance, thus making tracking down problems easier.</li>
+<li><strong>Pseudo-Distribution</strong>: Essentially a 1 node cluster. Useful for finding problems related to the distributed nature of Hadoop.</li>
+<li><strong>Full-Distribution</strong>: A hadoop system installed on a cluster.</li>
+</ol>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Counters">Counters<a class="anchor-link" href="#Counters">&#182;</a></h2>
+</div>
+</div>
+</div>
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hadoop has various counters associated with a job (i.e. how many map, reduce tasks have run etc.).  </p>
+<p>Counters have the dual purpose of keeping the system informed that a task is still running as well as metrics on a jobs progress.  Custom counters can also be written in Java.  </p>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="built-in-counters">Built-in Counters</h3>
+<p>For Hadoop 2.x</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Name/Enum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MapReduce Task Counters</td>
+<td>org.apache.hadoop.mapreduce.TaskCounter</td>
+</tr>
+<tr>
+<td>Job Counters</td>
+<td>org.apache.hadoop.mapreduce.JobCounter</td>
+</tr>
+<tr>
+<td>Filesystem Counters</td>
+<td>org.apache.hadoop.mapreduce.FileSystemCounter</td>
+</tr>
+<tr>
+<td>File Input Format Counters</td>
+<td>org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter</td>
+</tr>
+<tr>
+<td>File Output Format Counters</td>
+<td>org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="task-counters">Task Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAP_INPUT_RECORDS</td>
+<td>Number of input records consumed</td>
+</tr>
+<tr>
+<td>COMBINE_INPUT_RECORDS</td>
+<td>Number of input records consumed by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_GROUPS</td>
+<td>Number of distinct key groups consumed by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_RECORDS</td>
+<td>Number of input records consumed by reducers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_RECORDS</td>
+<td>Number of output records by mappers</td>
+</tr>
+<tr>
+<td>COMBINE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by reducers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div style=display:none>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAP_INPUT_RECORDS</td>
+<td>Number of input records consumed</td>
+</tr>
+<tr>
+<td>COMBINE_INPUT_RECORDS</td>
+<td>Number of input records consumed by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_GROUPS</td>
+<td>Number of distinct key groups consumed by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_INPUT_RECORDS</td>
+<td>Number of input records consumed by reducers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_RECORDS</td>
+<td>Number of output records by mappers</td>
+</tr>
+<tr>
+<td>COMBINE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by combiners</td>
+</tr>
+<tr>
+<td>REDUCE_OUTPUT_RECORDS</td>
+<td>Number of output records produced by reducers</td>
+</tr>
+<tr>
+<td>MAP_SKIPPED_RECORDS</td>
+<td>Number of skipped input records</td>
+</tr>
+<tr>
+<td>MAP_INPUT_BYTES</td>
+<td>Number of uncompressed bytes consumed</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_BYTES</td>
+<td>Number of uncompressed bytes by mappers</td>
+</tr>
+<tr>
+<td>MAP_OUTPUT_MATERIALIZED_BYTES</td>
+<td>Number of bytes by mappers to HD</td>
+</tr>
+<tr>
+<td>REDUCE_SKIPPED_GROUPS</td>
+<td>Number of distinct keys skipped by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_SKIPPED_RECORDS</td>
+<td>Number of input records skipped by reducers</td>
+</tr>
+<tr>
+<td>REDUCE_SHUFFLE_BYTES</td>
+<td>Number of bytes of map output copied by shuffle to reducers</td>
+</tr>
+<tr>
+<td>SPILLED_RECORDS</td>
+<td>Number of records spilled to disk by mappers and reducers</td>
+</tr>
+<tr>
+<td>CPU_MILLISECONDS</td>
+<td>Cumulative CPU time for a task in miliseconds</td>
+</tr>
+<tr>
+<td>PHYSICAL_MEMORY_BYTES</td>
+<td>The physical memory being used by a task in bytes</td>
+</tr>
+<tr>
+<td>VIRTUAL_MEMORY_BYTES</td>
+<td>The virtual memory being used by a task in bytes</td>
+</tr>
+<tr>
+<td>COMMITTED_HEAP_BYTES</td>
+<td>Total amount of memory available in the JVM in bytes</td>
+</tr>
+<tr>
+<td>SHUFFLED_MAPS</td>
+<td>Number of files transferred from mappers to reducers by shuffle</td>
+</tr>
+<tr>
+<td>FAILED_SHUFFLE</td>
+<td>Number of failed file transfers to reducers by shuffle</td>
+</tr>
+<tr>
+<td>MERGED_MAP_OUTPUTS</td>
+<td>Number of map outputs that have been merged in reducer</td>
+</tr>
+<tr>
+<td>BYTES_READ</td>
+<td>Number of bytes read by mapper and reducers</td>
+</tr>
+<tr>
+<td>BYTES_WRITTEN</td>
+<td>Number of bytes written by mappers and reducers</td>
+</tr>
+<tr>
+<td>SPLIT_RAW_BYTES</td>
+<td>Bytes of input-split objects read by mappers. This is split metadata.</td>
+</tr>
+<tr>
+<td>GC_TIME_MILLIS</td>
+<td>Milliseconds for garbage collection in tasks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="file-input-format-counters">File Input Format Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BYTES_READ</td>
+<td>Bytes read by mappers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="file-output-format">File Output Format</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BYTES_WRITTEN</td>
+<td>Bytes written reducers or (for map-only jobs) mappers</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+    </div></section><section>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="job-counters">Job Counters</h4>
+<table>
+<thead>
+<tr>
+<th>Counter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TOTAL_LAUNCHED_MAPS</td>
+<td>Number of map launched tasks</td>
+</tr>
+<tr>
+<td>TOTAL_LAUNCHED_REDUCES</td>
+<td>Number of launched reduce tasks</td>
+</tr>
+<tr>
+<td>TOTAL_LAUNCHED_UBERTASKS</td>
+<td>Number of uber tasks</td>
+</tr>
+<tr>
+<td>NUM_UBER_SUBMAPS</td>
+<td>Number of maps in uber tasks</td>
+</tr>
+<tr>
+<td>NUM_UBER_SUBREDUCES</td>
+<td>Number of reduces in uber tasks</td>
+</tr>
+<tr>
+<td>NUM_FAILED_MAPS</td>
+<td>Number of failed maps</td>
+</tr>
+<tr>
+<td>NUM_FAILED_REDUCES</td>
+<td>Number of failed reduces</td>
+</tr>
+<tr>
+<td>NUM_FAILED_UBERTASKS</td>
+<td>Number of failed uber tasks</td>
+</tr>
+<tr>
+<td>DATA_LOCAL_MAPS</td>
+<td>Number of data local mappers</td>
+</tr>
+<tr>
+<td>RACK_LOCAL_MAPS</td>
+<td>Number of rack local mappers</td>
+</tr>
+<tr>
+<td>OTHER_LOCAL_MAPS</td>
+<td>Number of non-local rack mappers</td>
+</tr>
+<tr>
+<td>SLOTS_MILLIS_MAPS</td>
+<td>Total time running mappers (milliseconds)</td>
+</tr>
+<tr>
+<td>SLOTS_MILLIS_REDUCES</td>
+<td>Total time running reducers (milliseconds)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></section>
     </section><section>
     <section>
     
@@ -4753,434 +5045,7 @@ strsplit(str, split = &#39; &#39;)
 </div>
 </div>
 </div>
-    </div></section>
-    </section><section>
-    <section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Debugging-Hadoop">Debugging Hadoop<a class="anchor-link" href="#Debugging-Hadoop">&#182;</a></h1>
-</div>
-</div>
-</div>
-
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Hadoop can run in 3 different modes, 2 of which are are useful for debugging:</p>
-<ol>
-<li><strong>Local</strong>: Hadoop installed an a single machine, everything is run in a single JVM instance, thus making tracking down problems easier.</li>
-<li><strong>Pseudo-Distribution</strong>: Essentially a 1 node cluster. Useful for finding problems related to the distributed nature of Hadoop.</li>
-<li><strong>Full-Distribution</strong>: A hadoop system installed on a cluster.</li>
-</ol>
-</div>
-</div>
-</div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Job,-Task,-and-Task-Attempt-IDs">Job, Task, and Task Attempt IDs<a class="anchor-link" href="#Job,-Task,-and-Task-Attempt-IDs">&#182;</a></h2>
-</div>
-</div>
-</div>
-
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>The format of a job ID is composed of the time that the
-        jobtracker (not the job) started and an incrementing counter
-        maintained by the jobtracker to uniquely identify the job to that
-        instance of the jobtracker. So the job with this ID:job_200904110811_0002is the second (0002; job IDs
-        are 1-based) job run by the jobtracker, which started at 08:11 on
-        April 11, 2009. The counter is formatted with leading zeros to make
-        job IDs sort nicely—in directory listings, for example. However, when
-        the counter reaches 10000, it is not reset, resulting in longer job IDs (which
-        don’t sort so well).Tasks belong to a job, and their IDs are formed by replacing the
-        job prefix of a job
-        ID with a task prefix and adding a
-        suffix to identify the task within the job. For example:task_200904110811_0002_m_000003is the fourth (000003, task
-        IDs are 0-based) map (m) task of
-        the job with ID job_200904110811_0002. The task
-        IDs are created for a job when it is initialized, so they do not
-        necessarily dictate the order in which the tasks will be
-        executed.Tasks may be executed more than once, due to failure (see Task failure) or speculative execution (see Speculative Execution), so to identify different instances
-        of a task execution, task attempts are given unique IDs on the
-        jobtracker. For example:attempt_200904110811_0002_m_000003_0is the first (0; attempt IDs
-        are 0-based) attempt at running task task_200904110811_0002_m_000003. Task
-        attempts are allocated during the job run as needed, so their ordering
-        represents the order in which they were created for tasktrackers to
-        run.The final count in the task attempt ID is incremented by 1,000
-        if the job is restarted after the jobtracker is restarted and recovers
-        its running jobs (although this behavior is disabled by default; see
-        Jobtracker failure)</p>
-</div>
-</div>
-</div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Counters">Counters<a class="anchor-link" href="#Counters">&#182;</a></h2>
-</div>
-</div>
-</div>
-
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Hadoop has various counters associated with a job (i.e. how many map, reduce tasks have run etc.).  </p>
-<p>Counters have the dual purpose of keeping the system informed that a task is still running as well as metrics on a jobs progress.  Custom counters can also be written in Java.  </p>
-</div>
-</div>
-</div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="built-in-counters">Built-in Counters</h3>
-<p>For Hadoop 2.x</p>
-<table>
-<thead>
-<tr>
-<th>Group</th>
-<th>Name/Enum</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MapReduce Task Counters</td>
-<td>org.apache.hadoop.mapreduce.TaskCounter</td>
-</tr>
-<tr>
-<td>Job Counters</td>
-<td>org.apache.hadoop.mapreduce.JobCounter</td>
-</tr>
-<tr>
-<td>Filesystem Counters</td>
-<td>org.apache.hadoop.mapreduce.FileSystemCounter</td>
-</tr>
-<tr>
-<td>File Input Format Counters</td>
-<td>org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter</td>
-</tr>
-<tr>
-<td>File Output Format Counters</td>
-<td>org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="task-counters">Task Counters</h4>
-<table>
-<thead>
-<tr>
-<th>Counter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MAP_INPUT_RECORDS</td>
-<td>Number of input records consumed</td>
-</tr>
-<tr>
-<td>COMBINE_INPUT_RECORDS</td>
-<td>Number of input records consumed by combiners</td>
-</tr>
-<tr>
-<td>REDUCE_INPUT_GROUPS</td>
-<td>Number of distinct key groups consumed by reducers</td>
-</tr>
-<tr>
-<td>REDUCE_INPUT_RECORDS</td>
-<td>Number of input records consumed by reducers</td>
-</tr>
-<tr>
-<td>MAP_OUTPUT_RECORDS</td>
-<td>Number of output records by mappers</td>
-</tr>
-<tr>
-<td>COMBINE_OUTPUT_RECORDS</td>
-<td>Number of output records produced by combiners</td>
-</tr>
-<tr>
-<td>REDUCE_OUTPUT_RECORDS</td>
-<td>Number of output records produced by reducers</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<table>
-<thead>
-<tr>
-<th>Counter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MAP_INPUT_RECORDS</td>
-<td>Number of input records consumed</td>
-</tr>
-<tr>
-<td>COMBINE_INPUT_RECORDS</td>
-<td>Number of input records consumed by combiners</td>
-</tr>
-<tr>
-<td>REDUCE_INPUT_GROUPS</td>
-<td>Number of distinct key groups consumed by reducers</td>
-</tr>
-<tr>
-<td>REDUCE_INPUT_RECORDS</td>
-<td>Number of input records consumed by reducers</td>
-</tr>
-<tr>
-<td>MAP_OUTPUT_RECORDS</td>
-<td>Number of output records by mappers</td>
-</tr>
-<tr>
-<td>COMBINE_OUTPUT_RECORDS</td>
-<td>Number of output records produced by combiners</td>
-</tr>
-<tr>
-<td>REDUCE_OUTPUT_RECORDS</td>
-<td>Number of output records produced by reducers</td>
-</tr>
-<tr>
-<td>MAP_SKIPPED_RECORDS</td>
-<td>Number of skipped input records</td>
-</tr>
-<tr>
-<td>MAP_INPUT_BYTES</td>
-<td>Number of uncompressed bytes consumed</td>
-</tr>
-<tr>
-<td>MAP_OUTPUT_BYTES</td>
-<td>Number of uncompressed bytes by mappers</td>
-</tr>
-<tr>
-<td>MAP_OUTPUT_MATERIALIZED_BYTES</td>
-<td>Number of bytes by mappers to HD</td>
-</tr>
-<tr>
-<td>REDUCE_SKIPPED_GROUPS</td>
-<td>Number of distinct keys skipped by reducers</td>
-</tr>
-<tr>
-<td>REDUCE_SKIPPED_RECORDS</td>
-<td>Number of input records skipped by reducers</td>
-</tr>
-<tr>
-<td>REDUCE_SHUFFLE_BYTES</td>
-<td>Number of bytes of map output copied by shuffle to reducers</td>
-</tr>
-<tr>
-<td>SPILLED_RECORDS</td>
-<td>Number of records spilled to disk by mappers and reducers</td>
-</tr>
-<tr>
-<td>CPU_MILLISECONDS</td>
-<td>Cumulative CPU time for a task in miliseconds</td>
-</tr>
-<tr>
-<td>PHYSICAL_MEMORY_BYTES</td>
-<td>The physical memory being used by a task in bytes</td>
-</tr>
-<tr>
-<td>VIRTUAL_MEMORY_BYTES</td>
-<td>The virtual memory being used by a task in bytes</td>
-</tr>
-<tr>
-<td>COMMITTED_HEAP_BYTES</td>
-<td>Total amount of memory available in the JVM in bytes</td>
-</tr>
-<tr>
-<td>SHUFFLED_MAPS</td>
-<td>Number of files transferred from mappers to reducers by shuffle</td>
-</tr>
-<tr>
-<td>FAILED_SHUFFLE</td>
-<td>Number of failed file transfers to reducers by shuffle</td>
-</tr>
-<tr>
-<td>MERGED_MAP_OUTPUTS</td>
-<td>Number of map outputs that have been merged in reducer</td>
-</tr>
-<tr>
-<td>BYTES_READ</td>
-<td>Number of bytes read by mapper and reducers</td>
-</tr>
-<tr>
-<td>BYTES_WRITTEN</td>
-<td>Number of bytes written by mappers and reducers</td>
-</tr>
-<tr>
-<td>SPLIT_RAW_BYTES</td>
-<td>Bytes of input-split objects read by mappers. This is split metadata.</td>
-</tr>
-<tr>
-<td>GC_TIME_MILLIS</td>
-<td>Milliseconds for garbage collection in tasks</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
     </div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="file-input-format-counters">File Input Format Counters</h4>
-<table>
-<thead>
-<tr>
-<th>Counter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BYTES_READ</td>
-<td>Bytes read by mappers</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div><div class="fragment">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="file-output-format">File Output Format</h4>
-<table>
-<thead>
-<tr>
-<th>Counter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>BYTES_WRITTEN</td>
-<td>Bytes written reducers or (for map-only jobs) mappers</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-    </div></section><section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="job-counters">Job Counters</h4>
-<table>
-<thead>
-<tr>
-<th>Counter</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TOTAL_LAUNCHED_MAPS</td>
-<td>Number of map launched tasks</td>
-</tr>
-<tr>
-<td>TOTAL_LAUNCHED_REDUCES</td>
-<td>Number of launched reduce tasks</td>
-</tr>
-<tr>
-<td>TOTAL_LAUNCHED_UBERTASKS</td>
-<td>Number of uber tasks</td>
-</tr>
-<tr>
-<td>NUM_UBER_SUBMAPS</td>
-<td>Number of maps in uber tasks</td>
-</tr>
-<tr>
-<td>NUM_UBER_SUBREDUCES</td>
-<td>Number of reduces in uber tasks</td>
-</tr>
-<tr>
-<td>NUM_FAILED_MAPS</td>
-<td>Number of failed maps</td>
-</tr>
-<tr>
-<td>NUM_FAILED_REDUCES</td>
-<td>Number of failed reduces</td>
-</tr>
-<tr>
-<td>NUM_FAILED_UBERTASKS</td>
-<td>Number of failed uber tasks</td>
-</tr>
-<tr>
-<td>DATA_LOCAL_MAPS</td>
-<td>Number of data local mappers</td>
-</tr>
-<tr>
-<td>RACK_LOCAL_MAPS</td>
-<td>Number of rack local mappers</td>
-</tr>
-<tr>
-<td>OTHER_LOCAL_MAPS</td>
-<td>Number of non-local rack mappers</td>
-</tr>
-<tr>
-<td>SLOTS_MILLIS_MAPS</td>
-<td>Total time running mappers (milliseconds)</td>
-</tr>
-<tr>
-<td>SLOTS_MILLIS_REDUCES</td>
-<td>Total time running reducers (milliseconds)</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div></section><section>
     
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
